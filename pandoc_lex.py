@@ -13,11 +13,11 @@ states = [
     ('metadata', 'exclusive')
 ]
 
-tokens = "ID IF ENDIF FOREACH TEXTO".split(' ')
+tokens = "ID IF ELSEIF ELSE ENDIF FOR ENDFOR TEXTO".split(' ')
 
 literals = "$ . ( )".split(' ')
 
-reservadas = "if else elseif endif foreach endfor".split(' ')
+reservadas = "if else elseif endif for endfor".split(' ')
 
 #  adicionar contexto para o $ com lookbehind do '\' -> "(?<!\\)$"
 
@@ -37,10 +37,6 @@ def t_error(t):
     print("Illegal char '%s'" % t.value[0])
     t.lexer.skip(1)
 
-t_ignore = '\t\r'
-def t_eof(t):
-    print(" ##endFILE##", end='')
-
 def t_metadata_ID(t):
     r'(?i)[a-z_]\w*'
     if t.value in reservadas:
@@ -52,6 +48,7 @@ def t_metadata_error(t):
       t.lexer.begin('INITIAL')
       exit()
 
+t_ignore = '\t\r'
 t_metadata_ignore = ' \t\n\r'
 
 lexer = lex.lex()

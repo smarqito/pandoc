@@ -1,8 +1,10 @@
 $if(obj.incl)$
 1a segunda palavra $obj.incl$ nunca funciona
+$for(obj.bat)$
 $if(obj.bat)$
 1estou no nivel 2
 $endif$
+$endfor$
 $obj$ fim 1
 $endif$
 fim 2
