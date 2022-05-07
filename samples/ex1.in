@@ -1,0 +1,8 @@
+$if(obj.incl)$
+1a segunda palavra $obj.incl$ nunca funciona
+$if(obj.bat)$
+1estou no nivel 2
+$endif$
+$obj$ fim 1
+$endif$
+fim 2
