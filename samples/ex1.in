@@ -1,10 +1,17 @@
 $if(obj.incl)$
 1a segunda palavra $obj.incl$ nunca funciona
 $for(obj.bat)$
-$if(obj.bat)$
+$if(obj.inc)$
 1estou no nivel 2
+$elseif(obj.nao)$
+entrei no else if
+$elseif(obj.incl)$
+entrei no else if 2
+$else$
+entrei no else
 $endif$
 $endfor$
-$obj$ fim 1
+$ex2()$ fim 1
+$obj.incl/uppercase$
 $endif$
 fim 2

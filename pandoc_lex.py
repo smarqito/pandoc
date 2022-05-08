@@ -13,9 +13,9 @@ states = [
     ('metadata', 'exclusive')
 ]
 
-tokens = "ID IF ELSEIF ELSE ENDIF FOR ENDFOR TEXTO".split(' ')
+tokens = "ID IF ELSEIF ELSE ENDIF FOR ENDFOR BRACKETS TEXTO".split(' ')
 
-literals = "$ . ( )".split(' ')
+literals = "$ . ( ) /".split(' ')
 
 reservadas = "if else elseif endif for endfor".split(' ')
 
@@ -49,7 +49,7 @@ def t_metadata_error(t):
       exit()
 
 t_ignore = '\t\r'
-t_metadata_ignore = ' \t\n\r'
+t_metadata_ignore = '\r'
 
 lexer = lex.lex()
 
