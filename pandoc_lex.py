@@ -8,6 +8,7 @@
 #----------------------------------------------------------------
 from re import *
 import ply.lex as lex
+import sys
 
 states = [
     ('metadata', 'exclusive')

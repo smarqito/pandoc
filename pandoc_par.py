@@ -13,7 +13,7 @@ from modules.IfStmt import IfStmt
 from modules.Stmt import Stmt
 from modules.Texto import Texto
 from modules.VarStmt import ForStmt, VarStmt
-from modules.doc import Doc
+from modules.Document import Doc
 from pandoc_lex import tokens, lexer
 
 def p_Doc(p): 
@@ -41,19 +41,20 @@ def p_Rule_b(p):
      #p[0] = p[1]
      p[0] = Texto(p[1])
 
-def p_Stmt_a(p):
-     r"Stmt : IF '(' Cond ')' Rules Elseif Else ENDIF"
-     #if p[3] != "N/D":
-     #     p[0] = p[5]
-     #else:
-     #     p[0] = p[6]
-     p[0] = IfStmt(p[3], p[5], p[6], p[7])
+def p_Stmt_If(p):
+     r"Stmt : IF '(' Cond ')' Rules ENDIF"
+     p[0] = IfStmt(p[3], p[5])
+
+def p_Stmt_IfElse(p):
+     r"Stmt : IF '(' Cond ')' Rules ELSE Rules ENDIF"
+     p[0] = IfStmt(p[3], p[5])
+
+def p_Stmt_IfElseIf(p):
+     r"Stmt : IF '(' Cond ')' Rules ElseIf ELSE Rules ENDIF"
+     p[0] = IfStmt(p[3], p[5])
 
 def p_Stmt_b(p): 
      r"Stmt : FOR '(' Var ')' Rules Sep ENDFOR"  
-     #p[0] = ""
-     #for elem in p[3]:
-     #     p[0] += p[5] + p[6]
      p[0] = ForStmt(p[3], p[5], p[6])
 
 def p_Stmt_d(p): 
@@ -69,12 +70,8 @@ def p_elseif_a(p):
      #     p[0] = p[6]
      p[0] = IfStmt(p[4], p[6])
 
-#def p_else_b(p):
-#     r"Else : ELSE Rules"
-#     p[0] = p[2]
-
 def p_elseif_b(p):
-     r"ElseIf : "
+     r"ElseIf : ELSEIF '(' Cond ')' Rules"
      p[0] = None
 
 def p_else_a(p):
