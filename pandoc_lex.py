@@ -13,7 +13,7 @@ states = [
     ('metadata', 'exclusive')
 ]
 
-tokens = "ID IF ELSEIF ELSE ENDIF FOR ENDFOR BRACKETS TEXTO".split(' ')
+tokens = "ID IF ELSEIF ELSE ENDIF FOR ENDFOR TEXTO".split(' ')
 
 literals = "$ . ( ) /".split(' ')
 

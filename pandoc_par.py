@@ -6,11 +6,10 @@
 #----------------------------------------------------------------
 ''' pandoc_par.py: parsing algorithm '''
 #----------------------------------------------------------------
-from array import array
 from re import *
 import sys
 import ply.yacc as yacc
-from pandoc_lex import tokens
+from pandoc_lex import tokens, lexer
 
 def p_Doc(p): 
      "Doc : Rules" 
@@ -81,12 +80,12 @@ def p_Var_c(p):
      r"Var : ID '(' ')'"
      subtemplate = open(p[1])
      txt = subtemplate.read()
-     #p[0] = p.parse(txt)
+     #print(p.parser.parse(txt, lexer=lexer))
      p[0] = "partial"
 
 def p_Var_d(p):
      r"Var : Var '/' ID"
-     if p[1] is array:
+     if p[1] is list:
           if p[3] == "length":
                p[0] = len(p[1])
           elif p[3] == "first":
@@ -103,9 +102,9 @@ def p_Var_d(p):
                p[0] = p[1].upper()
           elif p[3] == "lowercase":
                p[0] = p[1].lower()
-          if p[3] == "length":
+          elif p[3] == "length":
                p[0] = len(p[1])
-          else :
+          else:
                print("pipe nao definido")
 
 def p_error(p):
@@ -118,6 +117,7 @@ parser.ids = {
         'incl' : 'ola',
         'bat' : ['eu', 'sei', 'que', 'nao', 'vai', 'funcionar', 'direito']
     }
+    
 }
 
 #parser.level = 0
