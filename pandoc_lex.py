@@ -13,11 +13,11 @@ states = [
     ('metadata', 'exclusive')
 ]
 
-tokens = "ID IF ELSEIF ELSE ENDIF FOR ENDFOR TEXTO".split(' ')
+tokens = "ID IF ELSEIF ELSE ENDIF FOR ENDFOR SEP TEXTO".split(' ')
 
 literals = "$ . ( ) /".split(' ')
 
-reservadas = "if else elseif endif for endfor".split(' ')
+reservadas = "if else elseif endif for endfor sep".split(' ')
 
 #  adicionar contexto para o $ com lookbehind do '\' -> "(?<!\\)$"
 
@@ -28,6 +28,7 @@ def t_ON(t):
 def t_metadata_OFF(t):
     r"\$"
     t.lexer.begin('INITIAL')
+
 
 def t_TEXTO(t): 
     r"[^$]+"

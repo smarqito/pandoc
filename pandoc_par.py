@@ -9,59 +9,89 @@
 from re import *
 import sys
 import ply.yacc as yacc
+from modules.IfStmt import IfStmt
+from modules.Stmt import Stmt
+from modules.Texto import Texto
+from modules.VarStmt import ForStmt, VarStmt
+from modules.doc import Doc
 from pandoc_lex import tokens, lexer
 
 def p_Doc(p): 
      "Doc : Rules" 
-     p[0] = p[1]
+     #p[0] = p[1]
+     p[0]= Doc(p[1])
 
 def p_Rules_a(p): 
      r"Rules : "
-     p[0] = ''     
+     #p[0] = ''  
+     p[0] = []   
 
 def p_Rules_b(p):
      r"Rules : Rules Rule"
-     p[0] = p[1] + p[2]
+     #p[0] = p[1] + p[2]
+     p[0] = p[1] + [p[2]]
 
 def p_Rule_a(p): 
      r"Rule : Stmt"
-     p[0] = p[1]
+     #p[0] = p[1]
+     p[0] = Stmt(p[1])
 
 def p_Rule_b(p): 
      r"Rule : TEXTO"
-     p[0] = p[1]
+     #p[0] = p[1]
+     p[0] = Texto(p[1])
 
 def p_Stmt_a(p):
-     r"Stmt : IF '(' Cond ')' Rules Else ENDIF"
-     if p[3] != "N/D":
-          p[0] = p[5]
-     else:
-          p[0] = p[6]
-     
+     r"Stmt : IF '(' Cond ')' Rules Elseif Else ENDIF"
+     #if p[3] != "N/D":
+     #     p[0] = p[5]
+     #else:
+     #     p[0] = p[6]
+     p[0] = IfStmt(p[3], p[5], p[6], p[7])
 
 def p_Stmt_b(p): 
-     r"Stmt : FOR '(' Var ')' Rules ENDFOR"  
-     p[0] = ""
-     for elem in p[3]:
-          p[0] += p[5]
+     r"Stmt : FOR '(' Var ')' Rules Sep ENDFOR"  
+     #p[0] = ""
+     #for elem in p[3]:
+     #     p[0] += p[5] + p[6]
+     p[0] = ForStmt(p[3], p[5], p[6])
 
-def p_Stmt_c(p): 
+def p_Stmt_d(p): 
      r"Stmt : Var"
-     p[0] = str(p[1])
+     # p[0] = str(p[1])
+     p[0] = VarStmt(str(p[1]))
+
+def p_elseif_a(p):
+     r"ElseIf : ElseIf ELSEIF '(' Cond ')' Rules"
+     #if p[3] != "N/D":
+     #     p[0] = p[5]
+     #else:
+     #     p[0] = p[6]
+     p[0] = IfStmt(p[4], p[6])
+
+#def p_else_b(p):
+#     r"Else : ELSE Rules"
+#     p[0] = p[2]
+
+def p_elseif_b(p):
+     r"ElseIf : "
+     p[0] = None
 
 def p_else_a(p):
-     r"Else : ELSEIF '(' Cond ')' Rules Else"
-     if p[3] != "N/D":
-          p[0] = p[5]
-     else:
-          p[0] = p[6]
-
-def p_else_b(p):
      r"Else : ELSE Rules"
      p[0] = p[2]
 
-def p_else_c(p):
+def p_else_b(p):
      r"Else : "
+     p[0] = ""
+
+
+def p_sep_a(p):
+     r"Sep : SEP TEXTO"
+     p[0] = p[2]
+
+def p_sep_b(p):
+     r"Sep : "
      p[0] = ""
 
 def p_Cond_a(p): 
