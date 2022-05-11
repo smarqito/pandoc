@@ -1,4 +1,10 @@
-$if(obj.incl)$
-1a segunda palavra nunca funciona
+$if(False)$
+1a segunda palavra $var$ nunca funciona
+$elseif(False)$
+primeiro else if
+$elseif(True)$
+segundo else if
+$else$
+estamos num else
 $endif$
 fim 2

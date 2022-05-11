@@ -5,11 +5,19 @@ class StmtIf(Stmt):
     def __init__(self, cond, elems : list = []):
         super().__init__()
         self.cond = cond
-        self.elems = elems
+        self.body = elems
+
+    def testCondition(self) -> bool:
+        if self.cond == "True":
+            return True
+        return False
 
     def pp(self):
-        print("begin if")
-        print("condicao", self.cond)
-        for elem in self.elems:
-            elem.pp()
-        print("end if")
+        if self.testCondition():
+            print("begin if")
+            print("condicao", self.cond)
+            for elem in self.body:
+                elem.pp()
+            print("end if")
+            return True
+        return False

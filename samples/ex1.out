@@ -1,5 +1,15 @@
+--- TRUE
+begin ifelse
 begin if
-condicao obj.incl
+condicao True
 1a segunda palavra nunca funciona
 end if
+end ifelse
+fim 2
+
+--- FALSE
+begin ifelse
+else:
+estamos num else
+end ifelse
 fim 2

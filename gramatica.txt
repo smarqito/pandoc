@@ -1,20 +1,22 @@
 Document -> Elems
 
 Elems   ->  Elems Elem
-Elems   ->  Elem
+Elems   |   Elem
 
 Elem    ->  Stmt
         |   TEXTO
 
 Stmt    ->  If
 
-If      ->  IF OCOND Cond CCOND Elems Else ENDIF
+If      ->  IF OPAR Cond CPAR Elems Else ENDIF
+                                      | None                                             : StmtIf
+                                      | ('else', elems, )                                : StmtIfElse
+                                      | ('elseIf', elseIfs, elseBody : Elems | None)     : StmtIfElseIf
 
-Else    ->  ELSE Elems
-        |   ElseIfs ELSE Elems
-        |   Empty
+Else                                                ([elseifs], [else])
+Else    ->  ELSE Elems                              ([], elem)
+        |   ElseIf Else                             (p[1] + p[2][0], p[2][1])
+        |   Empty                                   ([], [])
 
-ElseIfs ->  ElseIfs ElseIf 
-        |   ElseIf
 
-ElseIf  ->  ELSEIF OCOND Cond CCOND Elems
+ElseIf  ->  ELSEIF OPAR Cond CPAR Elems             [StmtIf]

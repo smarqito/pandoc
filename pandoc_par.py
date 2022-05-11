@@ -13,6 +13,8 @@ from pandoc_lex import tokens
 from modules.Document import Document
 from modules.StmtIf import StmtIf
 from modules.Texto import Texto
+from modules.StmtIfElseIf import StmtIfElseIf
+from modules.StmtIfElse import StmtIfElse
 ##########################################
 def my_error(msg):
      print(msg)
@@ -70,15 +72,36 @@ def p_Stmt_If(p):
 ######################
 
 def p_If(p):
-     r'If : IF OPAR Cond CPAR Elems ENDIF'
-     p[0] = StmtIf(p[3], p[5])
+     r'If : IF OPAR Cond CPAR Elems Else ENDIF'
+     _elseifs, _else = p[6] # Else
+     if len(_else) > 0 or len(_elseifs) > 0:
+          p[0] = StmtIfElse(p[3], p[5], _elseifs, _else)
+     else:         
+          p[0] = StmtIf(p[3], p[5])
 
 ######################
 #        Else        #
 ######################
 
-def p_Else(p):
-     pass
+def p_Else_a(p):
+     r'Else : ELSE Elems'
+     p[0] = ([], p[2])
+
+def p_Else_b(p):
+     r'Else : ElseIf Else'
+     p[0] = (p[1] + p[2][0], p[2][1])
+
+def p_Else_d(p):
+     r'Else : '
+     p[0] = ([], [])
+     
+######################
+#       ElseIf       #
+######################
+
+def p_ElseIf(p):
+     r'ElseIf : ELSEIF OPAR Cond CPAR Elems'
+     p[0] = [StmtIf(p[3], p[5])]
 
 ######################
 #     Condicoes      #
