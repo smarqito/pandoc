@@ -13,7 +13,6 @@ from pandoc_lex import tokens
 from modules.Document import Document
 from modules.StmtIf import StmtIf
 from modules.Texto import Texto
-from modules.StmtIfElseIf import StmtIfElseIf
 from modules.StmtIfElse import StmtIfElse
 ##########################################
 def my_error(msg):
