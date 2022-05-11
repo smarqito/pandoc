@@ -5,7 +5,7 @@ Elems   |   Elem
 
 Elem    ->  Stmt
         |   Var
-        |   TEXTO
+        |   TEXT
 
 ###############################################
 #                  Stmt                       #
@@ -18,6 +18,8 @@ If      ->  IF OPAR Cond CPAR Elems Else ENDIF
                                       | ('else', elems, )                                : StmtIfElse
                                       | ('elseIf', elseIfs, elseBody : Elems | None)     : StmtIfElseIf
 
+Cond    ->  CondVar
+
 Else                                                ([elseifs], [else])
 Else    ->  ELSE Elems                              ([], elem)
         |   ElseIf Else                             (p[1] + p[2][0], p[2][1])
@@ -28,8 +30,15 @@ ElseIf  ->  ELSEIF OPAR Cond CPAR Elems             [StmtIf]
 
 
 ###############################################
-#                  Var                        #
+#                  Vars                       #
 ###############################################
 
-Var     ->  Var . ID                                p[1] + [p[2]]
-        |   ID                                      [p[1]]
+Var     ->  Var . ID                                p[1].add(p[2])
+        |   ID                                      Var(p[1])
+
+# Novo contexto no lexer
+# Necessidade criar esta producao para as vars nas condicoes 
+# nao rebentar; se nao existe da false
+CondVar ->  CondVar . CID                            p[1].add(p[2])
+        |   CID                                      CondVar(p[1])
+        

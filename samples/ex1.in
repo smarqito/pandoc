@@ -1,8 +1,8 @@
-$if(False)$
-1a segunda palavra $var$ nunca funciona
-$elseif(False)$
+$if(obj.OLA)$
+1a segunda palavra $obj.incl$ nunca funciona
+$elseif(obj.incl)$
 primeiro else if
-$elseif(True)$
+$elseif(obj.incl)$
 segundo else if
 $else$
 estamos num else

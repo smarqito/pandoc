@@ -9,11 +9,13 @@
 from re import *
 import sys
 import ply.yacc as yacc
+from modules.Var import Var
 from pandoc_lex import tokens
 from modules.Document import Document
 from modules.StmtIf import StmtIf
-from modules.Texto import Texto
+from modules.Text import Text
 from modules.StmtIfElse import StmtIfElse
+from modules.CondVar import CondVar
 ##########################################
 def my_error(msg):
      print(msg)
@@ -23,6 +25,16 @@ def getVar(dict, elem):
      if elem in dict:
           return dict[elem]
 ##########################################
+
+######## LIXO PARA REMOVER
+ids = {
+    'obj' : {
+        'incl' : 'ola',
+        'bat' : ['eu', 'sei', 'que', 'nao', 'vai', 'funcionar', 'direito']
+    }
+    
+}
+########
 
 ######################
 #     @axioma        #
@@ -55,8 +67,12 @@ def p_Elem_a(p):
      p[0] = p[1]
 
 def p_Elem_b(p): 
-     r"Elem : TEXTO"
-     p[0] = Texto(p[1])
+     r"Elem : TEXT"
+     p[0] = Text(p[1])
+
+def p_Elem_c(p): 
+     r"Elem : Var"
+     p[0] = p[1]
 
 ######################
 #       STMT         #
@@ -107,7 +123,7 @@ def p_ElseIf(p):
 ######################
 
 def p_Cond_a(p): 
-     r"Cond : Var"
+     r"Cond : CondVar"
      p[0] = p[1]
 
 ######################
@@ -116,16 +132,25 @@ def p_Cond_a(p):
 
 def p_Var_a(p): 
      r"Var : Var '.' ID"
-     #p[0] = getVar(p[1], p[3])
-     p[0] = p[1]+[p[3]]
+     p[1].nextValue(p[3])
+     p[0] = p[1]
 
 def p_Var_b(p): 
      r"Var : ID"
-     # p[0] = p.parser.ids.get(p[1], "N/D")
-     p[0] = [p[1]]
+     p[0] = Var(p[1], p.parser.yaml)
 
+######################
+#      CondVar_      #
+######################
 
+def p_CondVar_a(p): 
+     r"CondVar : CondVar '.' CID"
+     p[1].nextValue(p[3])
+     p[0] = p[1]
 
+def p_CondVar_b(p): 
+     r"CondVar : CID"
+     p[0] = CondVar(p[1], p.parser.yaml)
 
 # def p_Var_c(p):
 #      r"Var : ID '(' ')'"
@@ -171,26 +196,22 @@ def p_error(p):
      print("Syntax error in input!", p)
 
 parser = yacc.yacc()
+parser.lineno = 0
 
-parser.ids = {
-    'obj' : {
-        'incl' : 'ola',
-        'bat' : ['eu', 'sei', 'que', 'nao', 'vai', 'funcionar', 'direito']
-    }
-    
-}
 
 #parser.level = 0
 
 # for line in sys.stdin:
 #     print(parser.parse(line))
 if len(sys.argv) == 1:
+     parser.yaml = ids
      for line in sys.stdin:
           print(parser.parse(line))
 else:
+     parser.yaml = ids
      f = open(sys.argv[1])
      txt = f.read()
      result = parser.parse(txt)
-     result.pp()
+     result.pp(ids)
 
 

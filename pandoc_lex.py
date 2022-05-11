@@ -11,12 +11,13 @@ import ply.lex as lex
 import sys
 
 states = [
-    ('metadata', 'exclusive')
+    ('metadata', 'exclusive'),
+    ('conditions', 'exclusive')
 ]
 
 reservadas = "if else elseif endif for endfor sep".upper().split(' ')
 
-tokens = "ID TEXTO OPAR CPAR".split(' ') + reservadas
+tokens = "ID CID TEXT OPAR CPAR".split(' ') + reservadas
 
 literals = ". /".split(' ')
 
@@ -30,14 +31,31 @@ def t_ON(t):
 def t_metadata_OFF(t):
     r"\$\n?"
     t.lexer.begin('INITIAL')
+    if len(t.value) > 1:
+        t.lexer.lineno += 1
 
-def t_TEXTO(t): 
-    r"[^$]+"
+def t_TEXT(t): 
+    r"[^$\n]+"
     return t
 
 def t_error(t):
     print("Illegal char '%s'" % t.value[0])
     t.lexer.skip(1)
+
+def t_conditions_CPAR(t):
+    r"\)"
+    t.lexer.begin('metadata')
+    return t
+
+def t_conditions_CID(t):
+    r'(?i)[a-z_]\w*'
+    return t
+
+def t_metadata_COND(t):
+    r"(if|elseif|for)"
+    t.lexer.begin('conditions')
+    t.type = t.value.upper()
+    return t
 
 def t_metadata_ID(t):
     r'(?i)[a-z_]\w*'
@@ -45,7 +63,7 @@ def t_metadata_ID(t):
         t.type = t.value.upper()
     return t
 
-def t_metadata_OPAR(t):
+def t_metadata_conditions_OPAR(t):
     r"\("
     return t
     
@@ -53,13 +71,17 @@ def t_metadata_CPAR(t):
     r"\)"
     return t
 
-def t_metadata_error(t):
+def t_metadata_conditions_error(t):
       print("Metadata illegal!! '%s'" % t.value)
       t.lexer.begin('INITIAL')
       exit()
 
+def t_ANY_newline(t):
+     r'\n+'
+     t.lexer.lineno += len(t.value)
+
 t_ignore = '\t\r'
-t_metadata_ignore = ' \n\t\r'
+t_metadata_conditions_ignore = ' \t\r'
 
 lexer = lex.lex()
 
