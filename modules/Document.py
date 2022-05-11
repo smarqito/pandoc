@@ -1,6 +1,7 @@
 class Document:
-    def __init__(self, elems = None):
+    def __init__(self, elems : list = []):
         self.elems = elems
 
-    def toHtml(self, data):
-        pass
+    def pp(self):
+        for elem in self.elems:
+            elem.pp()

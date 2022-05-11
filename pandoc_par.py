@@ -9,130 +9,141 @@
 from re import *
 import sys
 import ply.yacc as yacc
-from modules.IfStmt import IfStmt
-from modules.Stmt import Stmt
+from pandoc_lex import tokens
+from modules.Document import Document
+from modules.StmtIf import StmtIf
 from modules.Texto import Texto
-from modules.VarStmt import ForStmt, VarStmt
-from modules.Document import Doc
-from pandoc_lex import tokens, lexer
+##########################################
+def my_error(msg):
+     print(msg)
+     exit()
+
+def getVar(dict, elem):
+     if elem in dict:
+          return dict[elem]
+##########################################
+
+######################
+#     @axioma        #
+#     Document       #
+######################
 
 def p_Doc(p): 
-     "Doc : Rules" 
-     #p[0] = p[1]
-     p[0]= Doc(p[1])
+     "Doc : Elems" 
+     p[0]= Document(p[1])
 
-def p_Rules_a(p): 
-     r"Rules : "
-     #p[0] = ''  
-     p[0] = []   
+######################
+#     Elementos      #
+######################
 
-def p_Rules_b(p):
-     r"Rules : Rules Rule"
-     #p[0] = p[1] + p[2]
+def p_Elems_a(p):
+     r"Elems : Elems Elem"
      p[0] = p[1] + [p[2]]
 
-def p_Rule_a(p): 
-     r"Rule : Stmt"
-     #p[0] = p[1]
-     p[0] = Stmt(p[1])
+def p_Elems_b(p): 
+     r"Elems : Elem"
+     p[0] = [p[1]]
 
-def p_Rule_b(p): 
-     r"Rule : TEXTO"
+######################
+#     Elemento       #
+######################
+
+def p_Elem_a(p): 
+     r"Elem : Stmt"
      #p[0] = p[1]
+     p[0] = p[1]
+
+def p_Elem_b(p): 
+     r"Elem : TEXTO"
      p[0] = Texto(p[1])
 
+######################
+#       STMT         #
+######################
+
 def p_Stmt_If(p):
-     r"Stmt : IF '(' Cond ')' Rules ENDIF"
-     p[0] = IfStmt(p[3], p[5])
+     r"Stmt : If"
+     p[0] = p[1]
 
-def p_Stmt_IfElse(p):
-     r"Stmt : IF '(' Cond ')' Rules ELSE Rules ENDIF"
-     p[0] = IfStmt(p[3], p[5])
+######################
+#       IF STMT      #
+######################
 
-def p_Stmt_IfElseIf(p):
-     r"Stmt : IF '(' Cond ')' Rules ElseIf ELSE Rules ENDIF"
-     p[0] = IfStmt(p[3], p[5])
+def p_If(p):
+     r'If : IF OPAR Cond CPAR Elems ENDIF'
+     p[0] = StmtIf(p[3], p[5])
 
-def p_Stmt_b(p): 
-     r"Stmt : FOR '(' Var ')' Rules Sep ENDFOR"  
-     p[0] = ForStmt(p[3], p[5], p[6])
+######################
+#        Else        #
+######################
 
-def p_Stmt_d(p): 
-     r"Stmt : Var"
-     # p[0] = str(p[1])
-     p[0] = VarStmt(str(p[1]))
+def p_Else(p):
+     pass
 
-def p_elseif_a(p):
-     r"ElseIf : ElseIf ELSEIF '(' Cond ')' Rules"
-     #if p[3] != "N/D":
-     #     p[0] = p[5]
-     #else:
-     #     p[0] = p[6]
-     p[0] = IfStmt(p[4], p[6])
-
-def p_elseif_b(p):
-     r"ElseIf : ELSEIF '(' Cond ')' Rules"
-     p[0] = None
-
-def p_else_a(p):
-     r"Else : ELSE Rules"
-     p[0] = p[2]
-
-def p_else_b(p):
-     r"Else : "
-     p[0] = ""
-
-
-def p_sep_a(p):
-     r"Sep : SEP TEXTO"
-     p[0] = p[2]
-
-def p_sep_b(p):
-     r"Sep : "
-     p[0] = ""
+######################
+#     Condicoes      #
+######################
 
 def p_Cond_a(p): 
      r"Cond : Var"
      p[0] = p[1]
 
+######################
+#        Var         #
+######################
+
 def p_Var_a(p): 
      r"Var : Var '.' ID"
-     p[0] = p[1].get(p[3], "N/D")
+     #p[0] = getVar(p[1], p[3])
+     p[0] = p[1]+p[2]+p[3]
 
 def p_Var_b(p): 
      r"Var : ID"
-     p[0] = p.parser.ids.get(p[1], "N/D")
+     # p[0] = p.parser.ids.get(p[1], "N/D")
+     p[0] = p[1]
 
-def p_Var_c(p):
-     r"Var : ID '(' ')'"
-     subtemplate = open(p[1])
-     txt = subtemplate.read()
-     #print(p.parser.parse(txt, lexer=lexer))
-     p[0] = "partial"
 
-def p_Var_d(p):
-     r"Var : Var '/' ID"
-     if p[1] is list:
-          if p[3] == "length":
-               p[0] = len(p[1])
-          elif p[3] == "first":
-               p[0] = p[1].get(0, "N/D")
-          elif p[3] == "last":
-               p[0] = p[1].get(len(p[1]) - 1, "N/D")
-          elif p[3] == "reverse":
-               p[0] = p[1].reverse()
-     elif p[1] is dict:
-          if p[3] == "pairs":
-               p[0] = "convert to array os maps"
-     else:
-          if p[3] == "uppercase":
-               p[0] = p[1].upper()
-          elif p[3] == "lowercase":
-               p[0] = p[1].lower()
-          elif p[3] == "length":
-               p[0] = len(p[1])
-          else:
-               print("pipe nao definido")
+
+
+# def p_Var_c(p):
+#      r"Var : ID '(' ')'"
+#      subtemplate = open(p[1])
+#      txt = subtemplate.read()
+#      #print(p.parser.parse(txt, lexer=lexer))
+#      p[0] = "partial"
+
+# def p_Var_d(p):
+#      r"Var : Var '/' ID"
+#      if p[1] is list:
+#           if p[3] == "length":
+#                p[0] = len(p[1])
+#           elif p[3] == "first":
+#                p[0] = p[1].get(0, "N/D")
+#           elif p[3] == "last":
+#                p[0] = p[1].get(len(p[1]) - 1, "N/D")
+#           elif p[3] == "reverse":
+#                p[0] = p[1].reverse()
+#      elif p[1] is dict:
+#           if p[3] == "pairs":
+#                p[0] = "convert to array os maps"
+#      else:
+#           if p[3] == "uppercase":
+#                p[0] = p[1].upper()
+#           elif p[3] == "lowercase":
+#                p[0] = p[1].lower()
+#           elif p[3] == "length":
+#                p[0] = len(p[1])
+#           else:
+#                print("pipe nao definido")
+# def p_sep_a(p):
+#      r"Sep : SEP TEXTO"
+#      p[0] = p[2]
+
+# def p_sep_b(p):
+#      r"Sep : "
+#      p[0] = ""
+
+
 
 def p_error(p):
      print("Syntax error in input!", p)
@@ -158,6 +169,6 @@ else:
      f = open(sys.argv[1])
      txt = f.read()
      result = parser.parse(txt)
-     print(result)
+     result.pp()
 
 

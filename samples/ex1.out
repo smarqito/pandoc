@@ -1,4 +1,5 @@
-$if(obj.incl)$
+begin if
+condicao obj.incl
 1a segunda palavra nunca funciona
-$endif$
+end if
 fim 2

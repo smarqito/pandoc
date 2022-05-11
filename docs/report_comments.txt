@@ -1,0 +1,2 @@
+Stmt
+Fatorizacao a esquerda passando a ter um simbolo nao terminal 'If' (4.3.4 pp.214)

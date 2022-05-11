@@ -1,0 +1,20 @@
+Document -> Elems
+
+Elems   ->  Elems Elem
+Elems   ->  Elem
+
+Elem    ->  Stmt
+        |   TEXTO
+
+Stmt    ->  If
+
+If      ->  IF OCOND Cond CCOND Elems Else ENDIF
+
+Else    ->  ELSE Elems
+        |   ElseIfs ELSE Elems
+        |   Empty
+
+ElseIfs ->  ElseIfs ElseIf 
+        |   ElseIf
+
+ElseIf  ->  ELSEIF OCOND Cond CCOND Elems

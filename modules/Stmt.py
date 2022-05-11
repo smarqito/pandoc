@@ -1,8 +1,5 @@
 from abc import abstractmethod
-from modules.Rule import Rule
-class Stmt(Rule):
+from modules.Elem import Elem
+class Stmt(Elem):
     def __init__(self):
         pass
-    @abstractmethod
-    def toHtml(self):   pass
-    

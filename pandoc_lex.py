@@ -14,11 +14,12 @@ states = [
     ('metadata', 'exclusive')
 ]
 
-tokens = "ID IF ELSEIF ELSE ENDIF FOR ENDFOR SEP TEXTO".split(' ')
+reservadas = "if else elseif endif for endfor sep".upper().split(' ')
 
-literals = "$ . ( ) /".split(' ')
+tokens = "ID TEXTO OPAR CPAR".split(' ') + reservadas
 
-reservadas = "if else elseif endif for endfor sep".split(' ')
+literals = ". /".split(' ')
+
 
 #  adicionar contexto para o $ com lookbehind do '\' -> "(?<!\\)$"
 
@@ -27,9 +28,8 @@ def t_ON(t):
     t.lexer.begin('metadata')
 
 def t_metadata_OFF(t):
-    r"\$"
+    r"\$\n?"
     t.lexer.begin('INITIAL')
-
 
 def t_TEXTO(t): 
     r"[^$]+"
@@ -41,8 +41,16 @@ def t_error(t):
 
 def t_metadata_ID(t):
     r'(?i)[a-z_]\w*'
-    if t.value in reservadas:
+    if t.value.upper() in reservadas:
         t.type = t.value.upper()
+    return t
+
+def t_metadata_OPAR(t):
+    r"\("
+    return t
+    
+def t_metadata_CPAR(t):
+    r"\)"
     return t
 
 def t_metadata_error(t):
@@ -51,7 +59,7 @@ def t_metadata_error(t):
       exit()
 
 t_ignore = '\t\r'
-t_metadata_ignore = '\r'
+t_metadata_ignore = ' \n\t\r'
 
 lexer = lex.lex()
 
