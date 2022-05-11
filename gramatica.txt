@@ -4,7 +4,12 @@ Elems   ->  Elems Elem
 Elems   |   Elem
 
 Elem    ->  Stmt
+        |   Var
         |   TEXTO
+
+###############################################
+#                  Stmt                       #
+###############################################
 
 Stmt    ->  If
 
@@ -20,3 +25,11 @@ Else    ->  ELSE Elems                              ([], elem)
 
 
 ElseIf  ->  ELSEIF OPAR Cond CPAR Elems             [StmtIf]
+
+
+###############################################
+#                  Var                        #
+###############################################
+
+Var     ->  Var . ID                                p[1] + [p[2]]
+        |   ID                                      [p[1]]

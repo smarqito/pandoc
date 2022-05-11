@@ -117,12 +117,12 @@ def p_Cond_a(p):
 def p_Var_a(p): 
      r"Var : Var '.' ID"
      #p[0] = getVar(p[1], p[3])
-     p[0] = p[1]+p[2]+p[3]
+     p[0] = p[1]+[p[3]]
 
 def p_Var_b(p): 
      r"Var : ID"
      # p[0] = p.parser.ids.get(p[1], "N/D")
-     p[0] = p[1]
+     p[0] = [p[1]]
 
 
 
