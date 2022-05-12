@@ -31,7 +31,8 @@ def getVar(dict, elem):
 ids = {
     'obj' : {
         'incl' : 'ola',
-        'bat' : ['eu', 'sei', 'que', 'nao', 'vai', 'funcionar', 'direito']
+        'bat' : ['eu', 'sei', 'que', 'nao', 'vai', 'funcionar', 'direito'],
+        'map' : {'key1' : {'key22' : 'value2'}, 'key2' : {'key22' : 'value22'}}
     }
     
 }

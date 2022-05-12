@@ -1,6 +1,6 @@
 $if(obj.OLA)$                                   
 1a segunda palavra $obj.OLA$ nunca funciona
-$elseif(obj.incl)$
+$elseif(obj.incl)$ 
 primeiro else if 
 $elseif(obj.incl)$
 segundo else if $obj.ola$
@@ -8,4 +8,4 @@ $else$
 estamos num else
 $endif$
 fim 2
-$for(obj.bat)$$obj.bat$ $endfor$
+$for(obj.map)$$it.key22$ $endfor$

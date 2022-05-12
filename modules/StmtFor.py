@@ -20,7 +20,7 @@ class StmtFor(Stmt):
     def handleDict(self):
         for it in self.cond.getValue():
             for elem in self.elems:
-                elem.pp_dict(it)
+                elem.pp_dict(self.cond.getValue().get(it))
 
     def pp(self):
         if self.cond.getType() is dict:
