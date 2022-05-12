@@ -19,8 +19,23 @@ class Var(Elem):
     def getValue(self) -> ...:
         return self.value
     
+    def getKeyword(self):
+        return self.id
+
     def pp(self):
         if not self.value:
             print(f"erro: {self.id} nao existe!!")
             exit()
         print(self.value, end="")
+
+    def pp_dict(self, var):
+        print("com var", var)
+
+    def pp_list(self, var, cond):
+        if not self.value:
+            print(f"erro: {self.id} nao existe!!")
+            exit()
+        elif self.getKeyword() == cond:
+            print(var, end="")
+        else:
+            print(self.value, end="")

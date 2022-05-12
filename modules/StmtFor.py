@@ -7,15 +7,25 @@ class StmtFor(Stmt):
         super().__init__()
         self.cond = cond
         self.elems = elems
+    
     def handleStr(self):
         for elem in self.elems:
             elem.pp()
 
-    def handleIt(self):
-        for it in self.cond:
+    def handleList(self):
+        for it in self.cond.getValue():
             for elem in self.elems:
-                elem.pp(it)
-   
-   
+                elem.pp_list(it, self.cond.getKeyword())
+
+    def handleDict(self):
+        for it in self.cond.getValue():
+            for elem in self.elems:
+                elem.pp_dict(it)
+
     def pp(self):
-        pass
+        if self.cond.getType() is dict:
+            self.handleDict()
+        elif self.cond.getType() is list:
+            self.handleList()
+        else:
+            self.handleStr()

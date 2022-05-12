@@ -40,7 +40,11 @@ ElseIf  ->  ELSEIF OPAR Cond CPAR Elems             [StmtIf]
 Var     ->  Var . ID                                p[1].add(p[2])
         |   ID                                      Var(p[1])
 
-# Novo contexto no lexer
+###############################################
+#                  LIXO                       #
+###############################################
+
+# Novo contexto no lexers
 # Necessidade criar esta producao para as vars nas condicoes 
 # nao rebentar; se nao existe da false
 CondVar ->  CondVar . CID                            p[1].add(p[2])

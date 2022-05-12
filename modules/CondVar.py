@@ -1,7 +1,7 @@
 from modules.Elem import Elem
 
 
-class CondVar(Elem):
+class CondVar:
     def __init__(self, keyword : ..., dict):
         super().__init__()
         self.value = dict.get(keyword, False)
@@ -11,9 +11,3 @@ class CondVar(Elem):
         if self.value:
             self.value = self.value.get(keyword, False)
         self.id += f'.{keyword}'
-    
-    def getValue(self) -> ...:
-        return self.value
-    
-    def pp(self):
-        print(self.value, end="")

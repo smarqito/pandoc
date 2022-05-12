@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#----------------------------------------------------------------
+# #----------------------------------------------------------------
 # Created by: G53@PL
 # Created date: 2022-04-11
 # Version = '1.0'
@@ -75,9 +75,9 @@ def p_Elem_c(p):
      r"Elem : Var"
      p[0] = p[1]
 
-def p_Elem_d(p):
-     r"Elem : CondVar"
-     p[0] = p[1]
+# def p_Elem_d(p):
+#      r"Elem : CondVar"
+#      p[0] = p[1]
 
 ######################
 #       STMT         #
@@ -141,7 +141,7 @@ def p_For(p):
 ######################
 
 def p_Cond_a(p): 
-     r"Cond : CondVar"
+     r"Cond : Var"
      p[0] = p[1]
 
 ######################
@@ -161,14 +161,14 @@ def p_Var_b(p):
 #      CondVar_      #
 ######################
 
-def p_CondVar_a(p): 
-     r"CondVar : CondVar '.' CID"
-     p[1].nextValue(p[3])
-     p[0] = p[1]
+# def p_CondVar_a(p): 
+#      r"CondVar : CondVar '.' CID"
+#      p[1].nextValue(p[3])
+#      p[0] = p[1]
 
-def p_CondVar_b(p): 
-     r"CondVar : CID"
-     p[0] = CondVar(p[1], p.parser.yaml)
+# def p_CondVar_b(p): 
+#      r"CondVar : CID"
+#      p[0] = CondVar(p[1], p.parser.yaml)
 
 # def p_Var_c(p):
 #      r"Var : ID '(' ')'"
@@ -230,6 +230,6 @@ else:
      f = open(sys.argv[1])
      txt = f.read()
      result = parser.parse(txt)
-     result.pp(ids)
+     result.pp()
 
 

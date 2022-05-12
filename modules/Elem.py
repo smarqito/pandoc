@@ -8,5 +8,9 @@ class Elem:
     @abstractmethod
     def pp(self):   pass
     @abstractmethod
-    def pp(self, var): pass
+    def pp_dict(self, var):
+        self.pp()
+    @abstractmethod
+    def pp_list(self, var, cond):
+        self.pp()
     
