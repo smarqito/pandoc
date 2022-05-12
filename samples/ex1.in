@@ -8,4 +8,4 @@ $else$
 estamos num else
 $endif$
 fim 2
-$for(obj.map)$$it.key22$ $endfor$
+$for(obj.map)$$it.key22$$sep$; $endfor$

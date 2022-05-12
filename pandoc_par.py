@@ -32,7 +32,7 @@ ids = {
     'obj' : {
         'incl' : 'ola',
         'bat' : ['eu', 'sei', 'que', 'nao', 'vai', 'funcionar', 'direito'],
-        'map' : {'key1' : {'key22' : 'value2'}, 'key2' : {'key22' : 'value22'}}
+        'map' : {'key1' : {'key22' : 'value2'}, 'key2' : {'key22' : 'value22'}, 'key3' : {'key22' : 'value222'}}
     }
     
 }
@@ -134,8 +134,16 @@ def p_ElseIf(p):
 ######################
 
 def p_For(p):
-     r"For : FOR OPAR Cond CPAR Elems ENDFOR"
-     p[0] = StmtFor(p[3], p[5])
+     r"For : FOR OPAR Cond CPAR Elems Sep ENDFOR"
+     p[0] = StmtFor(p[3], p[5], p[6])
+
+def p_Sep(p):
+     r"Sep : SEP TEXT"
+     p[0] = p[2]
+
+def p_Sep_empty(p):
+     r"Sep : "
+     p[0] = None
 
 ######################
 #     Condicoes      #

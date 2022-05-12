@@ -3,10 +3,12 @@ from modules.Var import Var
 
 
 class StmtFor(Stmt):
-    def __init__(self, cond : Var, elems : list = []):
+    def __init__(self, cond : Var, elems : list = [], sep = None):
         super().__init__()
         self.cond = cond
         self.elems = elems
+        if sep:
+            self.sep = sep
     
     def handleStr(self):
         for elem in self.elems:
@@ -18,9 +20,13 @@ class StmtFor(Stmt):
                 elem.pp_list(it, self.cond.getKeyword())
 
     def handleDict(self):
+        size = len(self.cond.getValue()) - 1
         for it in self.cond.getValue():
             for elem in self.elems:
                 elem.pp_dict(self.cond.getValue().get(it))
+            if self.sep and size:
+                print(self.sep, end="")
+                size -= 1
 
     def pp(self):
         if self.cond.getType() is dict:

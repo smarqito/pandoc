@@ -15,7 +15,10 @@ Elem    ->  Stmt
 Stmt    ->  If
         ->  For
 
-For     -> FOR OPAR Cond CPAR Elems ENDFOR                                               : StmtFor (Cond, Elems) 
+For     -> FOR OPAR Cond CPAR Elems Sep ENDFOR                                               : StmtFor (Cond, Elems) 
+
+Sep     -> SEP TEXT
+        | Empty
 
 If      ->  IF OPAR Cond CPAR Elems Else ENDIF
                                       | None                                             : StmtIf
