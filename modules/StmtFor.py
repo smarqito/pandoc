@@ -1,11 +1,21 @@
 from modules.Stmt import Stmt
+from modules.Var import Var
 
 
-class ForStmt(Stmt):
-    def __init__(self, var, rules, sep = None):
+class StmtFor(Stmt):
+    def __init__(self, cond : Var, elems : list = []):
         super().__init__()
-        self.var = var
-        if rules:
-            self.rules = rules
-        if sep:
-            self.sep = sep
+        self.cond = cond
+        self.elems = elems
+    def handleStr(self):
+        for elem in self.elems:
+            elem.pp()
+
+    def handleIt(self):
+        for it in self.cond:
+            for elem in self.elems:
+                elem.pp(it)
+   
+   
+    def pp(self):
+        pass

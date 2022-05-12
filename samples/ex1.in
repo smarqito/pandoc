@@ -1,9 +1,9 @@
-$if(obj.OLA)$
-1a segunda palavra $obj.incl$ nunca funciona
+$if(obj.OLA)$                                   
+1a segunda palavra $obj.OLA$ nunca funciona
 $elseif(obj.incl)$
-primeiro else if
+primeiro else if 
 $elseif(obj.incl)$
-segundo else if
+segundo else if $obj.ola$
 $else$
 estamos num else
 $endif$

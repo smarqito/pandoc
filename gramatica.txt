@@ -5,6 +5,7 @@ Elems   |   Elem
 
 Elem    ->  Stmt
         |   Var
+        |   CondVar
         |   TEXT
 
 ###############################################
@@ -12,6 +13,9 @@ Elem    ->  Stmt
 ###############################################
 
 Stmt    ->  If
+        ->  For
+
+For     -> FOR OPAR Cond CPAR Elems ENDFOR                                               : StmtFor (Cond, Elems) 
 
 If      ->  IF OPAR Cond CPAR Elems Else ENDIF
                                       | None                                             : StmtIf
@@ -42,3 +46,6 @@ Var     ->  Var . ID                                p[1].add(p[2])
 CondVar ->  CondVar . CID                            p[1].add(p[2])
         |   CID                                      CondVar(p[1])
         
+$if (var)$
+... $var$ ...
+$endif$

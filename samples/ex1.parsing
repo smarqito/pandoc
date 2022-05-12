@@ -1,0 +1,26 @@
+    PUSH INITIAL
+$   PUSH METADATA
+if  PUSH CONDITIONS
+(obj.OLA)
+$   PUSH CINITIAL
+1a segunda palavra
+$   POP -> CONDITIONS
+obj.OLA
+$   PUSH CINITIAL
+nunca funciona
+$   POP -> CONDITIONS
+elseif(obj.incl)
+$   PUSH CINITIAL
+primeiro else if
+$   POP -> CONDITIONS
+elseif(obj.incl)
+$   PUSH CINITIAL
+segundo else if
+$   POP -> CONDITIONS
+else
+$   PUSH CINITIAL
+estamos num else
+$   POP -> CONDITIONS
+endif   POP -> METADATA
+$   POP -> INITIAL
+fim 2

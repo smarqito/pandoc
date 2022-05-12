@@ -4,23 +4,23 @@ from modules.Elem import Elem
 class Var(Elem):
     def __init__(self, keyword : ..., dict):
         super().__init__()
-        try:
-            self.value = dict[keyword]
-            self.id = keyword
-        except:
-            print(f"Variavel {keyword} nao definida")
-            exit()
+        self.value = dict.get(keyword, None)
+        self.id = keyword
     
     def nextValue(self, keyword):
-        try:
-            self.value = self.value[keyword]
-            self.id += f'.{keyword}'
-        except:
-            print(f"Variavel {self.value}.{keyword} nao definida")
-            exit()
+        if self.value:
+            self.value = self.value.get(keyword, None)
+
+        self.id += f'.{keyword}'
     
+    def getType(self):
+        return type(self.value)
+
     def getValue(self) -> ...:
         return self.value
     
     def pp(self):
+        if not self.value:
+            print(f"erro: {self.id} nao existe!!")
+            exit()
         print(self.value, end="")

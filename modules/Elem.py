@@ -7,4 +7,6 @@ class Elem:
     
     @abstractmethod
     def pp(self):   pass
+    @abstractmethod
+    def pp(self, var): pass
     

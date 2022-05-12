@@ -9,6 +9,7 @@
 from re import *
 import sys
 import ply.yacc as yacc
+from modules.StmtFor import StmtFor
 from modules.Var import Var
 from pandoc_lex import tokens
 from modules.Document import Document
@@ -74,12 +75,20 @@ def p_Elem_c(p):
      r"Elem : Var"
      p[0] = p[1]
 
+def p_Elem_d(p):
+     r"Elem : CondVar"
+     p[0] = p[1]
+
 ######################
 #       STMT         #
 ######################
 
 def p_Stmt_If(p):
      r"Stmt : If"
+     p[0] = p[1]
+
+def p_Stmt_For(p):
+     r"Stmt : For"
      p[0] = p[1]
 
 ######################
@@ -117,6 +126,15 @@ def p_Else_d(p):
 def p_ElseIf(p):
      r'ElseIf : ELSEIF OPAR Cond CPAR Elems'
      p[0] = [StmtIf(p[3], p[5])]
+
+
+######################
+#      For Stmt      #
+######################
+
+def p_For(p):
+     r"For : FOR OPAR Cond CPAR Elems ENDFOR"
+     p[0] = StmtFor(p[3], p[5])
 
 ######################
 #     Condicoes      #
