@@ -17,7 +17,7 @@ states = [
 
 reservadas = "if else elseif endif for endfor sep".upper().split(' ')
 
-tokens = "ID TEXT OPAR CPAR".split(' ') + reservadas
+tokens = "ID TEXT OPAR CPAR BACK".split(' ') + reservadas
 
 literals = ". /".split(' ')
 
@@ -57,9 +57,13 @@ def t_metadata_OFF(t):
 #     return t
 
 def t_TEXT(t): 
-    r"[^$]+"
+    r"[^$\\]+"
     return t
-    
+
+def t_BACK(t):
+    r"\\[^\s]+"
+    return t
+
 def t_error(t):
     print("Illegal char '%s'" % t.value[0])
     t.lexer.skip(1)

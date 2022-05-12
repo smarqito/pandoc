@@ -9,6 +9,7 @@
 from re import *
 import sys
 import ply.yacc as yacc
+from modules.Entity import Entity
 from modules.StmtFor import StmtFor
 from modules.Var import Var
 from pandoc_lex import tokens
@@ -75,6 +76,10 @@ def p_Elem_b(p):
 def p_Elem_c(p): 
      r"Elem : Var"
      p[0] = p[1]
+
+def p_Elem_d(p):
+     r"Elem : BACK"
+     p[0] = Entity(p[1])
 
 # def p_Elem_d(p):
 #      r"Elem : CondVar"
