@@ -178,14 +178,15 @@ def p_subtemplate_a(p):
 def p_subtemplate_b(p):
      r"Subtemplate : Var COLON Var OPAR CPAR"
      np = yacc.yacc()
-     if p[1].getKeyword() == "it":
+     kws = p[1].getKeywords() # keywords por lista
+     if kws[0] == "it":
           np.yaml = None
      else:
           print("erro na iteracao")
           exit()
      np.lineno = p.lineno
      np.finfo = p.parser.finfo
-     p[0] = Subtemplate(p[3].getKeyword(), np)
+     p[0] = Subtemplate(p[3].getKeyword(), np, kws[1:])
 
 
 ######################

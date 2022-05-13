@@ -1,4 +1,4 @@
 2. estou num subtemplate $obj.incl$
 $for(obj.map)$
-$it:ex3()$
+$it.key22:ex3()$
 $endfor$

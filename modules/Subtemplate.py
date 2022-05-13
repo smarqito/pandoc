@@ -2,11 +2,13 @@ from modules.Stmt import Stmt
 from re import *
 
 class Subtemplate(Stmt):
-    def __init__(self, filename, parser):
+    def __init__(self, filename, parser, keywords = []):
         super().__init__()
         self.parser = parser
         self.filename = filename
+        self.keywords = keywords
         self.handleFilename()
+
 
     def handleFilename(self):
         m = search(r"(?P<fname>[^\\\/;:\"?<>|]+)(?P<ext>\.\w+)?$", self.filename)
@@ -18,6 +20,8 @@ class Subtemplate(Stmt):
     #     self.parser.yaml = newObj
 
     def pp_dict(self, var):
+        for k in self.keywords:
+            var = var[k]
         self.parser.yaml = var
         self.pp()
 
