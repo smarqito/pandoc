@@ -3,13 +3,13 @@ def pairs(x):
 def rest(x):
     return x
 def reverse(x):
-    return x
+    return x[::-1]
 def first(x):
-    return x
+    return x[0]
 def last(x):
-    return x
+    return x[len(x) - 1]
 def rest(x):
-    return x
+    return x[-(len(x) - 1):]
 def allbutlast(x):
     return x
 def chomp(x):
