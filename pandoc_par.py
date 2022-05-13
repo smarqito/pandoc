@@ -20,6 +20,7 @@ from modules.StmtIfElse import StmtIfElse
 from modules.Subtemplate import Subtemplate
 from modules.ItVar import ItVar
 from modules.It import It
+from modules.ItRange import ItRange
 ##########################################
 def my_error(msg):
      print(msg)
@@ -177,21 +178,6 @@ def p_subtemplate_a(p):
      np.finfo = p.parser.finfo
      p[0] = Subtemplate(p[1].getKeyword(), np)
 
-######
-# def p_subtemplate_b(p):
-#      r"Subtemplate : Var COLON Var OPAR CPAR"
-#      np = yacc.yacc()
-#      kws = p[1].getKeywords() # keywords por lista
-#      if kws[0] == "it":
-#           np.yaml = None
-#      else:
-#           print("erro na iteracao")
-#           exit()
-#      np.lineno = p.lineno
-#      np.finfo = p.parser.finfo
-#      p[0] = Subtemplate(p[3].getKeyword(), np, kws[1:])
-######
-
 ######################
 #         IT         #
 ######################
@@ -215,8 +201,13 @@ def p_ItOpt_Var(p):
      r"ItOpt : DOT Var"
      p[0] = ItVar(p[2].getKeywords(), p.parser.yaml)
 
-#def p_ItOpt_Var_brackets(p):
-#     r"ItOpt : OSQBRACK NUM COMMA NUM CSQBRACK"
+def p_ItOpt_Var_brackets_var(p):
+     r"ItOpt : DOT Var OSQBRAC Num COMMA Num CSQBRAC"
+     p[0] = ItRange(p.parser.yaml, (p[4], p[6]), p[2].getKeywords())
+
+def p_ItOpt_Var_brackets(p):
+     r"ItOpt : OSQBRAC Num COMMA Num CSQBRAC"
+     p[0] = ItRange(p.parser.yaml, (p[2], p[4]))
 
 def p_ItOpt_Var_empty(p):
      r"ItOpt : "
@@ -229,6 +220,10 @@ def p_ItOpt_Var_empty(p):
 
 def p_Cond_a(p): 
      r"Cond : Var"
+     p[0] = p[1]
+
+def p_Cond_b(p): 
+     r"Cond : It"
      p[0] = p[1]
 
 ######################
@@ -245,57 +240,16 @@ def p_Var_b(p):
      p[0] = Var(p[1], p.parser.yaml)
 
 ######################
-#      CondVar_      #
-######################
+#        Num         #
+###################### 
 
-# def p_CondVar_a(p): 
-#      r"CondVar : CondVar '.' CID"
-#      p[1].nextValue(p[3])
-#      p[0] = p[1]
+def p_Num_a(p):
+     "Num : NUM"
+     p[0] = p[1]
 
-# def p_CondVar_b(p): 
-#      r"CondVar : CID"
-#      p[0] = CondVar(p[1], p.parser.yaml)
-
-# def p_Var_c(p):
-#      r"Var : ID '(' ')'"
-#      subtemplate = open(p[1])
-#      txt = subtemplate.read()
-#      #print(p.parser.parse(txt, lexer=lexer))
-#      p[0] = "partial"
-
-# def p_Var_d(p):
-#      r"Var : Var '/' ID"
-#      if p[1] is list:
-#           if p[3] == "length":
-#                p[0] = len(p[1])
-#           elif p[3] == "first":
-#                p[0] = p[1].get(0, "N/D")
-#           elif p[3] == "last":
-#                p[0] = p[1].get(len(p[1]) - 1, "N/D")
-#           elif p[3] == "reverse":
-#                p[0] = p[1].reverse()
-#      elif p[1] is dict:
-#           if p[3] == "pairs":
-#                p[0] = "convert to array os maps"
-#      else:
-#           if p[3] == "uppercase":
-#                p[0] = p[1].upper()
-#           elif p[3] == "lowercase":
-#                p[0] = p[1].lower()
-#           elif p[3] == "length":
-#                p[0] = len(p[1])
-#           else:
-#                print("pipe nao definido")
-# def p_sep_a(p):
-#      r"Sep : SEP TEXTO"
-#      p[0] = p[2]
-
-# def p_sep_b(p):
-#      r"Sep : "
-#      p[0] = ""
-
-
+def p_Num_b(p):
+     "Num : "
+     p[0] = None # mais verboso by @mixa -> (clown) <-
 
 def p_error(p):
      print("Syntax error in input!", p)
@@ -303,11 +257,6 @@ def p_error(p):
 parser = yacc.yacc()
 parser.lineno = 0
 
-
-#parser.level = 0
-
-# for line in sys.stdin:
-#     print(parser.parse(line))
 if len(sys.argv) == 1:
      parser.yaml = ids
      for line in sys.stdin:

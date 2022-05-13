@@ -17,7 +17,7 @@ states = [
 
 reservadas = "if else elseif endif for endfor sep it".upper().split(' ')
 
-tokens = "ID TEXT OPAR CPAR BACK COLON OSQBRACK CQSBRACK COMMA DOT NUM".split(' ') + reservadas
+tokens = "ID TEXT OPAR CPAR BACK COLON OSQBRAC CSQBRAC COMMA DOT NUM".split(' ') + reservadas
 
 literals = "/".split(' ')
 
@@ -88,11 +88,11 @@ def t_metadata_COLON(t):
     r":"
     return t
 
-def t_metadata_OSQBRACKET(t):
+def t_metadata_OSQBRAC(t):
     r"\["
     return t
 
-def t_metadata_CSQBRACKET(t):
+def t_metadata_CSQBRAC(t):
     r"\]"
     return t
 
