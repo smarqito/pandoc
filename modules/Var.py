@@ -35,7 +35,7 @@ class Var(Elem):
             newVar = var
             for match in f:
                 newVar = newVar.get(match, None)
-                if not var:
+                if not newVar:
                     print(f"erro: {self.getKeyword()} nao existe!!")
                     exit()
             print(newVar, end="")
