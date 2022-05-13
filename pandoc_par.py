@@ -18,6 +18,8 @@ from modules.StmtIf import StmtIf
 from modules.Text import Text
 from modules.StmtIfElse import StmtIfElse
 from modules.Subtemplate import Subtemplate
+from modules.ItVar import ItVar
+from modules.It import It
 ##########################################
 def my_error(msg):
      print(msg)
@@ -90,9 +92,9 @@ def p_Elem_d(p):
      r"Elem : BACK"
      p[0] = Entity(p[1])
 
-# def p_Elem_d(p):
-#      r"Elem : CondVar"
-#      p[0] = p[1]
+def p_Elem_e(p):
+     r"Elem : It"
+     p[0] = p[1]
 
 ######################
 #       STMT         #
@@ -175,18 +177,50 @@ def p_subtemplate_a(p):
      np.finfo = p.parser.finfo
      p[0] = Subtemplate(p[1].getKeyword(), np)
 
-def p_subtemplate_b(p):
-     r"Subtemplate : Var COLON Var OPAR CPAR"
-     np = yacc.yacc()
-     kws = p[1].getKeywords() # keywords por lista
-     if kws[0] == "it":
-          np.yaml = None
-     else:
-          print("erro na iteracao")
-          exit()
-     np.lineno = p.lineno
-     np.finfo = p.parser.finfo
-     p[0] = Subtemplate(p[3].getKeyword(), np, kws[1:])
+######
+# def p_subtemplate_b(p):
+#      r"Subtemplate : Var COLON Var OPAR CPAR"
+#      np = yacc.yacc()
+#      kws = p[1].getKeywords() # keywords por lista
+#      if kws[0] == "it":
+#           np.yaml = None
+#      else:
+#           print("erro na iteracao")
+#           exit()
+#      np.lineno = p.lineno
+#      np.finfo = p.parser.finfo
+#      p[0] = Subtemplate(p[3].getKeyword(), np, kws[1:])
+######
+
+######################
+#         IT         #
+######################
+
+def p_It(p):
+     r"It : IT ItOpt"
+     p[0] = p[2]
+
+def p_ItOpt_subtemplate_var(p):
+     r"ItOpt : DOT Var COLON Subtemplate"
+     p[4].setObj(None)
+     p[4].setKeywords(p[2].getKeywords())
+     p[0] = p[4]
+
+def p_ItOpt_subtemplate(p):
+     r"ItOpt : COLON Subtemplate"
+     p[2].setObj(None)
+     p[0] = p[2]
+
+def p_ItOpt_Var(p):
+     r"ItOpt : DOT Var"
+     p[0] = ItVar(p[2].getKeywords(), p.parser.yaml)
+
+#def p_ItOpt_Var_brackets(p):
+#     r"ItOpt : OSQBRACK NUM COMMA NUM CSQBRACK"
+
+def p_ItOpt_Var_empty(p):
+     r"ItOpt : "
+     p[0] = It(p.parser.yaml)
 
 
 ######################
@@ -202,7 +236,7 @@ def p_Cond_a(p):
 ######################
 
 def p_Var_a(p): 
-     r"Var : Var '.' ID"
+     r"Var : Var DOT ID"
      p[1].nextValue(p[3])
      p[0] = p[1]
 

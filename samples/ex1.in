@@ -8,7 +8,6 @@ $else$
 estamos num else
 $endif$
 fim 2
-$for(obj.map)$$it$$sep$; $endfor$
 $ex2()$
 \$ ola
 \div

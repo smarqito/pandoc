@@ -6,7 +6,6 @@ Elems   |   Elem
 Elem    ->  Stmt
         |   Var
         |   It
-        |   CondVar
         |   TEXT
 
 ###############################################
@@ -14,8 +13,8 @@ Elem    ->  Stmt
 ###############################################
 
 Stmt    ->  If
-        ->  For
-        ->  Subtemplate
+        |  For
+        |  Subtemplate
 
 Subtemplate -> Var OPAR CPAR
             | Var COLON Var OPAR CPAR  
@@ -30,7 +29,7 @@ If      ->  IF OPAR Cond CPAR Elems Else ENDIF
                                       | ('else', elems, )                                : StmtIfElse
                                       | ('elseIf', elseIfs, elseBody : Elems | None)     : StmtIfElseIf
 
-Cond    ->  CondVar
+Cond    ->  Var
 
 Else                                                ([elseifs], [else])
 Else    ->  ELSE Elems                              ([], elem)
@@ -45,10 +44,14 @@ ElseIf  ->  ELSEIF OPAR Cond CPAR Elems             [StmtIf]
 #                  Vars                       #
 ###############################################
 
-It      ->  IT COLON Subtemplate                    Subtemplate : changeObj()
-        |   IT . Var                                Var
+It      -> IT ItOpt
 
-Var     ->  Var . ID                                p[1].add(p[2])
+ItOpt   ->  COLON Subtemplate                       Subtemplate()
+        |   DOT Var                                 ItVar(p[2].getKeywords())
+        |   OSQBRAC NUM COMMA NUM CSQBRAC           ItRange(p[2], p[4])
+        |                                           It()
+
+Var     ->  Var DOT ID                              p[1].add(p[2])
         |   ID                                      Var(p[1])
 
 ###############################################

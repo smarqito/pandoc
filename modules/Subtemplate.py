@@ -16,8 +16,11 @@ class Subtemplate(Stmt):
             self.parser.finfo['ext'] = m['ext']
         self.parser.finfo['fname'] = m['fname']
 
-    # def changeObj(self, newObj):
-    #     self.parser.yaml = newObj
+    def setObj(self, newObj):
+        self.parser.yaml = newObj
+
+    def setKeywords(self, kws):
+        self.keywords = kws
 
     def pp_dict(self, var):
         for k in self.keywords:

@@ -11,7 +11,7 @@ class StmtFor(Stmt):
     
     def handleStr(self):
         for elem in self.elems:
-            elem.pp()
+            elem.pp_dict(self.cond.getValue())
 
     def handleList(self):
         for it in self.cond.getValue():
@@ -23,6 +23,7 @@ class StmtFor(Stmt):
         for it in self.cond.getValue():
             for elem in self.elems:
                 elem.pp_dict(self.cond.getValue().get(it))
+
             if self.sep and size:
                 print(self.sep, end="")
                 size -= 1

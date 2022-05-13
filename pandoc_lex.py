@@ -15,11 +15,11 @@ states = [
     # ('conditions', 'exclusive')
 ]
 
-reservadas = "if else elseif endif for endfor sep".upper().split(' ')
+reservadas = "if else elseif endif for endfor sep it".upper().split(' ')
 
-tokens = "ID TEXT OPAR CPAR BACK COLON".split(' ') + reservadas
+tokens = "ID TEXT OPAR CPAR BACK COLON OSQBRACK CQSBRACK COMMA DOT NUM".split(' ') + reservadas
 
-literals = ". /".split(' ')
+literals = "/".split(' ')
 
 
 #  adicionar contexto para o $ com lookbehind do '\' -> "(?<!\\)$"
@@ -86,6 +86,27 @@ def t_metadata_CPAR(t):
 
 def t_metadata_COLON(t):
     r":"
+    return t
+
+def t_metadata_OSQBRACKET(t):
+    r"\["
+    return t
+
+def t_metadata_CSQBRACKET(t):
+    r"\]"
+    return t
+
+def t_metadata_COMMA(t):
+    r","
+    return t
+
+def t_metadata_DOT(t):
+    r"\."
+    return t
+
+def t_metadata_NUM(t):
+    r"\d+"
+    t.value = int(t.value)
     return t
 
 def t_metadata_error(t):
