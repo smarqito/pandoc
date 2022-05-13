@@ -57,11 +57,11 @@ class Pipe:
             if self.args:
                 a, b, c = self.args
                 if c:
-                    Pipe._pipes[self.id](a,b,c,x)
+                    return Pipe._pipes[self.id](a,b,c,x)
                 else:
-                    Pipe._pipes[self.id](a,b,x)
+                    return Pipe._pipes[self.id](a,b,x)
             else:
-                Pipe._pipes[self.id](x)
+                return Pipe._pipes[self.id](x)
         else:
             print(f"Pipe \"{self.id}\" não definido")
             exit()
