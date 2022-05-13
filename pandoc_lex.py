@@ -12,14 +12,14 @@ import sys
 
 states = [
     ('metadata', 'exclusive'),
-    # ('conditions', 'exclusive')
+    ('args', 'exclusive')
 ]
 
 reservadas = "if else elseif endif for endfor sep it".upper().split(' ')
 
-tokens = "ID TEXT OPAR CPAR BACK COLON OSQBRAC CSQBRAC COMMA DOT NUM".split(' ') + reservadas
+tokens = "ID TEXT OPAR CPAR BACK COLON OSQBRAC CSQBRAC COMMA DOT SLASH NUM QUO".split(' ') + reservadas
 
-literals = "/".split(' ')
+literals = "^".split(' ')
 
 
 #  adicionar contexto para o $ com lookbehind do '\' -> "(?<!\\)$"
@@ -109,7 +109,25 @@ def t_metadata_NUM(t):
     t.value = int(t.value)
     return t
 
-def t_metadata_error(t):
+def t_metadata_SLASH(t):
+    r"\/"
+    return t
+
+def t_metadata_QUO(t):
+    r"\""
+    t.lexer.push_state('args')
+    return t
+    
+def t_args_QUO(t):
+    r"\""
+    t.lexer.pop_state()
+    return t
+
+def t_args_TEXT(t):
+    r"[\"]+"
+    return t
+
+def t_metadata_args_error(t):
       print("Metadata illegal!! '%s'" % t.value)
       exit()
 
@@ -118,7 +136,7 @@ def t_metadata_error(t):
 #      t.lexer.lineno += len(t.value)
 
 
-t_metadata_ignore = ' \t\r'
+t_metadata_args_ignore = ' \t\r'
 
 lexer = lex.lex()
 

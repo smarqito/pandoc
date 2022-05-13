@@ -13,4 +13,6 @@ class Elem:
     @abstractmethod
     def pp_list(self, var, cond):
         self.pp()
+    def pp_nested(self, spaces):
+        self.pp()
     

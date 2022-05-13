@@ -10,6 +10,7 @@ from re import *
 import sys
 import ply.yacc as yacc
 from modules.Entity import Entity
+from modules.Nesting import Nesting
 from modules.StmtFor import StmtFor
 from modules.Var import Var
 from pandoc_lex import tokens
@@ -21,6 +22,7 @@ from modules.Subtemplate import Subtemplate
 from modules.ItVar import ItVar
 from modules.It import It
 from modules.ItRange import ItRange
+from modules.Pipe import Pipe
 ##########################################
 def my_error(msg):
      print(msg)
@@ -45,7 +47,8 @@ ids = {
     'obj' : {
         'incl' : 'ola',
         'bat' : ['eu', 'sei', 'que', 'nao', 'vai', 'funcionar', 'direito'],
-        'map' : {'key1' : {'key22' : 'value2'}, 'key2' : {'key22' : 'value22'}, 'key3' : {'key22' : 'value222'}}
+        'map' : {'key1' : {'key22' : 'value2'}, 'key2' : {'key22' : 'value22'}, 'key3' : {'key22' : 'value222'}},
+        'descr' : 'A fine bottle of 18-yr-old\n Oban whiskey.\n claro que esta'
     }
     
 }
@@ -96,6 +99,11 @@ def p_Elem_d(p):
 def p_Elem_e(p):
      r"Elem : It"
      p[0] = p[1]
+
+def p_Elem_f(p):
+     r"Elem : Nesting"
+     p[0] = p[1]
+
 
 ######################
 #       STMT         #
@@ -171,7 +179,7 @@ def p_Sep_empty(p):
 ######################
 
 def p_subtemplate_a(p):
-     r"Subtemplate : Var OPAR CPAR"
+     r"Subtemplate : VarAtomic OPAR CPAR Pipes" 
      np = yacc.yacc()
      np.lineno = p.lineno
      np.yaml = p.parser.yaml
@@ -213,7 +221,30 @@ def p_ItOpt_Var_empty(p):
      r"ItOpt : "
      p[0] = It(p.parser.yaml)
 
+######################
+#       NESTING      #
+######################
 
+def p_Nesting_a(p):
+     r"Nesting : Var '^' NestElems '^'"
+     p[0] = Nesting(p[1], p[3])
+
+def p_NestElems_a(p):
+     r"NestElems : NestElems NestElem"
+     p[0] = p[1] + [p[2]]
+
+def p_NestElems_b(p):
+     r"NestElems : NestElem"
+     p[0] = [p[1]]
+
+def p_NestElem_a(p):
+     r"NestElem : Var"
+     p[0] = p[1]
+
+def p_NestElem_b(p):
+     r"NestElem : TEXT"
+     p[0] = Text(p[1])
+     
 ######################
 #     Condicoes      #
 ######################
@@ -230,14 +261,34 @@ def p_Cond_b(p):
 #        Var         #
 ######################
 
-def p_Var_a(p): 
-     r"Var : Var DOT ID"
+def p_Var(p):
+     r"Var : VarAtomic Pipes"
+     p[0] = p[1]
+
+def p_VarAtomic_a(p): 
+     r"VarAtomic : VarAtomic DOT ID"
      p[1].nextValue(p[3])
      p[0] = p[1]
 
-def p_Var_b(p): 
-     r"Var : ID"
+def p_VarAtomic_b(p): 
+     r"VarAtomic : ID"
      p[0] = Var(p[1], p.parser.yaml)
+
+######################
+#       Pipes        #
+###################### 
+
+def p_pipes_a(p):
+     "Pipes : Pipes SLASH ID"
+     p[0] = p[1] + [Pipe(p[3])]
+
+def p_pipes_b(p):
+     "Pipes : Pipes SLASH ID NUM QUO TEXT QUO"
+     p[0] = p[1] + [Pipe(p[3], (p[4], p[6], p[9]))]
+
+def p_pipes_c(p):
+     "Pipes : "
+     p[0] = []
 
 ######################
 #        Num         #
@@ -249,7 +300,7 @@ def p_Num_a(p):
 
 def p_Num_b(p):
      "Num : "
-     p[0] = None # mais verboso by @mixa -> (clown) <-
+     p[0] = None
 
 def p_error(p):
      print("Syntax error in input!", p)

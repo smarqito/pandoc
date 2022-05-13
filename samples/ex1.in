@@ -1,4 +1,4 @@
-$if(obj.OLA)$                                   
+$if(obj.OLA)$
 1a segunda palavra $obj.OLA$ nunca funciona
 $elseif(obj.incl)$ 
 primeiro else if 
@@ -11,3 +11,7 @@ fim 2
 $ex2()$
 \$ ola
 \div
+$obj.incl$$^$ $obj.incl$ $obj.descr$$obj.descr$$^$
+
+
+$obj.descr$

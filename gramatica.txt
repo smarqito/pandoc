@@ -7,6 +7,7 @@ Elem    ->  Stmt
         |   Var
         |   It
         |   TEXT
+        |   Nesting
 
 ###############################################
 #                  Stmt                       #
@@ -16,10 +17,9 @@ Stmt    ->  If
         |  For
         |  Subtemplate
 
-Subtemplate -> Var OPAR CPAR
-            | Var COLON Var OPAR CPAR  
+Subtemplate -> Var OPAR CPAR Pipes                                                       Pipes(Subtemplate(...))
 
-For     -> FOR OPAR Cond CPAR Elems Sep ENDFOR                                               : StmtFor (Cond, Elems) 
+For     -> FOR OPAR Cond CPAR Elems Sep ENDFOR                                           : StmtFor (Cond, Elems) 
 
 Sep     -> SEP TEXT
         | Empty
@@ -29,8 +29,6 @@ If      ->  IF OPAR Cond CPAR Elems Else ENDIF
                                       | ('else', elems, )                                : StmtIfElse
                                       | ('elseIf', elseIfs, elseBody : Elems | None)     : StmtIfElseIf
 
-Cond    ->  Var
-
 Else                                                ([elseifs], [else])
 Else    ->  ELSE Elems                              ([], elem)
         |   ElseIf Else                             (p[1] + p[2][0], p[2][1])
@@ -39,9 +37,10 @@ Else    ->  ELSE Elems                              ([], elem)
 
 ElseIf  ->  ELSEIF OPAR Cond CPAR Elems             [StmtIf]
 
+Cond    ->  Var
 
 ###############################################
-#                  Vars                       #
+#                  IT                         #
 ###############################################
 
 It      -> IT ItOpt
@@ -49,11 +48,36 @@ It      -> IT ItOpt
 ItOpt   ->  COLON Subtemplate                       Subtemplate()
         |   DOT Var                                 ItVar(p[2].getKeywords())
         |   OSQBRAC NUM COMMA NUM CSQBRAC           ItRange(p[2], p[4])
-        |                                           It()
+        |   Empty                                   It()
 
-Var     ->  Var DOT ID                              p[1].add(p[2])
-        |   ID                                      Var(p[1])
+###############################################
+#                  Vars                       #
+###############################################
 
+VarPipe -> Var Pipes                                Pipes(p[0], p[1])   
+
+VarAtomic ->  VarAtomic DOT ID                      p[1].add(p[2])
+          |  ID                                     Var(p[1])
+        
+###############################################
+#                  Pipes                      # 
+###############################################
+
+Pipes   -> Pipes SLASH ID                                p[0] = p[1] + [p[3]]   
+        | Pipes SLASH ID NUM QUO TEXT QUO QUO TEXT QUO   p[0] = p[]                                          
+        | Empty                                          p[0] = []        
+
+###############################################
+#                  Nesting                    #
+###############################################
+
+Nesting ->  Var TEXT '^' NestElems '^'
+
+NestElems -> NestElems
+          |  NestElem
+
+NestElem  -> Var
+          |  TEXT
 ###############################################
 #                  LIXO                       #
 ###############################################

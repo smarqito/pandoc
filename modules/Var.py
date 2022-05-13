@@ -1,5 +1,5 @@
 from modules.Elem import Elem
-from re import findall, search
+from re import sub
 
 class Var(Elem):
     def __init__(self, keyword : ..., dict):
@@ -40,3 +40,8 @@ class Var(Elem):
             print(var, end="")
         else:
             print(self.value, end="")
+
+    def pp_nested(self, spaces):
+        if type(self.value) is str:
+            self.value = sub(r"\n", rf"\n{' ' * spaces}", self.value)
+        self.pp()
