@@ -17,7 +17,7 @@ from modules.Document import Document
 from modules.StmtIf import StmtIf
 from modules.Text import Text
 from modules.StmtIfElse import StmtIfElse
-from modules.CondVar import CondVar
+from modules.Subtemplate import Subtemplate
 ##########################################
 def my_error(msg):
      print(msg)
@@ -26,6 +26,15 @@ def my_error(msg):
 def getVar(dict, elem):
      if elem in dict:
           return dict[elem]
+
+def getFinfo(path) -> dict:
+     m = search(r"(?P<path>\/?(?:\w+\/)*)(?P<fname>[^\\\/;:\"?<>|]+)(?P<ext>\.\w+)$", path) 
+     return {
+          'path' : m['path'],
+          'fname' : m['fname'],
+          'ext' : m['ext']
+     } 
+
 ##########################################
 
 ######## LIXO PARA REMOVER
@@ -97,6 +106,10 @@ def p_Stmt_For(p):
      r"Stmt : For"
      p[0] = p[1]
 
+def p_Stmt_Subtemplate(p):
+     r"Stmt : Subtemplate"
+     p[0] = p[1]
+
 ######################
 #       IF STMT      #
 ######################
@@ -149,6 +162,31 @@ def p_Sep(p):
 def p_Sep_empty(p):
      r"Sep : "
      p[0] = None
+
+######################
+#     Subtemplate    #
+######################
+
+def p_subtemplate_a(p):
+     r"Subtemplate : Var OPAR CPAR"
+     np = yacc.yacc()
+     np.lineno = p.lineno
+     np.yaml = p.parser.yaml
+     np.finfo = p.parser.finfo
+     p[0] = Subtemplate(p[1].getKeyword(), np)
+
+def p_subtemplate_b(p):
+     r"Subtemplate : Var COLON Var OPAR CPAR"
+     np = yacc.yacc()
+     if p[1].getKeyword() == "it":
+          np.yaml = None
+     else:
+          print("erro na iteracao")
+          exit()
+     np.lineno = p.lineno
+     np.finfo = p.parser.finfo
+     p[0] = Subtemplate(p[3].getKeyword(), np)
+
 
 ######################
 #     Condicoes      #
@@ -240,10 +278,9 @@ if len(sys.argv) == 1:
      for line in sys.stdin:
           print(parser.parse(line))
 else:
+     parser.finfo = getFinfo(sys.argv[1])
      parser.yaml = ids
      f = open(sys.argv[1])
      txt = f.read()
      result = parser.parse(txt)
      result.pp()
-
-

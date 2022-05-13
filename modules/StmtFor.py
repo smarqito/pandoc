@@ -7,8 +7,7 @@ class StmtFor(Stmt):
         super().__init__()
         self.cond = cond
         self.elems = elems
-        if sep:
-            self.sep = sep
+        self.sep = sep
     
     def handleStr(self):
         for elem in self.elems:

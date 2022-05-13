@@ -17,7 +17,7 @@ states = [
 
 reservadas = "if else elseif endif for endfor sep".upper().split(' ')
 
-tokens = "ID TEXT OPAR CPAR BACK".split(' ') + reservadas
+tokens = "ID TEXT OPAR CPAR BACK COLON".split(' ') + reservadas
 
 literals = ". /".split(' ')
 
@@ -33,7 +33,7 @@ def t_ON(t):
     t.lexer.push_state('metadata')
 
 def t_metadata_OFF(t):
-    r"\$\n?"
+    r"\$"
     t.lexer.pop_state()
     if len(t.value) > 1:
         t.lexer.lineno += 1
@@ -82,6 +82,10 @@ def t_metadata_OPAR(t):
     
 def t_metadata_CPAR(t):
     r"\)"
+    return t
+
+def t_metadata_COLON(t):
+    r":"
     return t
 
 def t_metadata_error(t):

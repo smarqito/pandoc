@@ -5,6 +5,7 @@ Elems   |   Elem
 
 Elem    ->  Stmt
         |   Var
+        |   It
         |   CondVar
         |   TEXT
 
@@ -14,6 +15,10 @@ Elem    ->  Stmt
 
 Stmt    ->  If
         ->  For
+        ->  Subtemplate
+
+Subtemplate -> Var OPAR CPAR
+            | Var COLON Var OPAR CPAR  
 
 For     -> FOR OPAR Cond CPAR Elems Sep ENDFOR                                               : StmtFor (Cond, Elems) 
 
@@ -39,6 +44,9 @@ ElseIf  ->  ELSEIF OPAR Cond CPAR Elems             [StmtIf]
 ###############################################
 #                  Vars                       #
 ###############################################
+
+It      ->  IT COLON Subtemplate                    Subtemplate : changeObj()
+        |   IT . Var                                Var
 
 Var     ->  Var . ID                                p[1].add(p[2])
         |   ID                                      Var(p[1])
