@@ -1,4 +1,4 @@
-from re import sub
+from re import sub, search
 from math import ceil, floor
 
 def pairs(x):
@@ -52,50 +52,83 @@ def handle_roman(x) -> str:
     }
     
     pos = 12
-    num = int(x)
+    num = int(x[0])
+    print("numero",num)
     res = ""
     while num:
         while(num < _to_roman_ind[pos]):
             pos -=1
-        res += _to_roman[pos]
+        res += _to_roman[_to_roman_ind[pos]]
         num -= _to_roman_ind[pos]
     return res
 
 def roman(x):
-    return sub(r"\d+", handle_roman, x)        
+    return sub(r"[1-9]\d*", handle_roman, x)        
 
 def left(x, n, l, r):
     res = ""
     tam = 0
-    if l:
-        res += l
-        tam += len(l)
-    res += x
-    tam += len(x)
-    if r:
-        res += (n-tam-len(r)) * " "
-        res += r
-    else: 
-        res += (n-tam) * " "
-    return res
+    while (len(x) > 0):
+        tam = 0
+        if l:
+            res += l
+            tam += len(l)
+
+        m = search(r'\n', x)
+        n_pos = n + 1 #Caso nao exista \n o n_pos não é necessário logo é smepre maior que tam_disp
+        if m:
+            n_pos = int(m.span()[1])
+        tam_disp = n - len(l) - len(r)
+
+        if n_pos > tam_disp:
+            res += x[:tam_disp]
+            tam += len(x[:tam_disp])
+            x = x[tam_disp:]
+        else:
+            res += x[:n_pos-1]
+            tam += len(x[:n_pos-1])
+            x = x[n_pos:]
+
+        if r:
+            if len(x) == 0:
+                res += (n-tam-len(r)) * " "
+            elif n_pos < tam_disp:
+                res += (tam_disp - n_pos + 1) * " "
+            res += r
+        res += '\n'
+    return res   
     
 def center(x, n, l, r):
     res = ""
-    tam = 0
-    if l:
-        res += l
-        tam += len(l)
-    if r:
-        numSpaces = (n - tam - len(x) - len(r)) / 2
-        res += ceil(numSpaces) * " "
-        res += x
-        res += floor(numSpaces) * " "
-        res += r
-    else:
-        numSpaces = (n - tam - len(x)) / 2
-        res += ceil(numSpaces) * " "
-        res += x
-        res += floor(numSpaces) * " "
+    while (len(x) > 0):
+        if l:
+            res += l
+
+        m = search(r'\n', x)
+        n_pos = n + 1 #Caso nao exista \n o n_pos não é necessário logo é smepre maior que tam_disp
+        if m:
+            n_pos = int(m.span()[1])
+        tam_disp = n - len(l) - len(r)
+
+        if r:
+            if n_pos > tam_disp:
+                length = len(x[:tam_disp])
+            else:
+                length = len(x[:n_pos-1])
+            numSpaces = (n - len(l) - length - len(r)) / 2
+            res += ceil(numSpaces) * " "
+
+            if n_pos > tam_disp:
+                res += x[:tam_disp]
+                x = x[tam_disp:]
+            else:
+                res += x[:n_pos-1]
+                x = x[n_pos:]
+                
+            res += floor(numSpaces) * " "
+            res += r
+        res += '\n'
+
     return res
 
 def right(x, n, l, r):
@@ -142,9 +175,12 @@ class Pipe:
             if self.args:
                 a, b, c = self.args
                 if c:
-                    return Pipe._pipes[self.id](a,b,c,x)
+                    return Pipe._pipes[self.id](x,a,b,c)
                 else:
-                    return Pipe._pipes[self.id](a,b,x)
+                    if self.id == 'left' or self.id == 'center':
+                        return Pipe._pipes[self.id](x,a,b,"")
+                    else:
+                        return Pipe._pipes[self.id](x,a,"",b)
             else:
                 return Pipe._pipes[self.id](x)
         else:

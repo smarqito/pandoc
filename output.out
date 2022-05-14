@@ -1,0 +1,25 @@
+primeiro else if 
+fim 2
+2. estou num subtemplate ola
+3. estou num subtemplate e2 
+3. estou num subtemplate e22 
+3. estou num subtemplate e222 
+depois do for$ ola
+<div>_</div>
+|A fine bottle of 1|
+|     8-yr-old     |
+|   Oban whiskey.  |
+|  claro que esta  |
+
+ola  
+ ola A fine bottle of 18-yr-old
+     Oban whiskey.
+     claro que esta
+     A fine bottle of 18-yr-old
+     Oban whiskey.
+     claro que esta
+     
+A fine bottle of 18-yr-old
+Oban whiskey.
+claro que esta
+

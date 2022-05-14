@@ -20,8 +20,8 @@ class Var(Elem):
     def getValue(self) -> ...:
         return self.value
 
-    def setValue(self, value):
-        self.value = value
+    def handle_pipes(self, pipes):
+        self.value = pipes.handlePipes(self.value)
     
     def getKeyword(self):
         return self.id

@@ -1,4 +1,4 @@
 \div
 $if(obj)$
-objeto
+$it$
 $endif$

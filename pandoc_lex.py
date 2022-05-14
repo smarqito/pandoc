@@ -124,7 +124,7 @@ def t_args_QUO(t):
     return t
 
 def t_args_TEXT(t):
-    r"[\"]+"
+    r'[^"]+'
     return t
 
 def t_metadata_args_error(t):

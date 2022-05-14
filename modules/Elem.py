@@ -28,4 +28,6 @@ class Elem:
         self.pp()
     def pp_nested(self, spaces):
         self.pp()
+    def handle_pipes(self, pipes):
+        pass
     

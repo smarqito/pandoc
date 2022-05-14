@@ -9,13 +9,14 @@
 from re import *
 import sys
 import ply.yacc as yacc
-from modules.Pipes import Pipes
 from pandoc_lex import tokens
 from modules.Entity import Entity
 from modules.Var import Var
 from modules.Document import Document
 from modules.Text import Text
-from modules.Stmt.StmtSubtemplate import StmtSubtemplate
+from modules.Nesting import Nesting
+from modules.Pipe import Pipe
+from modules.Pipes import Pipes
 from modules.It.It import It
 from modules.It.ItVar import ItVar
 from modules.It.ItRange import ItRange
@@ -23,8 +24,7 @@ from modules.It.ItSubtemplate import ItSubtemplate
 from modules.Stmt.StmtFor import StmtFor
 from modules.Stmt.StmtIf import StmtIf
 from modules.Stmt.StmtIfElse import StmtIfElse
-from modules.Nesting import Nesting
-from modules.Pipe import Pipe
+from modules.Stmt.StmtSubtemplate import StmtSubtemplate
 ##########################################
 
 
@@ -56,7 +56,7 @@ ids = {
         'incl': 'ola',
         'bat': ['eu', 'sei', 'que', 'nao', 'vai', 'funcionar', 'direito'],
         'map': {'key1': {'key22': 'value2'}, 'key2': {'key22': 'value22'}, 'key3': {'key22': 'value222'}},
-        'descr': 'A fine bottle of 18-yr-old\n Oban whiskey.\n claro que esta',
+        'descr': 'A fine bottle of 18-yr-old\nOban whiskey.\nclaro que esta',
         'alpha' : 'numero para letra : 0 1 2 3 10 26',
         'roman' : 'numeros romanos : 1 4 14 93 192 1053'
     }
@@ -320,7 +320,7 @@ def p_Cond_b(p):
 def p_Var(p):
     r"Var : VarAtomic Pipes"
     pipes = Pipes(p[2])
-    p[1].setValue(pipes.handlePipes(p[1].getValue()))
+    p[1].handle_pipes(pipes)
     p[0] = p[1]
 
 
@@ -390,14 +390,14 @@ def p_error(p):
 parser = yacc.yacc()
 parser.lineno = 0
 
-if len(sys.argv) == 1:
-    parser.yaml = ids
-    for line in sys.stdin:
-        print(parser.parse(line))
-else:
-    parser.finfo = getFinfo(sys.argv[1])
-    parser.yaml = ids
-    f = open(sys.argv[1])
-    txt = f.read()
-    result = parser.parse(txt)
-    result.pp()
+# if len(sys.argv) == 1:
+#     parser.yaml = ids
+#     for line in sys.stdin:
+#         print(parser.parse(line))
+# else:
+#     parser.finfo = getFinfo(sys.argv[1])
+#     parser.yaml = ids
+#     f = open(sys.argv[1])
+#     txt = f.read()
+#     result = parser.parse(txt)
+#     result.pp()
