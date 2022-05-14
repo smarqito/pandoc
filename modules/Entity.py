@@ -9,8 +9,8 @@ class Entity(Elem):
         '\$' : '$',
         '\div' : '<div>_</div>'
     }
-    def __init__(self, entity) -> None:
-        super().__init__()
+    def __init__(self, entity, end = None) -> None:
+        super().__init__(end)
         self.entity = entity
     
     def getValue(self) -> str:
@@ -18,5 +18,5 @@ class Entity(Elem):
 
     def pp(self):
         # global entities
-        print(self.getValue(), end="")
+        print(self.getValue(), end=self.end)
     

@@ -27,7 +27,6 @@ class StmtFor(Stmt):
             if self.sep and size:
                 print(self.sep, end="")
                 size -= 1
-        print()
 
     def pp(self):
         if self.cond.getType() is dict:

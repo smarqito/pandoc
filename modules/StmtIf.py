@@ -13,10 +13,7 @@ class StmtIf(Stmt):
 
     def pp(self):
         if self.testCondition():
-            print("begin if")
-            print("condicao", self.cond.getValue())
             for elem in self.body:
                 elem.pp()
-            print("end if")
             return True
         return False

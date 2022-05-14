@@ -2,9 +2,9 @@ from modules.ItVar import ItVar
 
 
 class ItRange(ItVar):
-    def __init__(self, default, _range, kws = []) -> None:
+    def __init__(self, default, _range, kws = [], end = None) -> None:
         self.n, self.m = _range
-        super().__init__(kws, default)
+        super().__init__(kws, default, end)
     
     def handleDefault(self):
         super().handleDefault()

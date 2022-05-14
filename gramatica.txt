@@ -8,6 +8,7 @@ Elem    ->  Stmt
         |   It
         |   TEXT
         |   Nesting
+        |   Newline
 
 ###############################################
 #                  Stmt                       #
@@ -17,25 +18,25 @@ Stmt    ->  If
         |  For
         |  Subtemplate
 
-Subtemplate -> Var OPAR CPAR Pipes                                                       Pipes(Subtemplate(...))
+Subtemplate -> Var OPAR CPAR Pipes Newline                                                       Pipes(Subtemplate(...))
 
-For     -> FOR OPAR Cond CPAR Elems Sep ENDFOR                                           : StmtFor (Cond, Elems) 
+For     -> FOR OPAR Cond CPAR Newline Elems Sep ENDFOR                                           : StmtFor (Cond, Elems) 
 
 Sep     -> SEP TEXT
         | Empty
 
-If      ->  IF OPAR Cond CPAR Elems Else ENDIF
+If      ->  IF OPAR Cond CPAR Newline Elems Else ENDIF
                                       | None                                             : StmtIf
                                       | ('else', elems, )                                : StmtIfElse
                                       | ('elseIf', elseIfs, elseBody : Elems | None)     : StmtIfElseIf
 
 Else                                                ([elseifs], [else])
-Else    ->  ELSE Elems                              ([], elem)
+Else    ->  ELSE Newline Elems                              ([], elem)
         |   ElseIf Else                             (p[1] + p[2][0], p[2][1])
         |   Empty                                   ([], [])
 
 
-ElseIf  ->  ELSEIF OPAR Cond CPAR Elems             [StmtIf]
+ElseIf  ->  ELSEIF OPAR Cond CPAR Newline Elems             [StmtIf]
 
 Cond    ->  Var
 
@@ -43,7 +44,7 @@ Cond    ->  Var
 #                  IT                         #
 ###############################################
 
-It      -> IT ItOpt
+It      -> IT ItOpt Newline
 
 ItOpt   ->  COLON Subtemplate                       Subtemplate()
         |   DOT Var                                 ItVar(p[2].getKeywords())
@@ -54,7 +55,7 @@ ItOpt   ->  COLON Subtemplate                       Subtemplate()
 #                  Vars                       #
 ###############################################
 
-VarPipe -> Var Pipes                                Pipes(p[0], p[1])   
+VarPipe -> Var Pipes Newline                        Pipes(p[0], p[1])   
 
 VarAtomic ->  VarAtomic DOT ID                      p[1].add(p[2])
           |  ID                                     Var(p[1])
@@ -71,13 +72,16 @@ Pipes   -> Pipes SLASH ID                                p[0] = p[1] + [p[3]]
 #                  Nesting                    #
 ###############################################
 
-Nesting ->  Var TEXT '^' NestElems '^'
+Nesting ->  Var TEXT '^' NestElems '^' Newline
 
 NestElems -> NestElems
           |  NestElem
 
 NestElem  -> Var
           |  TEXT
+
+Newline   -> NL
+          | Empty
 ###############################################
 #                  LIXO                       #
 ###############################################

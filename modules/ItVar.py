@@ -1,8 +1,8 @@
 from modules.It import It
 
 class ItVar(It):
-    def __init__(self, kws, default) -> None:
-        super().__init__(default)
+    def __init__(self, kws, default, end = None) -> None:
+        super().__init__(default, end)
         self.keywords = kws
         self.handleDefault()
     

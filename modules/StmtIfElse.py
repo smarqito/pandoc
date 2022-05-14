@@ -9,7 +9,6 @@ class StmtIfElse(StmtIf):
         self.elseBody = elseElems
 
     def pp(self):
-        print("begin ifelse")
         f = False
         f = super().pp()
         if not f:
@@ -19,4 +18,3 @@ class StmtIfElse(StmtIf):
         if not f:
             for elseElem in self.elseBody:
                 elseElem.pp()
-        print("end ifelse")

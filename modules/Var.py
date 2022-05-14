@@ -2,8 +2,8 @@ from modules.Elem import Elem
 from re import sub
 
 class Var(Elem):
-    def __init__(self, keyword : ..., dict):
-        super().__init__()
+    def __init__(self, keyword : ..., dict, end = None):
+        super().__init__(end)
         self.value = dict.get(keyword, None)
         self.id = keyword
         self.ids = [keyword]

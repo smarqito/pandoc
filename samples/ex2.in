@@ -1,5 +1,4 @@
 2. estou num subtemplate $obj.incl$
 $for(obj.map)$
-$it$
 $it:ex3()$
 $endfor$

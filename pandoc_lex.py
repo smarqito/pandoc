@@ -17,7 +17,7 @@ states = [
 
 reservadas = "if else elseif endif for endfor sep it".upper().split(' ')
 
-tokens = "ID TEXT OPAR CPAR BACK COLON OSQBRAC CSQBRAC COMMA DOT SLASH NUM QUO".split(' ') + reservadas
+tokens = "ID TEXT OPAR CPAR BACK COLON OSQBRAC CSQBRAC COMMA DOT SLASH NUM QUO NL".split(' ') + reservadas
 
 literals = "^".split(' ')
 
@@ -57,7 +57,7 @@ def t_metadata_OFF(t):
 #     return t
 
 def t_TEXT(t): 
-    r"[^$\\]+"
+    r"[^$\\\n]+"
     return t
 
 def t_BACK(t):
@@ -131,9 +131,10 @@ def t_metadata_args_error(t):
       print("Metadata illegal!! '%s'" % t.value)
       exit()
 
-# def t_ANY_newline(t):
-#      r'\n+'
-#      t.lexer.lineno += len(t.value)
+def t_NL(t):
+     r'\n+'
+     t.lexer.lineno += len(t.value)
+     return t
 
 
 t_metadata_args_ignore = ' \t\r'

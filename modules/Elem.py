@@ -2,9 +2,15 @@ from abc import abstractmethod
 
 
 class Elem:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, end = None) -> None:
+        self.end = end.getValue() if end else None
     
+    def getEnd(self):
+        return self.end
+    
+    def setEnd(self, end):
+        self.end = end
+
     @abstractmethod
     def pp(self):   pass
     @abstractmethod

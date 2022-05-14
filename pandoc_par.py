@@ -80,21 +80,21 @@ def p_Elems_b(p):
 ######################
 
 def p_Elem_a(p): 
-     r"Elem : Stmt"
+     r"Elem : Stmt Newline"
      #p[0] = p[1]
      p[0] = p[1]
 
 def p_Elem_b(p): 
-     r"Elem : TEXT"
-     p[0] = Text(p[1])
+     r"Elem : TEXT Newline"
+     p[0] = Text(p[1], p[2])
 
 def p_Elem_c(p): 
      r"Elem : Var"
      p[0] = p[1]
 
 def p_Elem_d(p):
-     r"Elem : BACK"
-     p[0] = Entity(p[1])
+     r"Elem : BACK Newline"
+     p[0] = Entity(p[1], p[2])
 
 def p_Elem_e(p):
      r"Elem : It"
@@ -126,20 +126,20 @@ def p_Stmt_Subtemplate(p):
 ######################
 
 def p_If(p):
-     r'If : IF OPAR Cond CPAR Elems Else ENDIF'
-     _elseifs, _else = p[6] # Else
+     r'If : IF OPAR Cond CPAR Newline Elems Else ENDIF'
+     _elseifs, _else = p[7] # Else
      if len(_else) > 0 or len(_elseifs) > 0:
-          p[0] = StmtIfElse(p[3], p[5], _elseifs, _else)
+          p[0] = StmtIfElse(p[3], p[6], _elseifs, _else)
      else:         
-          p[0] = StmtIf(p[3], p[5])
+          p[0] = StmtIf(p[3], p[6])
 
 ######################
 #        Else        #
 ######################
 
 def p_Else_a(p):
-     r'Else : ELSE Elems'
-     p[0] = ([], p[2])
+     r'Else : ELSE Newline Elems'
+     p[0] = ([], p[3])
 
 def p_Else_b(p):
      r'Else : ElseIf Else'
@@ -154,8 +154,8 @@ def p_Else_d(p):
 ######################
 
 def p_ElseIf(p):
-     r'ElseIf : ELSEIF OPAR Cond CPAR Elems'
-     p[0] = [StmtIf(p[3], p[5])]
+     r'ElseIf : ELSEIF OPAR Cond CPAR Newline Elems'
+     p[0] = [StmtIf(p[3], p[6])]
 
 
 ######################
@@ -163,11 +163,11 @@ def p_ElseIf(p):
 ######################
 
 def p_For(p):
-     r"For : FOR OPAR Cond CPAR Elems Sep ENDFOR"
-     p[0] = StmtFor(p[3], p[5], p[6])
+     r"For : FOR OPAR Cond CPAR Newline Elems Sep ENDFOR"
+     p[0] = StmtFor(p[3], p[6], p[7])
 
 def p_Sep(p):
-     r"Sep : SEP TEXT"
+     r"Sep : SEP TEXT Newline"
      p[0] = p[2]
 
 def p_Sep_empty(p):
@@ -179,7 +179,7 @@ def p_Sep_empty(p):
 ######################
 
 def p_subtemplate_a(p):
-     r"Subtemplate : VarAtomic OPAR CPAR Pipes" 
+     r"Subtemplate : VarAtomic OPAR CPAR Pipes Newline" 
      np = yacc.yacc()
      np.lineno = p.lineno
      np.yaml = p.parser.yaml
@@ -195,7 +195,7 @@ def p_It(p):
      p[0] = p[2]
 
 def p_ItOpt_subtemplate_var(p):
-     r"ItOpt : DOT Var COLON Subtemplate"
+     r"ItOpt : DOT Var Newline COLON Subtemplate"
      p[4].setObj(None)
      p[4].setKeywords(p[2].getKeywords())
      p[0] = p[4]
@@ -206,11 +206,11 @@ def p_ItOpt_subtemplate(p):
      p[0] = p[2]
 
 def p_ItOpt_Var(p):
-     r"ItOpt : DOT Var"
+     r"ItOpt : DOT Var Newline"
      p[0] = ItVar(p[2].getKeywords(), p.parser.yaml)
 
 def p_ItOpt_Var_brackets_var(p):
-     r"ItOpt : DOT Var OSQBRAC Num COMMA Num CSQBRAC"
+     r"ItOpt : DOT Var Newline OSQBRAC Num COMMA Num CSQBRAC"
      p[0] = ItRange(p.parser.yaml, (p[4], p[6]), p[2].getKeywords())
 
 def p_ItOpt_Var_brackets(p):
@@ -226,8 +226,8 @@ def p_ItOpt_Var_empty(p):
 ######################
 
 def p_Nesting_a(p):
-     r"Nesting : Var '^' NestElems '^'"
-     p[0] = Nesting(p[1], p[3])
+     r"Nesting : Var Newline '^' NestElems '^' Newline"
+     p[0] = Nesting(p[1], p[4], p[6])
 
 def p_NestElems_a(p):
      r"NestElems : NestElems NestElem"
@@ -238,12 +238,12 @@ def p_NestElems_b(p):
      p[0] = [p[1]]
 
 def p_NestElem_a(p):
-     r"NestElem : Var"
+     r"NestElem : Var Newline"
      p[0] = p[1]
 
 def p_NestElem_b(p):
-     r"NestElem : TEXT"
-     p[0] = Text(p[1])
+     r"NestElem : TEXT Newline"
+     p[0] = Text(p[1], p[2])
      
 ######################
 #     Condicoes      #
@@ -284,9 +284,14 @@ def p_pipes_a(p):
 
 def p_pipes_b(p):
      "Pipes : Pipes SLASH ID NUM QUO TEXT QUO"
-     p[0] = p[1] + [Pipe(p[3], (p[4], p[6], p[9]))]
+     p[0] = p[1] + [Pipe(p[3], (p[4], p[6], None))]
 
 def p_pipes_c(p):
+     "Pipes : Pipes SLASH ID NUM QUO TEXT QUO QUO TEXT QUO"
+     p[0] = p[1] + [Pipe(p[3], (p[4], p[6], p[9]))]
+
+
+def p_pipes_d(p):
      "Pipes : "
      p[0] = []
 
@@ -301,6 +306,14 @@ def p_Num_a(p):
 def p_Num_b(p):
      "Num : "
      p[0] = None
+
+def p_Newline_a(p):
+     r"Newline : NL"
+     p[0] = Text(p[1])
+
+def p_Newline_b(p):
+     r"Newline : "
+     p[0] = Text('')
 
 def p_error(p):
      print("Syntax error in input!", p)
