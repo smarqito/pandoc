@@ -1,0 +1,130 @@
+###############################################
+#                Document                     #
+###############################################
+
+Document -> Elems
+
+###############################################
+#                Elements                     #
+###############################################
+
+Elems   ->  Elems Elem
+Elems   |   Elem
+
+###############################################
+#                Element                      #
+###############################################
+
+Elem    ->  Stmt Newline
+        |   TEXT NewLine
+        |   Var  NewLine
+        |   BACK NewLine
+        |   It
+        |   Nesting
+
+###############################################
+#                  Stmt                       #
+###############################################
+
+Stmt    ->  If
+        |  For
+        |  Subtemplate
+
+###############################################
+#                  IfStmt                     #
+###############################################
+
+If      ->  IF OPAR Cond CPAR Newline Elems Else ENDIF
+
+###############################################
+#                  Else                       #
+###############################################
+
+Else    ->  ELSE Newline Elems                               
+        |   ElseIf Else                                      
+        |   Empty                                            
+
+###############################################
+#                  ElseIF                     #
+###############################################
+
+ElseIf  ->  ELSEIF OPAR Cond CPAR Newline Elems              
+
+###############################################
+#                  ForStmt                    #
+###############################################
+
+For     -> FOR OPAR Cond CPAR Newline Elems Sep ENDFOR        
+
+Sep     -> SEP TEXT
+        | Empty
+
+###############################################
+#               Subtemplate                   #
+###############################################
+
+StmtSubtemplate  ->   Var OPAR CPAR Pipes Newline     
+SubIt            ->   VarAtomic OPAR CPAR Pipes        
+
+###############################################
+#                  IT                         #
+###############################################
+
+It      -> IT ItOpt Newline
+
+ItOpt   ->  COLON SubIt                                
+        |   DOT Var COLON SubIt                        
+        |   DOT Var                                    
+        |   DOT Var OSQBRAC NUM COMMA NUM CSQBRAC      
+        |   OSQBRAC NUM COMMA NUM CSQBRAC              
+        |   Empty                                      
+
+###############################################
+#                  Nesting                    #
+###############################################
+
+Nesting ->  Var TEXT '^' NestElems '^' Newline
+
+NestElems -> NestElems
+          |  NestElem
+
+NestElem  -> Var
+          |  TEXT
+###############################################
+#                   Conds                     # 
+###############################################
+
+Cond    ->  Var
+        |   It
+
+###############################################
+#                  Vars                       #
+###############################################
+
+Var -> VarAtomic Pipes
+
+VarAtomic ->  VarAtomic DOT ID                          
+          |  ID                                         
+
+###############################################
+#                  Pipes                      # 
+###############################################
+
+Pipes   -> Pipes SLASH ID                                
+        | Pipes SLASH ID NUM QUO TEXT QUO                
+        | Pipes SLASH ID NUM QUO TEXT QUO QUO TEXT QUO   
+        | Empty                                          
+          
+###############################################
+#                   Num                       # 
+###############################################
+
+Num     -> NUM
+        | Empty
+
+###############################################
+#                  Newline                    # 
+###############################################
+
+Newline   -> NL
+          | Empty

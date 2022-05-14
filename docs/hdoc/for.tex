@@ -1,4 +1,56 @@
 \documentclass[../relatorio.tex]{subfiles}
 \begin{document}
+    Um ciclo \textit{for} é iniciado pela palavra reservada \textit{for}
+    seguido de uma variável entre parênteses(dentro de '\$'), terminando 
+    com um \textit{endfor}(dentro de '\$').
+    Caso a variável a iterar seja:
+    \begin{itemize}
+        \item \textbf{Lista: }Os elementos são percorridos ordenadamente,
+        sendo a variável definida para cada elemento.
+        \item \textbf{Dicionário: }As chaves são percorridas ordenadamente,
+        sendo a variável definida para o valor correspondente\dots
+        \item \textbf{Texto: }O ciclo só irá realizar uma única iteração.
+    \end{itemize}
+
+    \begin{minted}{bash}
+        $for(example)$
+            $example.ex1$, $example.ex2$
+        $endfor$
+
+        $for(list)$$list$$endfor$
+    \end{minted}
+
+    Caso se pretenda utilizar um separador entre valores consecutivos numa
+    iteração do ciclo \textit{for}, é possível utilizar o sep(dentro de '\$'),
+    indicando o separador a utilizar. Por exemplo:
+    Caso queiramos iterar a lista:
+
+    \mintinline{Python}{autores = ["José", "Marco", "Miguel"]}
+
+    no seguinte template:
+
+    \mintinline{Bash}{$for(autores)$autor = $autores$$sep$, $endfor$}
+
+    Será produzido:
+
+    \mintinline{Bash}{autor = José, autor = Marco, autor = Miguel}
+
+    \subsubsection{Estratégia utilizada}
+
+    A classe \textit{for} é inicilizada com a variável a iterar, a lista
+    de elemento que compõe o corpo do \textit{for} e o separador no caso de
+    este ser utilizado.
+
+    Uma vez que a forma de iterar o ciclo, depende do tipo da variável, tal como
+    já foi explicado anteriormente, foram criadas 3 funções: \textit{handleStr},
+    \textit{handleList} e \textit{handleDict}\dots
+
+    Em todas as funções é percorrido a lista de elementos, sendo estes imprimidos
+    consoante o valor a ser iterado. No caso das listas é passado o elemento e também
+    a condição, desta forma, caso no corpo apareça a variavel da condição pertende-se 
+    imprimir apenas o valor e não a lista inteira. 
     
+    FALTA FALAR DOS MAPAS
+
+
 \end{document}

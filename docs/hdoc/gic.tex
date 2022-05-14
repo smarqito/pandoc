@@ -3,8 +3,37 @@
 
 Com o intuito de descrever a estrutura hierárquica da linguagem
 definida para os \textit{templates}, construiu-se a \textbf{gramática} 
-a usar na construção do compilador. 
-Usufruindo 
+a usar no compilador. 
+
+Como o programa na íntegra dependia das decisões tomadas durante
+a definção da gramática, foi o primeiro passo no processo de desenvolvimento
+da solução. 
+
+Usufruindo da biblioteca \textit{PLY} para facilmente aplicar as 
+regras sintáticas, a \textbf{gramática independente de contexto} (GIC) usada 
+no âmbito do presente projeto encontra-se em \ref{fig:grammar}.
+
+Mediante os símbolos \textbf{terminais}, \textbf{literais} e as palavras 
+\textbf{reservadas} definidas no contexto do analisador léxico do 
+compilador, em \ref{subsec:lex}, seguem-se as \textbf{produções}:
+
+\subsubsection{\textit{Document}}
+Correspondente à primeira produção criada no contexto gramatical,
+\textit{Document} caracteriza o \textit{template} na sua totalidade,
+com todos os elementos constituintes.
+A produção dada à sua simplicidade permaneceu imutável desde o ínicio
+do desenvolvimento do projeto até ao fim, sendo todas as alterações 
+ao nível atómico das produções.
+
+\subsubsection{\textit{Elements}}
+Os elementos que compõem um documento são caracterizados como uma lista 
+de elemento. 
+Não é do interesse do projeto tratar \textit{templates} vazios, pelo que 
+é obrigatório um documento ter \textbf{pelo menos} um 
+elemento constituinte, seja qual for. 
+
+\subsubsection{Elemento}
+
 
 
 \end{document}
