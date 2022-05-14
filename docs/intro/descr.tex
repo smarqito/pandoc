@@ -13,27 +13,30 @@ com todos os dados submetidos pelo utilizador.
 
 Os \textit{templates} a usar
 devem incluir um conjunto de regras, para permitir 
-substituir os dados submetidos pelo utilizador 
+substituir os dados fornecidos pelo utilizador 
 nos parâmetros desejados. 
 Neste sentido, propõe-se o desenvolvimento da \textbf{gramática}
 que cada \textit{template} deve seguir, 
 independemente da linguagem que está a utilizar.
 
-Para a criação do \textbf{compilador}, segue-se a criação do:
+Para o desenvolvimento do \textbf{compilador} segue-se a criação de um:
 \begin{itemize}
     \item Analisador Léxico. 
     \item \textit{Parser}.
 \end{itemize}
-\dots que permite capturar os campos de 
-\textbf{metadados} dos \textit{templates}, sem afetar
-o restante texto, para posteriormente os poder tratar,
-gerando o texto final. 
+\dots que conjuntamente permitem capturar os campos de 
+\textbf{metadados} dos \textit{templates}, para serem 
+posteriormente tratados.
 Para tal deve-se recorrer ao módulo \textit{PLY} do \textit{Python},
 nomeadamente o gerador de analisador léxicos - \textit{Lex} - e
 o gerador de compiladores (com base em gramáticas tradutoras) - \textit{Yacc}.
 
-O \textbf{dicionário} corresponde aos dados 
-a serem inseridos no \textit{template}. 
+No final, após o documento ser corrido na sua totalidade,
+o texto final está completo.
+
+Os dados a serem inseridos no \textit{template}
+encontram-se num ficheiro à parte, um \textbf{dicionário},
+que será submetido aquando da execução do programa. 
 No projeto a realizar utilizar-se-á ficheiros 
 \textit{YAML}, usufruindo da organização 
 estrutural da linguagem.

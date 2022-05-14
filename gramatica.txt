@@ -59,7 +59,7 @@ ElseIf  ->  ELSEIF OPAR Cond CPAR Newline Elems              [StmtIf]
 #                  ForStmt                    #
 ###############################################
 
-For     -> FOR OPAR Cond CPAR Newline Elems Sep ENDFOR                                           : StmtFor (Cond, Elems) 
+For     -> FOR OPAR Cond CPAR Newline Elems Sep ENDFOR       : StmtFor (Cond, Elems) 
 
 Sep     -> SEP TEXT
         | Empty
@@ -68,7 +68,7 @@ Sep     -> SEP TEXT
 #               Subtemplate                   #
 ###############################################
 
-StmtSubtemplate  ->   Var OPAR CPAR Pipes Newline                                                       Pipes(Subtemplate(...))
+StmtSubtemplate  ->   Var OPAR CPAR Pipes Newline     Pipes(Subtemplate(...))
 SubIt            ->   VarAtomic OPAR CPAR Pipes        
 
 ###############################################
@@ -77,12 +77,12 @@ SubIt            ->   VarAtomic OPAR CPAR Pipes
 
 It      -> IT ItOpt Newline
 
-ItOpt   ->  COLON SubIt                              Subtemplate()
-        |   DOT Var COLON SubIt                      p[4].setKeywords(p[2].getKeywords())
-        |   DOT Var                                  ItVar(p[2].getKeywords())
-        |   DOT Var OSQBRAC NUM COMMA NUM CSQBRAC    ItRange((p[4], p[6]), p[2].getKeywords()
-        |   OSQBRAC NUM COMMA NUM CSQBRAC            ItRange((p[2], p[4]))
-        |   Empty                                    It()
+ItOpt   ->  COLON SubIt                                Subtemplate()
+        |   DOT Var COLON SubIt                        p[4].setKeywords(p[2].getKeywords())
+        |   DOT Var                                    ItVar(p[2].getKeywords())
+        |   DOT Var OSQBRAC NUM COMMA NUM CSQBRAC      ItRange((p[4], p[6]), p[2].getKeywords()
+        |   OSQBRAC NUM COMMA NUM CSQBRAC              ItRange((p[2], p[4]))
+        |   Empty                                      It()
 
 ###############################################
 #                  Nesting                    #

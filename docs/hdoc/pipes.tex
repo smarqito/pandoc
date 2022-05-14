@@ -42,7 +42,49 @@
         lista.
         \item \textit{last: }Retorna o último elemento de uma
         lista.
-        \item \textit{last: }
+        \item \textit{rest: }Retorna o todos os elementos de uma
+        lista menos o primeiro.
+        \item \textit{allbutlast: }Retorna o todos os elementos de uma
+        lista menos o último.
+        \item \textit{chomp: }Substitui \textit{newlines} seguidos por apenas
+        um. 
+        \item \textit{nowrap: }
+        \item \textit{alpha: }Em valores textuais, converte números inteiros, 
+        entre 1 e 26, para a correspondente letra minúscula. 
+        \item \textit{roman: }Em valores textuais, converte número inteiros para
+        números romanos minuscúlos. 
+        \item \textit{left n "leftboarder" "rigthboarder": }Coloca um valor textual
+        num bloco de tamanho n, alinhado à esquerda, com um limite opcional à esquerda
+        e à direita. Caso só seja passado um limite, por defeito assume-se que se trata
+        do limite à esquerda. 
+        \item \textit{rigth n "leftboarder" "rigthboarder": }Coloca um valor textual
+        num bloco de tamanho n, alinhado ao centro, com um limite opcional à esquerda
+        e à direita. Caso só seja passado um limite, por defeito assume-se que se trata
+        do limite à esquerda. 
+        \item \textit{center n "leftboarder" "rigthboarder": }Coloca um valor textual
+        num bloco de tamanho n, alinhado à direita, com um limite opcional à esquerda
+        e à direita. Caso só seja passado um limite, por defeito assume-se que se trata
+        do limite à direita. 
     \end{itemize}
+
+    \subsubsection{Estratégia utilizada}
+
+    A classe \textit{Pipes} é inicializada com uma lista de objetos da classe 
+    \textit{Pipe}. Tem ainda uma função, \textit{handlePipes}, que aplica iterativamente
+    cada \textit{pipe} ao valor ou \textit{partial} recebido, retornando o valor transformado.
+
+    Na classe \textit{Pipe} foi criado um dicionário, em que a chave é o nome do \textit{pipe} 
+    e o valor é a função corresponde. 
+    
+    \inputminted[firstline=168, lastline=185]{py}{../modules/Pipe.py}
+    
+    Desta forma, a função responsável por aplicar o \textit{pipe} ao valor apenas precisa
+    de fazer:
+    \begin{minted}{Python}
+        Pipe._pipes[self.id](args)
+    \end{minted}
+    \dots sendo o self.id o nome do \textit{pipe} e args os argumentos passados, podendo variar de
+    $1$ a $4$.
+
 
 \end{document}
