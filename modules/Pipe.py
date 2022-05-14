@@ -62,7 +62,7 @@ def handle_roman(x) -> str:
     return res
 
 def roman(x):
-    return sub(r"\d+", handle_roman(x), x)        
+    return sub(r"\d+", handle_roman, x)        
 
 def left(x, n, l, r):
     res = ""

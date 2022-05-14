@@ -9,6 +9,7 @@
 from re import *
 import sys
 import ply.yacc as yacc
+from modules.Pipes import Pipes
 from pandoc_lex import tokens
 from modules.Entity import Entity
 from modules.Var import Var
@@ -55,7 +56,9 @@ ids = {
         'incl': 'ola',
         'bat': ['eu', 'sei', 'que', 'nao', 'vai', 'funcionar', 'direito'],
         'map': {'key1': {'key22': 'value2'}, 'key2': {'key22': 'value22'}, 'key3': {'key22': 'value222'}},
-        'descr': 'A fine bottle of 18-yr-old\n Oban whiskey.\n claro que esta'
+        'descr': 'A fine bottle of 18-yr-old\n Oban whiskey.\n claro que esta',
+        'alpha' : 'numero para letra : 0 1 2 3 10 26',
+        'roman' : 'numeros romanos : 1 4 14 93 192 1053'
     }
 
 }
@@ -316,6 +319,8 @@ def p_Cond_b(p):
 
 def p_Var(p):
     r"Var : VarAtomic Pipes"
+    pipes = Pipes(p[2])
+    p[1].setValue(pipes.handlePipes(p[1].getValue()))
     p[0] = p[1]
 
 
