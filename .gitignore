@@ -133,3 +133,10 @@ dmypy.json
 parser.out
 parsetab.py
 .vscode/
+
+
+# tex files
+*.aux
+*.fdb_latexmk
+*.fls
+*.synctex.gz

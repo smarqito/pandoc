@@ -222,6 +222,7 @@ def p_SubIt(p):
     np.yaml = p.parser.yaml
     np.finfo = p.parser.finfo
     p[0] = ItSubtemplate(p[1].getKeyword(), np)
+    
 ######################
 #         IT         #
 ######################

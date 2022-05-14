@@ -1,0 +1,109 @@
+\documentclass[runningheads]{llncs}
+
+\usepackage[a4paper]{geometry}
+%
+\usepackage{graphicx}
+\usepackage{minted}
+\setminted[bash]{
+frame=lines,
+breaklines,
+fontsize=\footnotesize,
+framesep=2mm
+}
+\usepackage{subfiles}
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following line
+% to display URLs in blue roman font according to Springer's eBook style:
+% \renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\begin{document}
+%
+\title{Trabalho Prático Nº2 - Compiladores}
+%
+%\titlerunning{Abbreviated paper title}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+\author{Marco Sousa\inst{1,2}\orcidID{62608} \and
+José Malheiro\inst{1,2}\orcidID{93271} \and
+Miguel Fernandes\inst{1,2}\orcidID{94269}}
+%
+\institute{Universidade do Minho\\
+\and Licenciatura em Engenharia Informática, Braga, Portugal}
+%
+%Colocar Numero do Grupo
+\maketitle              % typeset the header of the contribution
+%
+\begin{abstract}
+
+\keywords{Expressões regulares \and Python \and Templates \and Gramática Independente de Contexto \and Compiladores.}
+\end{abstract}
+%
+%
+%
+\section{Introdução}
+\subsection{Contextualização} 
+
+\subfile{intro/context.tex}
+
+\subsection{Breve Descrição do Trabalho Proposto}
+
+\subfile{intro/descr.tex}
+
+\section{HandleDoc}
+- Gramática abstrata
+\subfile{hdoc/gic.tex}
+- máquina de estados
+\subfile{hdoc/state.tex}
+- estratégia utilizada
+-- arvore de parsing concreta
+-- classes
+-- hierarquia
+-- descentralização das responsabilidades
+-- diagrama de classes
+\subfile{hdoc/strategy.tex}
+- Funcionalidades
+-- if 
+-- elseif
+-- else 
+\subfile{hdoc/ifs.tex}
+-- for
+\subfile{hdoc/for.tex}
+-- pipes
+\subfile{hdoc/pipes.tex}
+-- subtemplating
+\subfile{hdoc/subtempl.tex}
+-- range
+\subfile{hdoc/range.tex}
+-- it 
+\subfile{hdoc/it.tex}
+-- sep 
+\subfile{hdoc/sep.tex}
+CONSTRUIR MANUAL!!
+
+
+\section{Anexos}\label{sec:anexos}
+
+%
+% ---- Bibliography ----
+%
+% BibTeX users should specify bibliography style 'splncs04'.
+% References will then be sorted and formatted in the correct style.
+%
+% \bibliographystyle{splncs04}
+% \bibliography{mybibliography}
+% %
+% \begin{thebibliography}{1}
+% \bibitem{ref_article1}
+% Author, F.: Article title. Journal \textbf{2}(5), 99--110 (2016)
+
+% \bibitem{ref_lncs1}
+% Author, F., Author, S.: Title of a proceedings paper. In: Editor,
+% F., Editor, S. (eds.) CONFERENCE 2016, LNCS, vol. 9999, pp. 1--13.
+% Springer, Heidelberg (2016). \doi{10.10007/1234567890}
+
+% \end{thebibliography}
+
+\end{document}
