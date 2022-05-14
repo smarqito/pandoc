@@ -10,7 +10,7 @@ from re import *
 import sys
 import ply.yacc as yacc
 from modules.Entity import Entity
-from modules.ItSubtemplate import ItSubtemplate
+from modules.It.ItSubtemplate import ItSubtemplate
 from modules.Nesting import Nesting
 from modules.StmtFor import StmtFor
 from modules.Var import Var
@@ -20,9 +20,9 @@ from modules.StmtIf import StmtIf
 from modules.Text import Text
 from modules.StmtIfElse import StmtIfElse
 from modules.Subtemplate import Subtemplate
-from modules.ItVar import ItVar
-from modules.It import It
-from modules.ItRange import ItRange
+from modules.It.ItVar import ItVar
+from modules.It.It import It
+from modules.It.ItRange import ItRange
 from modules.Pipe import Pipe
 ##########################################
 
