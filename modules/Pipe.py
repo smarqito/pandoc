@@ -110,22 +110,22 @@ def center(x, n, l, r):
             n_pos = int(m.span()[1])
         tam_disp = n - len(l) - len(r)
 
-        if r:
-            if n_pos > tam_disp:
-                length = len(x[:tam_disp])
-            else:
-                length = len(x[:n_pos-1])
-            numSpaces = (n - len(l) - length - len(r)) / 2
-            res += ceil(numSpaces) * " "
+        if n_pos > tam_disp:
+            length = len(x[:tam_disp])
+        else:
+            length = len(x[:n_pos-1])
+        numSpaces = (n - len(l) - length - len(r)) / 2
+        res += ceil(numSpaces) * " "
 
-            if n_pos > tam_disp:
-                res += x[:tam_disp]
-                x = x[tam_disp:]
-            else:
-                res += x[:n_pos-1]
-                x = x[n_pos:]
+        if n_pos > tam_disp:
+            res += x[:tam_disp]
+            x = x[tam_disp:]
+        else:
+            res += x[:n_pos-1]
+            x = x[n_pos:]
                 
-            res += floor(numSpaces) * " "
+        res += floor(numSpaces) * " "
+        if r:
             res += r
         res += '\n'
 
@@ -133,17 +133,34 @@ def center(x, n, l, r):
 
 def right(x, n, l, r):
     res = ""
-    tam = 0
-    if l:
-        res += l
-        tam += len(l)
-    if r:
-        res += (n-tam-len(r)) * " "
-        res += x
-        res += r
-    else:
-        res += (n-tam) * " "
-        res += x
+    while(len(x) > 0):
+        if l:
+            res += l
+
+        m = search(r'\n', x)
+        n_pos = n + 1 #Caso nao exista \n o n_pos não é necessário logo é smepre maior que tam_disp
+        if m:
+            n_pos = int(m.span()[1])
+        tam_disp = n - len(l) - len(r)
+
+        if n_pos > tam_disp:
+            length = len(x[:tam_disp])
+        else:
+            length = len(x[:n_pos-1])
+
+        res += (n-length- len(l) -len(r)) * " "
+
+        if n_pos > tam_disp:
+            res += x[:tam_disp]
+            x = x[tam_disp:]
+        else:
+            res += x[:n_pos-1]
+            x = x[n_pos:]
+
+        if r:
+            res += r
+
+        res += '\n'
     return res
 
 

@@ -11,6 +11,6 @@ fim 2
 $ex2()$
 \$ ola
 \div
-$obj.descr/center 20 "|" "|"$
+$obj.descr/center 20 "|" "\"$
 $obj.incl$$^$ $obj.incl$ $obj.descr$$obj.descr$$^$
 $obj.descr$
