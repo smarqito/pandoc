@@ -3,8 +3,8 @@ from modules.Var import Var
 
 
 class StmtFor(Stmt):
-    def __init__(self, cond : Var, elems : list = [], sep = None):
-        super().__init__()
+    def __init__(self, cond : Var, elems : list = [], sep = None, end = None):
+        super().__init__(end)
         self.cond = cond
         self.elems = elems
         self.sep = sep
@@ -25,7 +25,7 @@ class StmtFor(Stmt):
                 elem.pp_dict(self.cond.getValue().get(it))
 
             if self.sep and size:
-                print(self.sep, end="")
+                print(self.sep, end=self.end)
                 size -= 1
 
     def pp(self):

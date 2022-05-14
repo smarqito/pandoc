@@ -19,14 +19,14 @@ class ItVar(It):
             if not (var := var.get(key, None)):
                 print(f"erro: {self.getKeyword()} nao existe!!")
                 exit()
-        print(var, end="")
+        print(var, end=self.end)
     
     def pp_list(self, var, cond):
         return super().pp_list(var, cond)
     
     def pp(self):
         if self.default:
-            print(self.default, end="")
+            print(self.default, end=self.end)
         else:
             print(f"erro: {self.getKeyword()} nao existe!!")
             exit()

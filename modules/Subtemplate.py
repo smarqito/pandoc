@@ -2,8 +2,8 @@ from modules.Stmt import Stmt
 from re import *
 
 class Subtemplate(Stmt):
-    def __init__(self, filename, parser, keywords = []):
-        super().__init__()
+    def __init__(self, filename, parser, keywords = [], end = None):
+        super().__init__(end)
         self.parser = parser
         self.filename = filename
         self.keywords = keywords
@@ -32,9 +32,10 @@ class Subtemplate(Stmt):
         finfo = self.parser.finfo
         path = finfo['path'] + finfo['fname'] + finfo['ext']
         f = open(path, "r")
-        txt = f.read()
-        erro = self.parser.parse(txt)
-        erro.pp()
+        subfile = f.read()
+        subtemplate = self.parser.parse(subfile)
+        subtemplate.pp()
+        # print("",end=self.end)
 
 
         

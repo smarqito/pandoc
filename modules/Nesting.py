@@ -11,9 +11,10 @@ class Nesting(Elem):
     def pp(self):
         self.prefix.pp()
         for elem in self.elems[:1]:
-            print(' ' * 2, end="")
+            print(' ' * 2, end=self.end)
             elem.pp()
         for elem in self.elems[1:]:
             elem.pp_nested(self.spaces)
+        print("", end=self.end)
 
     

@@ -1,0 +1,5 @@
+$if(obj.incl)$
+if true
+$else$
+if false
+$endif$

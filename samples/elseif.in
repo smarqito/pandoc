@@ -7,9 +7,3 @@ segundo else if $obj.ola$
 $else$
 estamos num else
 $endif$
-fim 2
-$ex2()$
-\$ ola
-\div
-$obj.incl$$^$ $obj.incl$ $obj.descr$$obj.descr$$^$
-$obj.descr$

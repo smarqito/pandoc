@@ -30,16 +30,16 @@ class Var(Elem):
         if not self.value:
             print(f"erro: {self.id} nao existe!!")
             exit()
-        print(self.value, end="")
+        print(self.value, end=self.end)
 
     def pp_list(self, var, cond):
         if not self.value:
             print(f"erro: {self.id} nao existe!!")
             exit()
         elif self.getKeyword() == cond:
-            print(var, end="")
+            print(var, end=self.end)
         else:
-            print(self.value, end="")
+            print(self.value, end=self.end)
 
     def pp_nested(self, spaces):
         if type(self.value) is str:

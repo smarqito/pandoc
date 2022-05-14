@@ -7,11 +7,11 @@ class It(Elem):
         self.default = default
 
     def pp_dict(self, var):
-        print(var)
+        print(var, end=self.end)
     
     def pp_list(self, var, cond):
-        print(var)
+        print(var, end=self.end)
 
     def pp(self):
         if self.default:
-            print(self.default)
+            print(self.default, end=self.end)

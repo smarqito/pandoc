@@ -1,0 +1,4 @@
+\div
+$if(obj)$
+objeto
+$endif$

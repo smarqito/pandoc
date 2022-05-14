@@ -3,13 +3,20 @@ from abc import abstractmethod
 
 class Elem:
     def __init__(self, end = None) -> None:
-        self.end = end.getValue() if end else None
+        self.setEnd(end)
+        # self.end = end.getValue() if end else "" 
     
     def getEnd(self):
         return self.end
     
     def setEnd(self, end):
-        self.end = end
+        if end:
+            if type(end) is str:
+                self.end = end
+            else:
+                self.end = end.getEnd()
+        else:
+            self.end=""
 
     @abstractmethod
     def pp(self):   pass
