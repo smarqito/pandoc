@@ -93,6 +93,7 @@ def p_Elems_b(p):
 def p_Elem_a(p):
     r"Elem : Stmt Newline"
     #p[0] = p[1]
+    p[1].setEnd(p[2])
     p[0] = p[1]
 
 
@@ -206,12 +207,12 @@ def p_Sep_empty(p):
 
 
 def p_subtemplate_a(p):
-    r"Subtemplate : VarAtomic OPAR CPAR Pipes Newline"
+    r"Subtemplate : VarAtomic OPAR CPAR Pipes"
     np = yacc.yacc()
     np.lineno = p.lineno
     np.yaml = p.parser.yaml
     np.finfo = p.parser.finfo
-    p[0] = Subtemplate(p[1].getKeyword(), np, end=p[5])
+    p[0] = Subtemplate(p[1].getKeyword(), np)
 
 
 def p_SubIt(p):
