@@ -140,3 +140,7 @@ parsetab.py
 *.fdb_latexmk
 *.fls
 *.synctex.gz
+*.pygstyle
+*.pygtex
+*.pyg
+*.pdf

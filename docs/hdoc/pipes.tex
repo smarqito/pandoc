@@ -1,4 +1,43 @@
 \documentclass[../relatorio.tex]{subfiles}
 \begin{document}
+    Tal como no \textit{Pandoc}, foram criados \textit{Pipes}
+    que transformam o valor de uma variável ou de um \textit{Partial}.
+
+    Os \textit{Pipes} são especificados com o uso de uma barra (/), 
+    depois do nome da variável ou do \textit{partial}. Por exemplo:
+
+    \begin{minted}{bash}
+        $author/uppercase$
+
+        $for(authors/reverse)$
+            $it.name$
+        $endfor$
+
+        $subtemplate()/lowercase$
+    \end{minted}
+
+    Os \textit{Pipes} também podem ser encadeados:
+    \begin{minted}{bash}
+        $author/uppercase/reverse$
+    \end{minted}
     
+    Quanto aos \textit{Pipes} criados, foram feitos todos os que o
+    \textit{Pandoc} tem implementados até ao momento da realização
+    do presente relatório, mais concretamente:
+
+    \begin{itemize}
+        \item \textit{pairs: }Converte um dicionário ou uma lista
+        para um dicionário de listas. Caso o valor seja uma lista,
+        a chave corresponde ao índice do array, começando em 1.
+        \item \textit{uppercase: }Converte um texto todo para
+        letras maiúsculas.
+        \item \textit{lowercase: }Converte um texto todo para
+        letras minúsculas.
+        \item \textit{length: }Retorna o tamanho do valor, no 
+        caso de um valor textual o número de caracteres, numa
+        lista ou dicionário o número de elementos.
+        \item \textit{reverse: }Inverte um valor textual ou uma
+        lista
+    \end{itemize}
+
 \end{document}

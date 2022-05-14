@@ -205,7 +205,7 @@ def p_Sep_empty(p):
     p[0] = None
 
 ######################
-#     StmtSubtemplate    #
+#   StmtSubtemplate  #
 ######################
 
 

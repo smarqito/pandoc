@@ -19,4 +19,7 @@ class Entity(Elem):
     def pp(self):
         # global entities
         print(self.getValue(), end=self.end)
+
+    def handle_pipes(self, pipes):
+        pass
     

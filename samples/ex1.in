@@ -8,9 +8,9 @@ $else$
 estamos num else
 $endif$
 fim 2
-$ex2()$
+$ex2()/uppercase$
 \$ ola
 \div
-$obj.descr/center 20 "|" "\"$
+$obj.map/pairs/first$
 $obj.incl$$^$ $obj.incl$ $obj.descr$$obj.descr$$^$
 $obj.descr$

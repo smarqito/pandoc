@@ -2,11 +2,12 @@ from modules.Stmt.Stmt import Stmt
 from re import *
 
 class StmtSubtemplate(Stmt):
-    def __init__(self, filename, parser, keywords = [], end = None):
+    def __init__(self, filename, parser, keywords = [], end = None, pipes = []):
         super().__init__(end)
         self.parser = parser
         self.filename = filename
         self.keywords = keywords
+        self.pipes = pipes
         self.handleFilename()
 
 
@@ -36,6 +37,9 @@ class StmtSubtemplate(Stmt):
         subtemplate = self.parser.parse(subfile)
         subtemplate.pp()
         # print("",end=self.end)
+
+    def handle_pipes(self, pipes):
+        return super().handle_pipes(pipes)
 
 
         

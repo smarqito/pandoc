@@ -1,14 +1,27 @@
+
+###############################################
+#                Document                     #
+###############################################
+
 Document -> Elems
+
+###############################################
+#                Elements                     #
+###############################################
 
 Elems   ->  Elems Elem
 Elems   |   Elem
 
-Elem    ->  Stmt
-        |   Var
+###############################################
+#                Element                      #
+###############################################
+
+Elem    ->  Stmt Newline
+        |   TEXT NewLine
+        |   Var  NewLine
+        |   BACK NewLine
         |   It
-        |   TEXT
         |   Nesting
-        |   Newline
 
 ###############################################
 #                  Stmt                       #
@@ -18,27 +31,45 @@ Stmt    ->  If
         |  For
         |  Subtemplate
 
-Subtemplate -> Var OPAR CPAR Pipes Newline                                                       Pipes(Subtemplate(...))
-
-For     -> FOR OPAR Cond CPAR Newline Elems Sep ENDFOR                                           : StmtFor (Cond, Elems) 
-
-Sep     -> SEP TEXT
-        | Empty
+###############################################
+#                  IfStmt                     #
+###############################################
 
 If      ->  IF OPAR Cond CPAR Newline Elems Else ENDIF
                                       | None                                             : StmtIf
                                       | ('else', elems, )                                : StmtIfElse
                                       | ('elseIf', elseIfs, elseBody : Elems | None)     : StmtIfElseIf
 
-Else                                                ([elseifs], [else])
-Else    ->  ELSE Newline Elems                              ([], elem)
-        |   ElseIf Else                             (p[1] + p[2][0], p[2][1])
-        |   Empty                                   ([], [])
+###############################################
+#                  Else                       #
+###############################################
 
+Else                                                         ([elseifs], [else])
+Else    ->  ELSE Newline Elems                               ([], elem)
+        |   ElseIf Else                                      (p[1] + p[2][0], p[2][1])
+        |   Empty                                            ([], [])
 
-ElseIf  ->  ELSEIF OPAR Cond CPAR Newline Elems             [StmtIf]
+###############################################
+#                  ElseIF                     #
+###############################################
 
-Cond    ->  Var
+ElseIf  ->  ELSEIF OPAR Cond CPAR Newline Elems              [StmtIf]
+
+###############################################
+#                  ForStmt                    #
+###############################################
+
+For     -> FOR OPAR Cond CPAR Newline Elems Sep ENDFOR                                           : StmtFor (Cond, Elems) 
+
+Sep     -> SEP TEXT
+        | Empty
+
+###############################################
+#               Subtemplate                   #
+###############################################
+
+StmtSubtemplate  ->   Var OPAR CPAR Pipes Newline                                                       Pipes(Subtemplate(...))
+SubIt            ->   VarAtomic OPAR CPAR Pipes        
 
 ###############################################
 #                  IT                         #
@@ -46,27 +77,12 @@ Cond    ->  Var
 
 It      -> IT ItOpt Newline
 
-ItOpt   ->  COLON Subtemplate                       Subtemplate()
-        |   DOT Var                                 ItVar(p[2].getKeywords())
-        |   OSQBRAC NUM COMMA NUM CSQBRAC           ItRange(p[2], p[4])
-        |   Empty                                   It()
-
-###############################################
-#                  Vars                       #
-###############################################
-
-VarPipe -> Var Pipes Newline                        Pipes(p[0], p[1])   
-
-VarAtomic ->  VarAtomic DOT ID                      p[1].add(p[2])
-          |  ID                                     Var(p[1])
-        
-###############################################
-#                  Pipes                      # 
-###############################################
-
-Pipes   -> Pipes SLASH ID                                p[0] = p[1] + [p[3]]   
-        | Pipes SLASH ID NUM QUO TEXT QUO QUO TEXT QUO   p[0] = p[]                                          
-        | Empty                                          p[0] = []        
+ItOpt   ->  COLON SubIt                              Subtemplate()
+        |   DOT Var COLON SubIt                      p[4].setKeywords(p[2].getKeywords())
+        |   DOT Var                                  ItVar(p[2].getKeywords())
+        |   DOT Var OSQBRAC NUM COMMA NUM CSQBRAC    ItRange((p[4], p[6]), p[2].getKeywords()
+        |   OSQBRAC NUM COMMA NUM CSQBRAC            ItRange((p[2], p[4]))
+        |   Empty                                    It()
 
 ###############################################
 #                  Nesting                    #
@@ -79,19 +95,41 @@ NestElems -> NestElems
 
 NestElem  -> Var
           |  TEXT
+###############################################
+#                   Conds                     # 
+###############################################
+
+Cond    ->  Var
+        |   It
+
+###############################################
+#                  Vars                       #
+###############################################
+
+Var -> VarAtomic Pipes
+
+VarAtomic ->  VarAtomic DOT ID                           p[1].nextValue(p[2])
+          |  ID                                          Var(p[1])
+
+###############################################
+#                  Pipes                      # 
+###############################################
+
+Pipes   -> Pipes SLASH ID                                p[0] = p[1] + [p[3]]   
+        | Pipes SLASH ID NUM QUO TEXT QUO                p[0] = p[(p[3], (p[4], p[6], None)]        
+        | Pipes SLASH ID NUM QUO TEXT QUO QUO TEXT QUO   p[0] = p[(p[3], (p[4], p[6], p[9])]                                          
+        | Empty                                          p[0] = []        
+          
+###############################################
+#                   Num                       # 
+###############################################
+
+Num     -> NUM
+        | Empty
+
+###############################################
+#                  Newline                    # 
+###############################################
 
 Newline   -> NL
           | Empty
-###############################################
-#                  LIXO                       #
-###############################################
-
-# Novo contexto no lexers
-# Necessidade criar esta producao para as vars nas condicoes 
-# nao rebentar; se nao existe da false
-CondVar ->  CondVar . CID                            p[1].add(p[2])
-        |   CID                                      CondVar(p[1])
-        
-$if (var)$
-... $var$ ...
-$endif$

@@ -18,3 +18,7 @@ class Text(Elem):
     def pp_nested(self, spaces):
         sub(r"(\n)", rf"$1{' ' * spaces}", self._texto)
         return super().pp_nested(spaces)
+
+    def handle_pipes(self, pipes):
+        if pipes:
+            self._text = pipes.handlePipes(self._text)
