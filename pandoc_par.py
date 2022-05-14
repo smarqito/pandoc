@@ -9,20 +9,20 @@
 from re import *
 import sys
 import ply.yacc as yacc
-from modules.Entity import Entity
-from modules.It.ItSubtemplate import ItSubtemplate
-from modules.Nesting import Nesting
-from modules.StmtFor import StmtFor
-from modules.Var import Var
 from pandoc_lex import tokens
+from modules.Entity import Entity
+from modules.Var import Var
 from modules.Document import Document
-from modules.StmtIf import StmtIf
 from modules.Text import Text
-from modules.StmtIfElse import StmtIfElse
-from modules.Subtemplate import Subtemplate
-from modules.It.ItVar import ItVar
+from modules.Stmt.StmtSubtemplate import StmtSubtemplate
 from modules.It.It import It
+from modules.It.ItVar import ItVar
 from modules.It.ItRange import ItRange
+from modules.It.ItSubtemplate import ItSubtemplate
+from modules.Stmt.StmtFor import StmtFor
+from modules.Stmt.StmtIf import StmtIf
+from modules.Stmt.StmtIfElse import StmtIfElse
+from modules.Nesting import Nesting
 from modules.Pipe import Pipe
 ##########################################
 
@@ -138,7 +138,7 @@ def p_Stmt_For(p):
 
 
 def p_Stmt_Subtemplate(p):
-    r"Stmt : Subtemplate"
+    r"Stmt : StmtSubtemplate"
     p[0] = p[1]
 
 ######################
@@ -202,17 +202,17 @@ def p_Sep_empty(p):
     p[0] = None
 
 ######################
-#     Subtemplate    #
+#     StmtSubtemplate    #
 ######################
 
 
 def p_subtemplate_a(p):
-    r"Subtemplate : VarAtomic OPAR CPAR Pipes"
+    r"StmtSubtemplate : VarAtomic OPAR CPAR Pipes"
     np = yacc.yacc()
     np.lineno = p.lineno
     np.yaml = p.parser.yaml
     np.finfo = p.parser.finfo
-    p[0] = Subtemplate(p[1].getKeyword(), np)
+    p[0] = StmtSubtemplate(p[1].getKeyword(), np)
 
 
 def p_SubIt(p):

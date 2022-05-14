@@ -1,7 +1,7 @@
-from modules.Stmt import Stmt
+from modules.Stmt.Stmt import Stmt
 from re import *
 
-class Subtemplate(Stmt):
+class StmtSubtemplate(Stmt):
     def __init__(self, filename, parser, keywords = [], end = None):
         super().__init__(end)
         self.parser = parser

@@ -1,8 +1,8 @@
 from re import *
-from modules.Subtemplate import Subtemplate
+from modules.Stmt.StmtSubtemplate import StmtSubtemplate
 
 
-class ItSubtemplate(Subtemplate):
+class ItSubtemplate(StmtSubtemplate):
     def __init__(self, filename, parser, keywords = [], end = None):
         super().__init__(filename, parser, keywords, end)
 

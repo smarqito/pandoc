@@ -1,4 +1,4 @@
-from modules.StmtIf import StmtIf
+from modules.Stmt.StmtIf import StmtIf
 from modules.Var import Var
 
 

@@ -1,4 +1,4 @@
-from modules.Stmt import Stmt
+from modules.Stmt.Stmt import Stmt
 from modules.Var import Var
 
 
