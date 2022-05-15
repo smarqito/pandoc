@@ -12,9 +12,12 @@ class StmtSubtemplate(Stmt):
 
 
     def handleFilename(self):
-        m = search(r"(?P<fname>[^\\\/;:\"?<>|]+)(?P<ext>\.\w+)?$", self.filename)
-        if m['ext']:
+        
+        if m := search(r"(?P<fname>[^\\\/;:\"?<>|]+)(?P<ext>\.\w+)$", self.filename):
             self.parser.finfo['ext'] = m['ext']
+        else:
+            m = search(r"(?P<fname>[^\\\/;:\"?<>|]+)$", self.filename)
+        
         self.parser.finfo['fname'] = m['fname']
 
     def setObj(self, newObj):

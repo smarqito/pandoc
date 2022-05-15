@@ -1,6 +1,6 @@
 2. estou num subtemplate $obj.incl$
 $for(obj.map)$
-$it:ex3()$
+$it:ex3.in()$
 $endfor$
 $if(obj.map)$
 abrangido pelo pipe 

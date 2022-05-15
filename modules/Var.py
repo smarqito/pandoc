@@ -1,3 +1,4 @@
+from aux import throw_error
 from modules.Elem import Elem
 from re import sub
 
@@ -32,15 +33,13 @@ class Var(Elem):
 
     def pp(self):
         if not self.value:
-            print(f"erro: {self.id} nao existe!!")
-            exit()
+            throw_error(f"erro: {self.id} nao existe!!", True)
         self.value = super().aplly_pipes(self.value)
         print(self.value, end=self.end)
 
     def pp_list(self, var, cond):
         if not self.value:
-            print(f"erro: {self.id} nao existe!!")
-            exit()
+            throw_error(f"erro: {self.id} nao existe!!", True)
         elif self.getKeyword() == cond:
             if self.pipes:
                 var = super().aplly_pipes(var)
@@ -48,7 +47,6 @@ class Var(Elem):
         else:
             self.aplly_pipes()
             print(self.value, end=self.end)
-
     def pp_nested(self, spaces):
         if type(self.value) is str:
             self.value = super().aplly_pipes(self.value)

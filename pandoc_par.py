@@ -41,7 +41,7 @@ def getVar(dict, elem):
 
 def getFinfo(path) -> dict:
     m = search(
-        r"(?P<path>\/?(?:\w+\/)*)(?P<fname>[^\\\/;:\"?<>|]+)(?P<ext>\.\w+)$", path)
+        r"(?P<path>\/?(?:\w+\/)*)(?P<fname>[^\\\/;:\"?<>|]*)(?P<ext>\.\w+)$", path)
     return {
         'path': m['path'],
         'fname': m['fname'],

@@ -1,0 +1,51 @@
+NAME
+    hdoc - templating program built in Python
+           allows the user to process multiple template files using one yaml file
+           developed using context-free grammar
+
+SYNOPSIS
+    hdoc -i <yaml_file> [hdoc options] template_files
+    hdoc -i <yaml_file> -o <output_dir> <template_file>
+    hdoc -f ...
+    hdoc -t ...
+    hdoc --log=<file> ...
+
+DESCRIPTION
+    hdoc can process multiple templating files, using data structures as data source
+    the templates can have:
+        for (var; range) loops
+        if, elseif, else conditions
+        current obj value, either in iterations or the document itself
+        pipes -> process an object using a function
+        subtemplates
+
+    -i  <yaml_file>             data file using yaml syntax
+    -j  <json_file>             data file using json syntax
+    -o  <output_file>           output file - concatenate all templates if more than 1
+    -p  <output_dir></.ext>?    choose an output directory; if it has an extension (ext)
+                                all files will be renamed to file_name<.ext>
+    -r <input_dir>              define an input directory; all arg files will be accessed in dir path
+    -h                          manual menu
+    --help <topic>              specific manual menu
+    --log <err_file>            redirect error file to another log
+
+    If no templates are specified, stdin will be used
+    All opts are available in this mode
+    With this, bash pipes can be used. 
+    stderr can also be set using the bash command 2> or --log <file_name>
+    the executable is made to print a simple error to stdout and full trace to stderr
+
+EXAMPLES
+    hdoc -i samples/info.yaml samples/ex1.in
+        default mode: will generate the expected text to stdout
+
+    hdoc -f samples/ -i samples/info.yaml ex1.in
+        change from path -> 'samples/' will be prefix of all filenames
+    
+    hdoc -t www/.html -i samples/info.yaml ex1.in
+        output dir will be www/ and all files will have the extension .html
+    
+    cat samples/ex3.in | hdoc -i samples/info.yaml -t www/.html --log=error.log
+    cat samples/ex3.in | hdoc -i samples/info.yaml -t www/.html 2>error.log
+        will compile the result of cat command, redirects stderr to error.log and
+        the output happenas as last example

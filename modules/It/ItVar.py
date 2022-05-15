@@ -1,3 +1,5 @@
+import sys
+from aux import throw_error
 from modules.It.It import It
 
 class ItVar(It):
@@ -26,8 +28,7 @@ class ItVar(It):
         else:
             for key in self.keywords:
                 if not (var := var.get(key, None)):
-                    print(f"erro: {self.getKeyword()} nao existe!!")
-                    exit()
+                    throw_error(f"erro: {self.getKeyword()} nao existe!!", True)
         var = super().aplly_pipes(var)
         print(var, end=self.end)
     
@@ -39,5 +40,4 @@ class ItVar(It):
             self.default = super().aplly_pipes(self.default)
             print(self.default, end=self.end)
         else:
-            print(f"erro: {self.getKeyword()} nao existe!!")
-            exit()
+            throw_error(f"erro: {self.getKeyword()} nao existe!!", True)

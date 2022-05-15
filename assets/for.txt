@@ -1,0 +1,10 @@
+SYNTAX
+    $for (obj|array)$
+        TEXT / ELEMS
+        $it$
+    $endfor$
+DESCRIPTION
+    iterate over obj or array if it exists
+
+    The value being iterated is available using the metadata $it$
+    (w/ all its functionalities).

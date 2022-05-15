@@ -1,6 +1,8 @@
 from re import sub, search
 from math import ceil, floor
 
+from aux import throw_error
+
 def pairs(x):
     res = []
     if type(x) is list:
@@ -247,5 +249,4 @@ class Pipe:
             else:
                 return Pipe._pipes[self.id](x)
         else:
-            print(f"Pipe \"{self.id}\" não definido")
-            exit()
+            throw_error(f"Pipe \"{self.id}\" não definido", True)

@@ -144,3 +144,4 @@ parsetab.py
 *.pygtex
 *.pyg
 *.pdf
+www/

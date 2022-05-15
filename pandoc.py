@@ -12,36 +12,88 @@ import yaml
 import getopt
 import os
 from pandoc_par import parser, getFinfo
+from aux import throw_error
 
 
 # f = open("samples/data.yaml", "r")
 
 # loaded = yaml.load(f.read(), Loader=yaml.Loader)
 
-args_filter = 'd:o:hge:'
-long_args = ['help=']
-
+args_filter = 'i:o:d:hgl:t:f:'
+long_args = ['help=', 'log=']
+rootdir = False
+outdir = False
+stdin = False
+stdout = False
 t_info = {
-    'files': []
+    'input': {
+        'path': '',
+        'fname': '',
+        'ext': ''
+    },
+    'output': {
+        'path': '',
+        'fname': '',
+        'ext': ''
+    },
+    'files': [],
+    'finfo': {
+        'path': '',
+        'fname': '',
+        'ext': ''
+    },
 }
 
 
-def throw_error(msg, to_exit=False):
-    print(msg, file=sys.stderr)
-    if to_exit:
-        exit()
+def getoutdir(path) -> dict:
+    m = search(
+        r"(?P<path>\/?(?:\w+\/)*)(?P<fname>[^\\\/;:\"?<>|]*)(?P<ext>\.\w+)$", path)
+    if m:
+        return {
+            'path': m['path'],
+            'fname': m['fname'],
+            'ext': m['ext']
+        }
+    elif m := search(
+        r"(?P<path>\/?(?:\w+\/)*)(?P<fname>[^\\\/;:\"?<>|]*)$", path):
+        return {
+            'path': m['path'],
+            'fname': m['fname'],
+            'ext': ''
+        }
+    else:
+        m = search(
+            r"(?P<path>[^\\;:\"?<>|]+)$", path)
+        return {
+            'path': m['path'],
+            'fname': '',
+            'ext': ''
+        }
+
+
+def build_path(filename):
+    t_info['finfo']['fname'] = filename
 
 
 def handle_input(x):
     global t_info
+    # info = getFinfo(x)
     info = getFinfo(x)
+    t_info['finfo'] = info
 
+    if rootdir:
+        t_info['finfo']['path'] = t_info['input']['path']
+        t_info['finfo']['fname'] = info['fname']
+    else:
+        t_info['input']['path'] = info['path']
+        t_info['input']['ext'] = info['ext']
+
+    t_info['finfo']['ext'] = info['ext']
     try:
-        sys.stdin = open(x, 'r')
+        sys.stdin = open(t_info['input']['path'] +
+                         t_info['finfo']['fname'] + info['ext'], 'r')
     except:
         throw_error(f"template de input {x} nao encontrado!", True)
-
-    t_info['finfo'] = info
 
 
 def set_input(x: list):
@@ -61,12 +113,31 @@ def handle_data(x):
 
 
 def handle_output(x):
-    f = open(x, 'w')
+    info = getoutdir(x)
+    path = ''
+    if outdir:
+        if t_info['output']['ext']:
+            path = t_info['output']['path'] + \
+                info['fname'] + t_info['output']['ext']
+        else:
+            path = t_info['output']['path'] + info['fname'] + info['ext']
+    else:
+        path = t_info['output']['path'] + info['fname'] + info['ext']
+    f = open(path, 'w')
     sys.stdout = f
 
 
 def handle_help(arg):
-    print("help type:", arg)
+    path = 'assets/'+arg+'.txt'
+    if os.path.isfile(path):
+        f = open(path, 'r')
+        print(f.read())
+    else:
+        throw_error(f"There is no help for searched topic: {arg}")
+
+def help_menu():
+    f = open('assets/manual.txt', 'r')
+    print(f.read())
 
 
 def handle_log(file):
@@ -74,21 +145,37 @@ def handle_log(file):
     sys.stderr = f
 
 
+def handle_outdir(path):
+    global outdir
+    t_info['output'] = getoutdir(path)
+    if not os.path.exists(t_info['output']['path']):
+        os.mkdir(t_info['output']['path'])
+    outdir = True
+
+
+def handle_indir(path):
+    global rootdir
+    t_info['input']['path'] = path
+    rootdir = True
+
+
 args_handler = {
     'input': handle_input,
-    '-d': handle_data,
+    '-i': handle_data,
+    '-l': handle_log,
     '-o': handle_output,
+    '-t': handle_outdir,
+    '-f': handle_indir,
     '--help': handle_help,
     '--log': handle_log,
-    '-e': handle_log
 }
 
 
-def handle_args():
-    global t_info
+def handle_opts():
+    global t_info, stdin
     optlist, args = getopt.getopt(sys.argv[1:], args_filter, long_args)
     if ('-h', '') in optlist:
-        print("carregamento do help menu")
+        help_menu()
         exit()
     elif x := [arg for opt, arg in optlist if opt == '--help']:
         for h in x:
@@ -96,7 +183,7 @@ def handle_args():
         exit()
     '''se chegou aqui, nao tem helpers (exit...)'''
     if not args:
-        throw_error(f'Arguments not defined!!', True)
+        stdin = True
     # ordena por chave do tuplo (nao faz redirect do output ate ter info toda!)
     # optlist.sort(key=lambda y : y[0])
     for opt, value in optlist:
@@ -107,19 +194,34 @@ def handle_args():
 # define extensao ficheiros
 # processa os argumentos, redireciona o output para o PATH+FILENAME+EXTENSAO
 
+
+def parse(txt):
+    result = parser.parse(txt)
+    result.pp()
+
+
 def hdoc():
     global t_info
-    if len(sys.argv) < 4:
+    global outdir, stdin
+    handle_opts()
+    if not t_info['yaml']:
         print('mal construido')
         throw_error("hdoc -d <yaml_file> <template_file> ", True)
-    handle_args()
+    parser.yaml = t_info['yaml']
     for filename in t_info['files']:
         handle_input(filename)
+        if outdir:
+            handle_output(filename)
         parser.finfo = t_info['finfo']
-        parser.yaml = t_info['yaml']
         txt = sys.stdin.read()
-        result = parser.parse(txt)
-        result.pp()
+        parse(txt)
+    if stdin:
+        if outdir:
+            handle_output("default")
+        else:
+            t_info['finfo']['path'] = ""
+        parser.finfo = t_info['finfo']
+        parse(sys.stdin.read())
 
 
 hdoc()
