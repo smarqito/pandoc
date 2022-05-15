@@ -88,14 +88,14 @@ def left(x, n, l, r):
             res += x[:n_pos-1]
             tam += len(x[:n_pos-1])
             x = x[n_pos:]
-
         if r:
             if len(x) == 0:
                 res += (n-tam-len(r)) * " "
             elif n_pos < tam_disp:
                 res += (tam_disp - n_pos + 1) * " "
             res += r
-        res += '\n'
+        if tam_disp < n_pos and len(x) > 0:
+            res += '\n'
     return res   
     
 def center(x, n, l, r):
@@ -127,7 +127,8 @@ def center(x, n, l, r):
         res += floor(numSpaces) * " "
         if r:
             res += r
-        res += '\n'
+        if tam_disp < n_pos and len(x) > 0:
+            res += '\n'
 
     return res
 
@@ -159,8 +160,8 @@ def right(x, n, l, r):
 
         if r:
             res += r
-
-        res += '\n'
+        if tam_disp < n_pos:
+            res += '\n'
     return res
 
 

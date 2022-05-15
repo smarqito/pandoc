@@ -17,7 +17,4 @@ class Nesting(Elem):
             elem.pp_nested(self.spaces)
         print("", end=self.end)
 
-    def  handle_pipes(self, pipes):
-        for elem  in self.elems:
-            elem.handle_pipes(pipes)
     

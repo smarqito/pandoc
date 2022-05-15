@@ -21,3 +21,13 @@ obj:
         claro que esta
   alpha: numero para letra 0 1 2 3 10 26
   roman: numeros romanos 1 4 14 93 192 1053
+  autores:
+    ent1:
+      nome : Jose
+      numero : '93271'
+    ent2:
+      nome : Marco
+      numero : '62608'
+    ent3:
+      nome : Miguel
+      numero : '94269' 

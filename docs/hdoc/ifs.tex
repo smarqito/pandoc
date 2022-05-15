@@ -3,7 +3,10 @@
     A condição \textit{if} começa com a palavra reservada \textit{if}
     seguida de uma variável entre parênteses(dentro de '\$'). Tem a
     possiblidade ainda de ser sucedido por um ou mais elseif, também com 
-    uma variavel entre parênteses(dentro de '\$') ou então um else(dentro de '\$'). 
+    uma variavel entre parênteses(dentro de '\$') ou então um else(dentro de '\$').
+    
+    O corpo da condição só é executado no caso da variável passada entre parênteses
+    nao ser vazia, isto é, estar contido no YAML recebido.
 
     \begin{minted}{bash}
         $if(example)$
@@ -21,5 +24,11 @@
 
     \subsubsection{Estratégia utilizada}
 
+    Para implementar as condições \textit{if}, foram criadas 2 classes,
+    uma delas a classe \textit{StmtIf} que apenas é inicializada com 
+    a variável da condição e a lista de elementos que compõe o seu corpo.
+
+    Quanto à outra classe, trata-se de uma subclasse da primeira, tendo 
+    
     
 \end{document}

@@ -19,6 +19,7 @@ class ItVar(It):
             if not (var := var.get(key, None)):
                 print(f"erro: {self.getKeyword()} nao existe!!")
                 exit()
+        var = super().aplly_pipes(var)
         print(var, end=self.end)
     
     def pp_list(self, var, cond):
@@ -26,6 +27,7 @@ class ItVar(It):
     
     def pp(self):
         if self.default:
+            self.default = super().aplly_pipes(self.default)
             print(self.default, end=self.end)
         else:
             print(f"erro: {self.getKeyword()} nao existe!!")

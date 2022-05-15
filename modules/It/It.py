@@ -7,9 +7,11 @@ class It(Elem):
         self.default = default
 
     def pp_dict(self, var):
+        var = super().aplly_pipes(var)
         print(var, end=self.end)
     
     def pp_list(self, var, cond):
+        var = super().aplly_pipes(var)
         print(var, end=self.end)
 
     def pp(self):

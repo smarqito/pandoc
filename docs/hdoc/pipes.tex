@@ -67,6 +67,22 @@
         do limite à direita. 
     \end{itemize}
 
+    Tendo como variáveis:
+    \begin{minted}{Python}
+        autores : {ent1 : {nome : Jose, numero : 93271}, ent2 : {nome : Marco, numero : 62608},
+                   ent3 : {nome : Miguel, numero : 94269}}
+    \end{minted}
+    E o seguinte \textit{template}:
+    \begin{minted}{bash}
+        $for(autores)$
+            $it.nome/uppercase/left 10 "|"$, $it.numero/center 10 "|" "|"$
+        $endfor$
+    \end{minted}
+    O texto gerado é:
+    \begin{minted}{bash}
+        
+    \end{minted}
+
     \subsubsection{Estratégia utilizada}
 
     A classe \textit{Pipes} é inicializada com uma lista de objetos da classe 

@@ -5,6 +5,7 @@ class Elem:
     def __init__(self, end = None) -> None:
         self.setEnd(end)
         # self.end = end.getValue() if end else "" 
+        self.pipes = None
     
     def getEnd(self):
         return self.end
@@ -28,6 +29,11 @@ class Elem:
         self.pp()
     def pp_nested(self, spaces):
         self.pp()
-    def handle_pipes(self, pipes):
-        pass
+    def set_pipes(self, pipes):
+        self.pipes = pipes
+    @abstractmethod
+    def aplly_pipes(self, value):
+        if self.pipes:
+            return self.pipes.handlePipes(value)
+        return value
     

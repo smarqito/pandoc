@@ -7,6 +7,7 @@ class Var(Elem):
         self.value = dict.get(keyword, None)
         self.id = keyword
         self.ids = [keyword]
+        self.pipes = None
     
     def nextValue(self, keyword):
         if self.value:
@@ -19,9 +20,6 @@ class Var(Elem):
 
     def getValue(self) -> ...:
         return self.value
-
-    def handle_pipes(self, pipes):
-        self.value = pipes.handlePipes(self.value)
     
     def getKeyword(self):
         return self.id
@@ -33,6 +31,7 @@ class Var(Elem):
         if not self.value:
             print(f"erro: {self.id} nao existe!!")
             exit()
+        self.value = super().aplly_pipes(self.value)
         print(self.value, end=self.end)
 
     def pp_list(self, var, cond):
@@ -40,11 +39,15 @@ class Var(Elem):
             print(f"erro: {self.id} nao existe!!")
             exit()
         elif self.getKeyword() == cond:
+            if self.pipes:
+                var = super().aplly_pipes(var)
             print(var, end=self.end)
         else:
+            self.aplly_pipes()
             print(self.value, end=self.end)
 
     def pp_nested(self, spaces):
         if type(self.value) is str:
+            self.value = super().aplly_pipes(self.value)
             self.value = sub(r"\n", rf"\n{' ' * spaces}", self.value)
         self.pp()

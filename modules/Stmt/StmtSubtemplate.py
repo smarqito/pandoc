@@ -35,11 +35,6 @@ class StmtSubtemplate(Stmt):
         f = open(path, "r")
         subfile = f.read()
         subtemplate = self.parser.parse(subfile)
+
         subtemplate.pp()
         # print("",end=self.end)
-
-    def handle_pipes(self, pipes):
-        return super().handle_pipes(pipes)
-
-
-        

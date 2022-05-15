@@ -58,7 +58,9 @@ ids = {
         'map': {'key1': {'key22': 'value2'}, 'key2': {'key22': 'value22'}, 'key3': {'key22': 'value222'}},
         'descr': 'A fine bottle of 18-yr-old\nOban whiskey.\nclaro que esta',
         'alpha' : 'numero para letra : 0 1 2 3 10 26',
-        'roman' : 'numeros romanos : 1 4 14 93 192 1053'
+        'roman' : 'numeros romanos : 1 4 14 93 192 1053',
+        'autores' : {'ent1' : {'nome' : 'Jose', 'numero' : '93271'}, 'ent2' : {'nome' : 'Marco', 'numero' : '62608'},
+                   'ent3' : {'nome' : 'Miguel', 'numero' : '94269'}}
     }
 
 }
@@ -215,7 +217,10 @@ def p_subtemplate_a(p):
     np.lineno = p.lineno
     np.yaml = p.parser.yaml
     np.finfo = p.parser.finfo
-    p[0] = StmtSubtemplate(p[1].getKeyword(), np)
+    sub = StmtSubtemplate(p[1].getKeyword(), np)
+    if p[4]:
+        sub.set_pipes(Pipes(p[4]))
+    p[0] = sub
 
 
 def p_SubIt(p):
@@ -224,7 +229,10 @@ def p_SubIt(p):
     np.lineno = p.lineno
     np.yaml = p.parser.yaml
     np.finfo = p.parser.finfo
-    p[0] = ItSubtemplate(p[1].getKeyword(), np)
+    sub = ItSubtemplate(p[1].getKeyword(), np)
+    if p[4]:
+        sub.set_pipes(Pipes(p[4]))
+    p[0] = sub
     
 ######################
 #         IT         #
@@ -232,8 +240,10 @@ def p_SubIt(p):
 
 
 def p_It(p):
-    r"It : IT ItOpt Newline"
-    p[2].setEnd(p[3])
+    r"It : IT ItOpt Pipes Newline"
+    p[2].setEnd(p[4])
+    if p[3]:
+        p[2].set_pipes(Pipes(p[3]))
     p[0] = p[2]
 
 
@@ -251,12 +261,12 @@ def p_ItOpt_subtemplate_var(p):
 
 
 def p_ItOpt_Var(p):
-    r"ItOpt : DOT Var"
+    r"ItOpt : DOT VarAtomic"
     p[0] = ItVar(p[2].getKeywords(), p.parser.yaml)
 
 
 def p_ItOpt_Var_brackets_var(p):
-    r"ItOpt : DOT Var OSQBRAC Num COMMA Num CSQBRAC"
+    r"ItOpt : DOT VarAtomic OSQBRAC Num COMMA Num CSQBRAC"
     p[0] = ItRange(p.parser.yaml, (p[4], p[6]), p[2].getKeywords())
 
 
@@ -319,8 +329,9 @@ def p_Cond_b(p):
 
 def p_Var(p):
     r"Var : VarAtomic Pipes"
-    pipes = Pipes(p[2])
-    p[1].handle_pipes(pipes)
+    if p[2]:
+        pipes = Pipes(p[2])
+        p[1].set_pipes(pipes)
     p[0] = p[1]
 
 
