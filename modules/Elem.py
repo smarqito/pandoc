@@ -1,5 +1,7 @@
 from abc import abstractmethod
 
+from modules.Pipes import Pipes
+
 
 class Elem:
     def __init__(self, end = None) -> None:
@@ -37,3 +39,14 @@ class Elem:
             return self.pipes.handlePipes(value)
         return value
     
+    def add_pipe(self, pipe):
+        if self.pipes:
+            self.pipes.addPipe(pipe)
+        else:
+            self.pipes = Pipes([pipe])
+
+    def add_pipes(self, pipes):
+        if self.pipes:
+            self.pipes.addPipes(pipes)
+        else:
+            self.pipes = pipes

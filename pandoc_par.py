@@ -9,6 +9,7 @@
 from re import *
 import sys
 import ply.yacc as yacc
+from modules.Range import Range
 from pandoc_lex import tokens
 from modules.Entity import Entity
 from modules.Var import Var
@@ -254,7 +255,7 @@ def p_ItOpt_subtemplate(p):
 
 
 def p_ItOpt_subtemplate_var(p):
-    r"ItOpt : DOT Var COLON SubIt"
+    r"ItOpt : DOT VarAtomic COLON SubIt"
     p[4].setObj(None)
     p[4].setKeywords(p[2].getKeywords())
     p[0] = p[4]
@@ -322,6 +323,10 @@ def p_Cond_b(p):
     r"Cond : It"
     p[0] = p[1]
 
+# def p_Cond_c(p):
+#     r"Cond : Range"
+#     p[0] = p[1]
+
 ######################
 #        Var         #
 ######################
@@ -368,6 +373,12 @@ def p_pipes_c(p):
 def p_pipes_d(p):
     "Pipes : "
     p[0] = []
+
+# 
+# def p_Range(p):
+#     r"Range : OSQBRAC NUM COLON NUM CSQBRAC"
+#     p[0] = Range(p[2], p[4])
+#     p[0] = p[2]
 
 ######################
 #        Num         #

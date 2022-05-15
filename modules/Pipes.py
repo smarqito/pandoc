@@ -9,3 +9,11 @@ class Pipes:
         for pipe in self.pipes:
             value = pipe.apply(value)
         return value
+    
+    def addPipe(self, pipe):
+        self.pipes.append(pipe)
+    
+    def addPipes(self, pipes):
+        '''@param pipes Pipes'''
+        for pipe in pipes.pipes:
+            self.addPipe(pipe)

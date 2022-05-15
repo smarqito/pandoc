@@ -35,6 +35,7 @@ class StmtSubtemplate(Stmt):
         f = open(path, "r")
         subfile = f.read()
         subtemplate = self.parser.parse(subfile)
-
+        if self.pipes:
+            subtemplate.add_pipes(self.pipes)
         subtemplate.pp()
         # print("",end=self.end)

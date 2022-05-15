@@ -29,6 +29,9 @@ class StmtFor(Stmt):
                 size -= 1
 
     def pp(self):
+        if self.pipes:
+            for elem in self.elems:
+                elem.add_pipes(self.pipes)
         if self.cond.getType() is dict:
             self.handleDict()
         elif self.cond.getType() is list:

@@ -2,4 +2,7 @@
 $for(obj.map)$
 $it:ex3()$
 $endfor$
+$if(obj.map)$
+abrangido pelo pipe 
+$endif$
 depois do for

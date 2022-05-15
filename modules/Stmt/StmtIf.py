@@ -12,6 +12,9 @@ class StmtIf(Stmt):
         return self.cond.getValue()
 
     def pp(self):
+        if self.pipes:
+            for elem in self.body:
+                elem.add_pipes(self.pipes)
         if self.testCondition():
             for elem in self.body:
                 elem.pp()
