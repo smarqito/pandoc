@@ -225,14 +225,12 @@ def p_subtemplate_a(p):
 
 
 def p_SubIt(p):
-    r"SubIt : VarAtomic OPAR CPAR Pipes"
+    r"SubIt : VarAtomic OPAR CPAR"
     np = yacc.yacc()
     np.lineno = p.lineno
     np.yaml = p.parser.yaml
     np.finfo = p.parser.finfo
     sub = ItSubtemplate(p[1].getKeyword(), np)
-    if p[4]:
-        sub.set_pipes(Pipes(p[4]))
     p[0] = sub
     
 ######################
