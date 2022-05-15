@@ -18,5 +18,5 @@ $obj.descr/left 10 "|" "|"$
 |--------|--------|
 $for(obj.autores)$
 $it.nome/uppercase/left 9 "|"$$it.numero/center 10 "|" "|"$
-|--------|--------|
+|$for([0:8])$-$endfor$|--------|
 $endfor$

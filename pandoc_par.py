@@ -321,9 +321,9 @@ def p_Cond_b(p):
     r"Cond : It"
     p[0] = p[1]
 
-# def p_Cond_c(p):
-#     r"Cond : Range"
-#     p[0] = p[1]
+def p_Cond_c(p):
+    r"Cond : Range"
+    p[0] = p[1]
 
 ######################
 #        Var         #
@@ -373,10 +373,10 @@ def p_pipes_d(p):
     p[0] = []
 
 # 
-# def p_Range(p):
-#     r"Range : OSQBRAC NUM COLON NUM CSQBRAC"
-#     p[0] = Range(p[2], p[4])
-#     p[0] = p[2]
+def p_Range(p):
+    r"Range : OSQBRAC NUM COLON NUM CSQBRAC"
+    p[0] = Range(p[2], p[4])
+    # p[0] = p[2]
 
 ######################
 #        Num         #
