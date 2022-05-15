@@ -374,9 +374,17 @@ def p_pipes_d(p):
 
 # 
 def p_Range(p):
-    r"Range : OSQBRAC NUM COLON NUM CSQBRAC"
-    p[0] = Range(p[2], p[4])
-    # p[0] = p[2]
+    r"Range : OSQBRAC RangeOpt CSQBRAC"
+    # p[0] = Range(p[2], p[4])
+    p[0] = p[2]
+
+def p_RangeOpt_a(p):
+    r"RangeOpt : NUM COLON NUM"
+    p[0] = Range(p[1], p[3])
+
+def p_RangeOpt_b(p):
+    r"RangeOpt : NUM COLON NUM COLON NUM"
+    p[0] = Range(p[1], p[3], p[5])
 
 ######################
 #        Num         #

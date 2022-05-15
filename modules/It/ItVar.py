@@ -15,10 +15,19 @@ class ItVar(It):
             self.default = var
 
     def pp_dict(self, var):
-        for key in self.keywords:
-            if not (var := var.get(key, None)):
-                print(f"erro: {self.getKeyword()} nao existe!!")
-                exit()
+        if "key" == self.keywords[0]:
+            if len(self.keywords) == 1:
+                var = list(var.keys())[0]
+            else:
+                for k in self.keywords[1:]:
+                    var = var[k]
+        elif "value" == self.keywords[0]:
+            var = " ".join(list(var.values()))
+        else:
+            for key in self.keywords:
+                if not (var := var.get(key, None)):
+                    print(f"erro: {self.getKeyword()} nao existe!!")
+                    exit()
         var = super().aplly_pipes(var)
         print(var, end=self.end)
     

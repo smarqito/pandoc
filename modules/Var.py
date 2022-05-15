@@ -20,6 +20,9 @@ class Var(Elem):
 
     def getValue(self) -> ...:
         return self.value
+
+    def setValue(self, newValue):
+        self.value = newValue
     
     def getKeyword(self):
         return self.id

@@ -12,6 +12,9 @@ class Range(Elem):
     def getValue(self):
         return self.value
 
+    def setValue(self, nValue):
+        self.value = nValue
+
     def getType(self):
         return type(self.value)
 

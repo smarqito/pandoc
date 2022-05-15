@@ -6,6 +6,18 @@ class It(Elem):
         super().__init__(end)
         self.default = default
 
+    def getValue(self):
+        return self.default
+    
+    def setValue(self, newValue):
+        self.default = newValue
+
+    def getType(self):
+        return type(self.default)
+
+    def getKeyword(self):
+        return self.getValue()
+
     def pp_dict(self, var):
         var = super().aplly_pipes(var)
         print(var, end=self.end)

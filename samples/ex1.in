@@ -13,10 +13,16 @@ $ex2()/uppercase$
 \div
 $obj.map/pairs/first$
 $obj.incl$$^$ $obj.incl$ $obj.descr$$obj.descr$$^$
-$obj.descr/left 10 "|" "|"$
+$obj.descr/right 10 "|" "|"$
 
-|--------|--------|
+$for(it.obj.autores/uppercase/roman)$
+O nome do aluno é: $it.key.nome$ cujo número de aluno é $it.value$
+$endfor$
+
+|$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|
+|Nome     |Nº       | Turno   |     Nota|
+|$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|
 $for(obj.autores)$
-$it.nome/uppercase/left 9 "|"$$it.numero/center 10 "|" "|"$
-|$for([0:8])$-$endfor$|--------|
+$it.nome/uppercase/left 9 "|"$$it.numero/left 9 "|"$$it.turno/roman/uppercase/center 9 "|" "|"$$it.nota/right 9 "|"$
+|$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|
 $endfor$

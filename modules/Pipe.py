@@ -34,7 +34,8 @@ def alpha(x):
     return sub(r"(2[0-6]|1\d|[1-9])", lambda m : chr(96+int(m[0])), x)
 
 def handle_roman(x) -> str:
-    _to_roman_ind = [1,4,5,9,10,40,50,90,100,400,500,900,1000]
+    _to_roman_ind = [1,4,5,9,10,40,50,90,100,400,500,900,1000,
+                    4000, 5000, 9000, 10000, 50000, 100000, 500000, 1000000]
     _to_roman = {
         1     : 'i'  ,
         4     : 'iv' ,
@@ -48,12 +49,19 @@ def handle_roman(x) -> str:
         400   : 'cd' ,
         500   : 'd'  ,
         900   : 'cm' ,
-        1000  : 'm'  
+        1000  : 'm'  ,
+        4000  : 'mv|',
+        5000  : 'v|',
+        9000  : 'mx|',
+        10000 : 'x|',
+        50000 : 'l|',
+        100000: 'c|',
+        500000: 'd|',
+        1000000 : 'm|'
     }
     
-    pos = 12
+    pos = len(_to_roman_ind) - 1
     num = int(x[0])
-    print("numero",num)
     res = ""
     while num:
         while(num < _to_roman_ind[pos]):
@@ -63,15 +71,28 @@ def handle_roman(x) -> str:
     return res
 
 def roman(x):
-    return sub(r"[1-9]\d*", handle_roman, x)        
+    if type(x) is dict:
+        tmp = {}
+        for elem in x:
+            tmp[elem] = roman(x[elem])
+        return tmp
+    elif type(x) is list:
+        tmp = []
+        for i in range(len(x)):
+            tmp.append(roman(x[i]))
+        return tmp
+    elif type(x) is str or int:
+        return sub(r"[1-9]\d*", handle_roman, x)
+    else:
+        return x
 
 def left(value, size, left, right):
     res = ""
     total = len(value)
     ptr = 0
     round = 0
-    if left:  size -= len(left)
-    if right: size -= len(right)
+    # if left:  size -= len(left)
+    # if right: size -= len(right)
 
     while ptr < total:
         round = 0
@@ -103,13 +124,13 @@ def center(x, n, l, r):
         n_pos = n + 1 #Caso nao exista \n o n_pos não é necessário logo é smepre maior que tam_disp
         if m:
             n_pos = int(m.span()[1])
-        tam_disp = n - len(l) - len(r)
+        tam_disp = n# - len(l) - len(r)
 
         if n_pos > tam_disp:
             length = len(x[:tam_disp])
         else:
             length = len(x[:n_pos-1])
-        numSpaces = (n - len(l) - length - len(r)) / 2
+        numSpaces = (n - length) / 2
         res += ceil(numSpaces) * " "
 
         if n_pos > tam_disp:
@@ -127,44 +148,73 @@ def center(x, n, l, r):
 
     return res
 
-def right(x, n, l, r):
+def right(value, size, left, right):
     res = ""
-    while(len(x) > 0):
-        if l:
-            res += l
+    total = len(value)
+    ptr = 0
+    round = 0
+    # if left:  size -= len(left)
+    # if right: size -= len(right)
+    tmp = ""
+    while ptr < total:
+        round = 0
+        if left: res += left
 
-        m = search(r'\n', x)
-        n_pos = n + 1 #Caso nao exista \n o n_pos não é necessário logo é smepre maior que tam_disp
-        if m:
-            n_pos = int(m.span()[1])
-        tam_disp = n - len(l) - len(r)
+        tmp = ""
+        while round < size and ptr < total:
+            if value[ptr] == '\n':
+                ptr += 1
+                break
+            else:
+                tmp += value[ptr]
+                ptr += 1
+                round += 1
+        
+        if round < size: res += " " * (size - round)
 
-        if n_pos > tam_disp:
-            length = len(x[:tam_disp])
-        else:
-            length = len(x[:n_pos-1])
+        res += tmp
 
-        res += (n-length- len(l) -len(r)) * " "
+        if right: res += right
 
-        if n_pos > tam_disp:
-            res += x[:tam_disp]
-            x = x[tam_disp:]
-        else:
-            res += x[:n_pos-1]
-            x = x[n_pos:]
-
-        if r:
-            res += r
-        if tam_disp < n_pos:
-            res += '\n'
+        if ptr < total: res += '\n'
     return res
 
+def myupper(x):
+    if type(x) is dict:
+        tmp = {}
+        for elem in x:
+            tmp[elem] = myupper(x[elem])
+        return tmp
+    elif type(x) is list:
+        tmp = []
+        for i in range(len(x)):
+            tmp.append(myupper(x[i]))
+        return x
+    elif type(x) is str:
+        return x.upper()
+    else:
+        return x
 
+def mylower(x):
+    if type(x) is dict:
+        tmp = {}
+        for elem in x:
+            tmp[elem] = mylower(x[elem])
+        return tmp
+    elif type(x) is list:
+        tmp = []
+        for i in range(len(x)):
+            tmp.append(mylower(x[i]))
+        return tmp
+    elif type(x) is str:
+        return x.lower()
+    else:
+        return x
 class Pipe:
     _pipes = {
         'pairs'     : lambda x : pairs(x),
-        'uppercase' : lambda x : x.upper(),
-        'lowercase' : lambda x : x.lower(),
+        'uppercase' : lambda x : myupper(x),
+        'lowercase' : lambda x : mylower(x),
         'length'    : lambda x : len(x),
         'reverse'   : lambda x : reverse(x),
         'first'     : lambda x : first(x),
@@ -199,5 +249,3 @@ class Pipe:
         else:
             print(f"Pipe \"{self.id}\" não definido")
             exit()
-
-
