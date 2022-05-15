@@ -17,23 +17,39 @@ Mediante os símbolos \textbf{terminais}, \textbf{literais} e as palavras
 \textbf{reservadas} definidas no contexto do analisador léxico do 
 compilador, em \ref{subsec:lex}, seguem-se as \textbf{produções}:
 
-\subsubsection{\textit{Document}}
+\subsubsection{\textit{Document}}\label{grm:doc}
 Correspondente à primeira produção criada no contexto gramatical,
 \textit{Document} caracteriza o \textit{template} na sua totalidade,
-com todos os elementos constituintes.
+com todos os elementos constituintes(\ref{grm:elemsS}).
 A produção dada à sua simplicidade permaneceu imutável desde o ínicio
 do desenvolvimento do projeto até ao fim, sendo todas as alterações 
 ao nível atómico das produções.
 
-\subsubsection{\textit{Elements}}
+\subsubsection{\textit{Elements}} \label{grm:elems}
 Os elementos que compõem um documento são caracterizados como uma lista 
-de elemento. 
+de elemento(\ref{grm:elem}). 
 Não é do interesse do projeto tratar \textit{templates} vazios, pelo que 
 é obrigatório um documento ter \textbf{pelo menos} um 
 elemento constituinte, seja qual for. 
 
-\subsubsection{Elemento}
+\subsubsection{\textit{Element}}\label{grm:elem}
+Componenente atómico do documento. 
+Um elemento pode ser do tipo:
+\begin{itemize}
+    \item \textit{Statement}    (Stmt)
+    \item Texto                 (TEXT)
+    \item Variável              (Var)
+    \item \textit{Backslash}    (BACK)
+    \item Iterável              (It)
+    \item \textit{Nesting}      (Nesting)
+\end{itemize}
+\dots sendo utilizado a produção \textit{Newline} para o tratamento 
+dos \textit{newlines}.
+Do modo como esta estruturada a organização de um documento, 
+um novo elemento integrante poderá ser facilmente inserido
+na gramática da linguagem.
 
+\subsubsection{\textit{Stmt}}
 
 
 \end{document}
