@@ -9,8 +9,7 @@ Como o programa na íntegra dependia das decisões tomadas durante
 a definção da gramática, foi o primeiro passo no processo de desenvolvimento
 da solução. 
 
-Usufruindo da biblioteca \textit{PLY} para facilmente aplicar as 
-regras sintáticas, a \textbf{gramática independente de contexto} (GIC) usada 
+A \textbf{gramática independente de contexto} (GIC) usada 
 no âmbito do presente projeto encontra-se em \ref{fig:grammar}.
 
 Mediante os símbolos \textbf{terminais}, \textbf{literais} e as palavras 
@@ -20,20 +19,25 @@ compilador, em \ref{subsec:lex}, seguem-se as \textbf{produções}:
 \subsubsection{\textit{Document}}\label{grm:doc}
 Correspondente à primeira produção criada no contexto gramatical,
 \textit{Document} caracteriza o \textit{template} na sua totalidade,
-com todos os elementos constituintes(\ref{grm:elemsS}).
+com todos os elementos constituintes (\ref{grm:elems}).
 A produção dada à sua simplicidade permaneceu imutável desde o ínicio
 do desenvolvimento do projeto até ao fim, sendo todas as alterações 
-ao nível atómico das produções.
+feitas ao nível atómico das produções.
 
 \subsubsection{\textit{Elements}} \label{grm:elems}
 Os elementos que compõem um documento são caracterizados como uma lista 
-de elemento(\ref{grm:elem}). 
+de elemento (\ref{grm:elem}). 
 Não é do interesse do projeto tratar \textit{templates} vazios, pelo que 
 é obrigatório um documento ter \textbf{pelo menos} um 
 elemento constituinte, seja qual for. 
 
+Como o \textit{parser} usado (\textit{Yacc}) tem um reconhecimento \textbf{LR}
+é vantajoso o uso de \textbf{recursividade à esquerda} para a definição da lista.
+Deste modo, será mais eficiente o \textit{shift-reduce} parsing, para além
+de permitir gramáticas com produções a começar no mesmo símbolo.
+
 \subsubsection{\textit{Element}}\label{grm:elem}
-Componenente atómico do documento. 
+Componenentes primitivos do documento. 
 Um elemento pode ser do tipo:
 \begin{itemize}
     \item \textit{Statement}    (Stmt)
@@ -43,13 +47,169 @@ Um elemento pode ser do tipo:
     \item Iterável              (It)
     \item \textit{Nesting}      (Nesting)
 \end{itemize}
-\dots sendo utilizado a produção \textit{Newline} para o tratamento 
-dos \textit{newlines}.
-Do modo como esta estruturada a organização de um documento, 
-um novo elemento integrante poderá ser facilmente inserido
-na gramática da linguagem.
 
-\subsubsection{\textit{Stmt}}
+O elemento \textbf{Texto} representa a parte inalterável do 
+ficheiro. 
+Os restantes são respetivos aos campos de \textbf{metadados}
+do ficheiro.
+Devido à organização de um documento, um novo elemento integrante 
+poderá ser facilmente inserido
+na gramática da linguagem, acrescentando uma nova produção.
 
+\subsubsection{\textit{Stmt}}\label{grm:stmt}
+Um \textit{Statement} refere-se a 3 operações:
+\begin{enumerate}
+    \item[\textit{If}]         {Condicional}
+    \item[\textit{For}]        {Ciclo}
+    \item[\textit{Subtemplate}]{Ficheiros adicionais}
+\end{enumerate}
+\dots para tornar a gramática mais \textit{readable}
+foi decidido tratar cada uma das operações em 
+produções separadas.
+
+\subsubsection{\textit{IfStmt}} \label{grm:ifstmt}
+Um \textit{IfStmt} trata-se de uma transformação
+condicional.
+
+Apresenta-se como:
+\begin{minted}{bash}    
+$if(cond)$
+    body
+$endif$
+\end{minted}
+\dots sendo que o \textit{body} só vai ser executado
+se $cond=True$. 
+Um $body$ pode ser constituído por 
+vários elementos a serem executados (\ref{grm:elems}).
+Pode existir casos opcionais, no seguimento da condição falhar, 
+$cond=False$, na forma de \textit{ElseIfs} ou \textit{Elses}.
+A marca \textit{endif} simboliza o término da operação.
+
+\subsubsection{\textit{Else}} \label{grm:else}
+A produção \textit{Else} refere-se aos casos opcionais 
+dentro de uma condicional, na ocorrência de falhar a 
+condição de entrada.
+
+Segue-se:
+\begin{enumerate}
+    \item \textit{Else :} No caso de tudo falhar, executa o \textit{body} dentro do campo
+                          e acaba a operação.
+    \item \textit{ElseIf :} Apresenta uma nova condição, se entrar, executa o seu \textit{body}
+                            e acaba a operação.
+    \item \textit{Empty :} Não existem casos opcionais.
+\end{enumerate}
+
+A estrutura de um \textit{ElseIf} e \textit{Else}:
+\begin{minted}{bash}    
+    $if(cond)$
+        If_body
+    $elseif(cond_elseif)$
+        elseif_body
+    $else$
+        Else_body
+    $endif$
+\end{minted}
+
+Convencionou-se que um \textit{Else} seria a última operação dentro de um \textit{If}, no 
+caso de tudo falhar. 
+Por este motivo, como podem existir $n$ \textit{ElseIfs}, foi necessária a utilização 
+de \textbf{recursividade à direita}. 
+Deste modo, é garantida uma lista de \textit{ElseIfs}, em que o \textit{Else}
+é a última operação, no caso de existir.
+
+\subsubsection{\textit{ElseIf}} \label{grm:elseif}
+Decidiu-se representar os \textit{ElseIfs} numa produção 
+à parte para auxiliar na leitura.
+A sua estrutura assemelha-se à de um \textit{If}, com 
+a exceção de utilizar uma nova palavra reservada e não 
+terminar obrigatoriamente num \textit{Endif}.
+
+\subsubsection{\textit{ForStmt}} \label{grm:forstmt}
+O elemento \textit{ForStmt} representa uma transformação cíclica.
+Para tal recebe uma condição, \ref{grm:conds}, a iterar 
+e os elementos a executar durante o período de vida, \ref{grm:elems}.
+
+A operação deve obrigatoriamente terminar com \textit{endfor}.
+
+Adicionalmente, pode-se colocar um \textbf{separador} a ser adicionado
+em cada iteração à frente do corpo do ciclo, com a exceção da última.
+Para tal foi criada a produção \textit{Sep}.
+O separador é opcional, por isso tem um campo vazio.
+
+\subsubsection{\textit{StmtSubtemplate}} \label{grm:sub}
+
+\subsubsection{\textit{It}} \label{grm:it}
+
+\subsubsection{\textit{Nesting}} \label{grm:nest}
+Para permitir conteúdo \textit{nested} dentro do documento, i.e
+a preservação da identação das linhas subsequentes, 
+foram criadas as produções para o \textit{nesting}.
+
+Utiliza-se a diretiva "\^" para separar o elemento para o qual todas as 
+linhas se vão indexar, \textit{Var}, e o restante texto, em \textit{NestElems}.
+
+Para tomar partido do reconhecedor utilizado pelo \textit{yacc}, 
+definiu-se à esquerda a recursividade da lista de elementos, \textit{NestElems}.
+Estes podem ser \textbf{texto} ou \textbf{variáveis}.
+
+\dots apesar do \textit{NestElems} representar, na íntegra, a produção 
+\textit{elems} (\ref{grm:elems}), foi necessário a criar para evitar problemas 
+com \textbf{reduções}.
+
+\subsubsection{\textit{Conds}} \label{grm:conds}
+As variáveis utilizadas na entrada das operações de \textit{If} e
+\textit{For} são apresentadas com a produção \textit{cond}.
+%completar
+
+\subsubsection{\textit{Vars}} \label{grm:vars}
+O elemento atómico para representar variáveis no documento.
+
+Uma variável é caracterizada pelo seu nome, um \textit{ID}.
+Contudo, no caso de mapas, os valores devem ser acessados 
+com $.key\_name$.
+Neste sentido, estamos a manipular os valores cujo nome da 
+chave no mapa é \textit{key\_name}.
+
+Adicionalmente, como é possível haver aninhamento de mapas, 
+recorreu-se à recursividade à esquerda.
+Aproveitando o facto do \textit{parser} ser \textit{Bottom-Up},
+as variáveis podem acessar os valores de qualquer mapa 
+existente no dicionário.
+
+Mais tarde, devido à implementação de \textit{pipes}(\ref{grm:pipes}), 
+as produções foram alteradas para permitir uma variável 
+ser modificada; foi criada \textit{VarAtomic} para representar
+apenas as variáveis.
+ 
+\subsubsection{\textit{Pipes}} \label{grm:pipes}
+Foram implementados um conjunto de \textit{pipes}, 
+como apresentados em \ref{subsec:pipes}.
+
+É permitido \textbf{aninhamento de pipes}, sendo a produção
+\textit{pipes} uma lista.
+Por esse motivo existe um caso \textbf{vazio}.
+
+Devido ao reconhecedor utilizado pelo \textit{Yacc} ser \textit{Bottom-Up}
+é preferível utilizar \textbf{recursividade à esquerda}, sendo por isso 
+aplicada em todas as produções.
+%Mencionar reduce/reduce
+\subsubsection{\textit{Num}} \label{grm:num}
+Dado a ser possibilitada a utilização de \textit{range} nos iteráveis (\ref{it}),
+foi criada uma produção para representar os parâmetros recebidos, do tipo numérico.
+
+A necessidade advém de ser oferecida a opção de não inserir um valor, para representar
+os extremos de um objeto a iterar.
+Por esse motivo, \textit{Num} têm uma produção a vazio.
+
+\subsubsection{\textit{Newline}} \label{grm:nl}
+A produção é utilizada para o tratamento dos caracteres \textit{newline}
+em todo o ficheiro.
+Ao nível da análise léxica são contabilizados os caracteres \textit{newline}
+lidos no ficheiro original, sendo guardado o seu número.
+Posteriormente, serão adicionados no texto final, nas 
+posições apropriadas para re-estabelecer o formato do \textit{template}.
+
+É possível não existir nenhum caracter \textit{newline} no ficheiro original,
+no contexto de uma produção da gramática, pelo que existe o caso \textbf{vazio}.
 
 \end{document}

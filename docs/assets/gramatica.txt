@@ -60,14 +60,14 @@ Sep     -> SEP TEXT
         | Empty
 
 ###############################################
-#               Subtemplate                   #
+#              StmtSubtemplate                #
 ###############################################
 
-StmtSubtemplate  ->   Var OPAR CPAR Pipes Newline     
-SubIt            ->   VarAtomic OPAR CPAR Pipes        
+StmtSubtemplate  ->   VarAtomic OPAR CPAR Pipes Newline     
+SubIt            ->   VarAtomic OPAR CPAR         
 
 ###############################################
-#                  IT                         #
+#                    It                       #
 ###############################################
 
 It      -> IT ItOpt Newline
@@ -90,6 +90,7 @@ NestElems -> NestElems
 
 NestElem  -> Var
           |  TEXT
+
 ###############################################
 #                   Conds                     # 
 ###############################################
@@ -98,7 +99,7 @@ Cond    ->  Var
         |   It
 
 ###############################################
-#                  Vars                       #
+#                   Vars                      #
 ###############################################
 
 Var -> VarAtomic Pipes
