@@ -13,10 +13,10 @@ $ex2()/uppercase$
 \div
 $obj.map/pairs/first$
 $obj.incl$$^$ $obj.incl$ $obj.descr$$obj.descr$$^$
-$obj.descr/center 10 "|" "|"$
+$obj.descr/left 10 "|" "|"$
 
 |--------|--------|
 $for(obj.autores)$
-$it.nome/uppercase/left 10 "|"$$it.numero/center 10 "|" "|"$
+$it.nome/uppercase/left 9 "|"$$it.numero/center 10 "|" "|"$
 $endfor$
 |--------|--------|

@@ -65,38 +65,33 @@ def handle_roman(x) -> str:
 def roman(x):
     return sub(r"[1-9]\d*", handle_roman, x)        
 
-def left(x, n, l, r):
+def left(value, size, left, right):
     res = ""
-    tam = 0
-    while (len(x) > 0):
-        tam = 0
-        if l:
-            res += l
-            tam += len(l)
+    total = len(value)
+    ptr = 0
+    round = 0
+    if left:  size -= len(left)
+    if right: size -= len(right)
 
-        m = search(r'\n', x)
-        n_pos = n + 1 #Caso nao exista \n o n_pos não é necessário logo é smepre maior que tam_disp
-        if m:
-            n_pos = int(m.span()[1])
-        tam_disp = n - len(l) - len(r)
+    while ptr < total:
+        round = 0
+        if left: res += left
 
-        if n_pos > tam_disp:
-            res += x[:tam_disp]
-            tam += len(x[:tam_disp])
-            x = x[tam_disp:]
-        else:
-            res += x[:n_pos-1]
-            tam += len(x[:n_pos-1])
-            x = x[n_pos:]
-        if r:
-            if len(x) == 0:
-                res += (n-tam-len(r)) * " "
-            elif n_pos < tam_disp:
-                res += (tam_disp - n_pos + 1) * " "
-            res += r
-        if tam_disp < n_pos and len(x) > 0:
-            res += '\n'
-    return res   
+        while round < size and ptr < total:
+            if value[ptr] == '\n':
+                ptr += 1
+                break
+            else:
+                res += value[ptr]
+                ptr += 1
+                round += 1
+        
+        if round < size: res += " " * (size - round)
+
+        if right: res += right
+
+        if ptr < total: res += '\n'
+    return res
     
 def center(x, n, l, r):
     res = ""
