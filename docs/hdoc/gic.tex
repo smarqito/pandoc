@@ -6,7 +6,7 @@ definida para os \textit{templates}, construiu-se a \textbf{gramática}
 a usar no compilador. 
 
 Como o programa na íntegra dependia das decisões tomadas durante
-a definção da gramática, foi o primeiro passo no processo de desenvolvimento
+a definição da gramática, foi o primeiro passo no processo de desenvolvimento
 da solução. 
 
 A \textbf{gramática independente de contexto} (GIC) usada 
@@ -31,9 +31,9 @@ Não é do interesse do projeto tratar \textit{templates} vazios, pelo que
 é obrigatório um documento ter \textbf{pelo menos} um 
 elemento constituinte, seja qual for. 
 
-Como o \textit{parser} usado (\textit{Yacc}) tem um reconhecimento \textbf{LR}
+Como o \textit{parser} usado (\textit{Yacc}) tem um reconhecimento \textbf{LALR}
 é vantajoso o uso de \textbf{recursividade à esquerda} para a definição da lista.
-Deste modo, será mais eficiente o \textit{shift-reduce} parsing, para além
+Deste modo, será mais eficiente o \textit{shift-reduce parsing}, para além
 de permitir gramáticas com produções a começar no mesmo símbolo.
 
 \subsubsection{\textit{Element}}\label{grm:elem}
@@ -51,10 +51,16 @@ Um elemento pode ser do tipo:
 O elemento \textbf{Texto} representa a parte inalterável do 
 ficheiro. 
 Os restantes são respetivos aos campos de \textbf{metadados}
-do ficheiro.
+do \textit{template}.
 Devido à organização de um documento, um novo elemento integrante 
 poderá ser facilmente inserido
 na gramática da linguagem, acrescentando uma nova produção.
+
+Com a exceção do \textit{TEXT} e \textit{BACK},
+tratam-se todos de símbolos não terminais, sendo facilitada
+o \textbf{decisão} perante a produção a escolher; se no começo 
+de uma estiver a identificar corretamente os parâmetros, 
+as restantes produções já não são válidas.
 
 \subsubsection{\textit{Stmt}}\label{grm:stmt}
 Um \textit{Statement} refere-se a 3 operações:
@@ -63,9 +69,9 @@ Um \textit{Statement} refere-se a 3 operações:
     \item[\textit{For}]        {Ciclo}
     \item[\textit{Subtemplate}]{Ficheiros adicionais}
 \end{enumerate}
-\dots para tornar a gramática mais \textit{readable}
-foi decidido tratar cada uma das operações em 
-produções separadas.
+\dots foi realizada uma fatorização à esquerda para cada 
+\textit{statement} possível, passando a ter apenas 
+\textbf{3 símbolos não terminais}.
 
 \subsubsection{\textit{IfStmt}} \label{grm:ifstmt}
 Um \textit{IfStmt} trata-se de uma transformação
@@ -78,10 +84,12 @@ $if(cond)$
 $endif$
 \end{minted}
 \dots sendo que o \textit{body} só vai ser executado
-se $cond=True$. 
+se $cond=True$; em que a variável \textit{cond} é do 
+tipo \ref{grm:conds}.
 Um $body$ pode ser constituído por 
 vários elementos a serem executados (\ref{grm:elems}).
-Pode existir casos opcionais, no seguimento da condição falhar, 
+É permitido existir casos opcionais, 
+no seguimento da condição falhar, 
 $cond=False$, na forma de \textit{ElseIfs} ou \textit{Elses}.
 A marca \textit{endif} simboliza o término da operação.
 
@@ -117,9 +125,13 @@ de \textbf{recursividade à direita}.
 Deste modo, é garantida uma lista de \textit{ElseIfs}, em que o \textit{Else}
 é a última operação, no caso de existir.
 
+Apesar de não ser tão eficiente, não existem problemas relacionados com a 
+utilização de recursividade à direita num \textit{parser LALR}.
+
 \subsubsection{\textit{ElseIf}} \label{grm:elseif}
 Decidiu-se representar os \textit{ElseIfs} numa produção 
-à parte para auxiliar na leitura.
+à parte, sendo um não terminal no contexto da produção 
+\textit{Else}(\ref{grm:else}).
 A sua estrutura assemelha-se à de um \textit{If}, com 
 a exceção de utilizar uma nova palavra reservada e não 
 terminar obrigatoriamente num \textit{Endif}.
@@ -131,21 +143,73 @@ e os elementos a executar durante o período de vida, \ref{grm:elems}.
 
 A operação deve obrigatoriamente terminar com \textit{endfor}.
 
+Deste modo, apresenta-se como:
+\begin{minted}{bash}
+    $for(cond)$
+        for_body $SEP$ separador
+    $endfor$
+\end{minted}
+
 Adicionalmente, pode-se colocar um \textbf{separador} a ser adicionado
 em cada iteração à frente do corpo do ciclo, com a exceção da última.
 Para tal foi criada a produção \textit{Sep}.
 O separador é opcional, por isso tem um campo vazio.
 
 \subsubsection{\textit{StmtSubtemplate}} \label{grm:sub}
+Para permitir utilizar outros \textit{templates} e substituir
+o seu texto no atual, adicionou-se a produção \textit{StmtSubtemplate}.
+
+Utilizou-se os parênteses $()$ como sinal para a utilização de um 
+\textit{subtemplate}.
+Segue-se:
+\begin{minted}{bash}
+    $subtemplate()$
+    $subtemplate()\pipe$
+\end{minted}
+
+Adicionalmente, estes podem sofrer alterações através de \textit{pipes} (\ref{grm:pipes}),
+utilizando o não terminal, no final da produção.
+\dots \textit{pipes} devem afetar todo o ficheiro, pelo que este deve ser 
+percorrido pelo \textit{parser}, como o \textit{template} principal.
+
+Uma distinção dos \textit{subtemplates}
+teve de ser feita para permitir o uso a partir
+de um iterável, \ref{grm:it},
+nomeadamente no interior de ciclos \textit{for}, não sendo permitidos \textit{pipes}.
+Assim, foi criada a produção \textit{SubIt}.
 
 \subsubsection{\textit{It}} \label{grm:it}
+Para permitir dentro das operações de \textbf{metadados} acessar à iteração
+de um objeto, utiliza-se a diretiva \textit{it},
+representada na produção \textit{It}.
+
+Seria no sentido:
+\begin{minted}{bash}
+    $it$
+    $it:subtemplate()$
+    $it.var:subtemplate()$
+    $it.var$
+    $it.var[begin_range, end_range]$
+    $it.[begin_range, end_range]$
+\end{minted}
+
+Neste caso, o \textit{it} pode iterar os objetos que 
+movimentam-se dentro dos metadados.
+São utilizados com grande efeito dentro dos ciclos \textit{for}, 
+para permitir obter o próximo valor dentro de um 
+iterável, em cada nova iteração do \textit{loop}.
+
+É notável a fatorização à esquerda efetuada entre todas as possíveis 
+opções dentro do \textit{it}.
+Como dito anteriormente, o \textit{parser} beneficia deste 
+comportamente, na decisão do caminho da árvore sintática.
 
 \subsubsection{\textit{Nesting}} \label{grm:nest}
 Para permitir conteúdo \textit{nested} dentro do documento, i.e
 a preservação da identação das linhas subsequentes, 
 foram criadas as produções para o \textit{nesting}.
 
-Utiliza-se a diretiva "\^" para separar o elemento para o qual todas as 
+Utiliza-se a diretiva - \^ - para separar o elemento para o qual todas as 
 linhas se vão indexar, \textit{Var}, e o restante texto, em \textit{NestElems}.
 
 Para tomar partido do reconhecedor utilizado pelo \textit{yacc}, 
@@ -154,12 +218,15 @@ Estes podem ser \textbf{texto} ou \textbf{variáveis}.
 
 \dots apesar do \textit{NestElems} representar, na íntegra, a produção 
 \textit{elems} (\ref{grm:elems}), foi necessário a criar para evitar problemas 
-com \textbf{reduções}.
+com \textbf{reduções}, sendo provocada uma circularidade não controlável.
 
 \subsubsection{\textit{Conds}} \label{grm:conds}
 As variáveis utilizadas na entrada das operações de \textit{If} e
 \textit{For} são apresentadas com a produção \textit{cond}.
-%completar
+
+No contexto das operações \textit{for} é dada a opção 
+de inserir um \textit{range} de valores; para permitir
+mais flexibilidade ao utilizador.
 
 \subsubsection{\textit{Vars}} \label{grm:vars}
 O elemento atómico para representar variáveis no documento.
@@ -192,9 +259,21 @@ Por esse motivo existe um caso \textbf{vazio}.
 Devido ao reconhecedor utilizado pelo \textit{Yacc} ser \textit{Bottom-Up}
 é preferível utilizar \textbf{recursividade à esquerda}, sendo por isso 
 aplicada em todas as produções.
-%Mencionar reduce/reduce
+
+Neste caso, podem ser apresentados como:
+\begin{minted}{bash}
+    \uppercase
+    \uppercase\center 20 "|" "|"
+\end{minted}
+\dots adicionalmente apresenta-se \textit{pipes} com argumentos, sendo 
+dinâmicos no seu \textit{output}.
+
+A adição dos \textit{pipes} nas operações superiores provocou 
+alguns problemas do âmbito \textit{reduce-reduce} e \textit{shift-reduce},
+sendo rapidamente tratados; nomeadamente na produção \textit{StmtSubtemplate} (\ref{grm:sub}).
+
 \subsubsection{\textit{Num}} \label{grm:num}
-Dado a ser possibilitada a utilização de \textit{range} nos iteráveis (\ref{it}),
+Dado a ser possibilitada a utilização de \textit{range} nos iteráveis (\ref{grm:it}),
 foi criada uma produção para representar os parâmetros recebidos, do tipo numérico.
 
 A necessidade advém de ser oferecida a opção de não inserir um valor, para representar

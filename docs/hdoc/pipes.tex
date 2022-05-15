@@ -69,18 +69,31 @@
 
     Tendo como variáveis:
     \begin{minted}{Python}
-        autores : {ent1 : {nome : Jose, numero : 93271}, ent2 : {nome : Marco, numero : 62608},
-                   ent3 : {nome : Miguel, numero : 94269}}
+        autores : {ent1 : {nome : Jose, numero : 93271, turno: PL2, nota: 20}, 
+                   ent2 : {nome : Marco, numero : 62608, turno: PL3, nota: 20},
+                   ent3 : {nome : Miguel, numero : 94269, turno: PL5, nota: 20}}
     \end{minted}
     E o seguinte \textit{template}:
     \begin{minted}{bash}
-        $for(autores)$
-            $it.nome/uppercase/left 10 "|"$, $it.numero/center 10 "|" "|"$
+        |$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|
+        |Nome     |Nº       | Turno   |     Nota|
+        |$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|
+        $for(obj.autores)$
+        $it.nome/uppercase/left 9 "|"$$it.numero/left 9 "|"$$it.turno/roman/uppercase/center 9 "|" "|"$$it.nota/right 9 "|"$
+        |$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|
         $endfor$
     \end{minted}
     O texto gerado é:
     \begin{minted}{bash}
-        
+        |---------|---------|---------|---------|
+        |Nome     |Nº       | Turno   |     Nota|
+        |---------|---------|---------|---------|
+        |JOSE     |93271    |   PLII  |       20|
+        |---------|---------|---------|---------|
+        |MARCO    |62608    |  PLIII  |       20|
+        |---------|---------|---------|---------|
+        |MIGUEL   |94269    |   PLV   |       20|
+        |---------|---------|---------|---------|
     \end{minted}
 
     \subsubsection{Estratégia utilizada}
@@ -90,9 +103,9 @@
     cada \textit{pipe} ao valor ou \textit{partial} recebido, retornando o valor transformado.
 
     Na classe \textit{Pipe} foi criado um dicionário, em que a chave é o nome do \textit{pipe} 
-    e o valor é a função corresponde. 
+    e o valor é a função que implementa o respetivo método. 
     
-    \inputminted[firstline=168, lastline=185]{py}{../modules/Pipe.py}
+    \inputminted[firstline=214, lastline=231]{py}{../modules/Pipe.py}
     
     Desta forma, a função responsável por aplicar o \textit{pipe} ao valor apenas precisa
     de fazer:
@@ -100,7 +113,17 @@
         Pipe._pipes[self.id](args)
     \end{minted}
     \dots sendo o self.id o nome do \textit{pipe} e args os argumentos passados, podendo variar de
-    $1$ a $4$.
+    $1$ a $4$. 
 
+    A classe \textit{Elem} tem as funções responsáveis por guardar os pipes associados às variáveis
+    ou aos \textit{partials}, assim na parte da escrita do texto final no caso de estes existirem,
+    estes são alterados para os novos valores. Consequentemente, todas as subclasses de \textit{Elem} tem
+    acesso a estas funções.
+
+    A função \textit{set\_pipes} é chamada no \textit{parser} de maneira a guardar os \textit{pipes} lidos. 
+    Posteriormente, na impressão do texto estes pipes são aplicados com a função \textit{apply\_pipes} 
+    que recebe o valor original e
+    retorna o valor transformado.
+    %Falta falar do add_pipe
 
 \end{document}
