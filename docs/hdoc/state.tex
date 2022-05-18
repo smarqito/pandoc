@@ -1,4 +1,73 @@
 \documentclass[../relatorio.tex]{subfiles}
 \begin{document}
-    
+    No âmbito de efetuar o \textit{tokenize} do ficheiro \textit{input},
+    para posteriormente ser tratado ao nível do \textit{parser}, 
+    utilizou-se o módulo \textit{Lex} da biblioteca \textit{PLY}.
+    Deste modo, será estabelecida a rotina de análise léxica 
+    dos \textit{templates} a utilizar, verificando anomalias e
+    proporcionando os parâmetros corretos para a construção da árvore 
+    sintática mais tarde.
+
+    \subsubsection{Símbolos utilizados}
+
+    Seguem-se os seguintes \textit{tokens}:
+    \begin{itemize}
+        \item \textit{ID :} Um conjunto de caracteres, sendo permitido no ínicio o "\_".
+        \item \textit{TEXT :} Qualquer conjunto de caracteres excluindo - "\$" ,"$\backslash$" e "$\backslash$n".
+        \item \textit{OPAR CPAR :} Abertura e fecho de parênteses, respetivamente.
+        \item \textit{BACK :} O caracter "$\backslash$".
+        \item \textit{COLON :} O caracter ":".
+        \item \textit{OSQBRAC CSQBRAC :} Abertura e fecho de parênteses retos.
+        \item \textit{COMMA :} O caracter ",".
+        \item \textit{DOT :} O caracter ".".
+        \item \textit{SLASH :} O caracter "/".
+        \item \textit{NUM :} Qualquer conjunto de números.
+        \item \textit{QUO :} O caracter " (aspas).
+        \item \textit{NL :} Conjunto de \textit{newlines} - "$\backslash$n".
+    \end{itemize}
+
+    Adicionadas aos \textit{tokens}, mas cujo o significado foi abordado
+    no contexto da gramática (\ref{subsec:grammar}), as palavras reservadas:
+        \textbf{if else elseif endif for endfor sep it}
+
+    Por fim, recorreu-se ao uso de um \textbf{literal}, com "\^".
+
+    \subsubsection{Estados Criados}
+    No âmbito da definição da linguagem usada nos \textit{templates},
+    foi necessária a implementação de \textbf{dois estados para contexto} no
+    analisador léxico.
+
+    \inputminted[firstline=13, lastline=16]{py}{../pandoc_lex.py}
+
+    O primeiro, \textbf{metadata}, é utilizado para identificar todos os
+    campos de metadados, eg. \textbf{operações If/For}.
+    O caracter que simboliza a entrada, e a consequente sáida, é o 
+    \textit{dollar sign} ("\$").
+    O estado pode ser acessado dentro do estado \textit{INITIAL}, e
+    na saída do estado \textit{args}.
+
+    O segundo, \textbf{args}, foi adicionado mediante a apresentação 
+    de argumentos nos \textit{pipes} (\ref{subsec:pipes}), para permitir 
+    distinguí-los do texto padrão. 
+    Neste caso, entra-se no estado \textit{args} somente dentro do 
+    estado \textit{metadata}, ao aparecer o símbolo - " (aspas).
+    Ao receber o símbolo " (aspas) volta ao estado \textit{metadata},
+    como referido anteriormente.
+
+    \dots ambos os estados são exclusivos pois é necessário fazer \textit{override}
+    do comportamento \textit{default} do \textit{lexer}.
+    Nestes são apenas válidos um conjunto de caracteres, daí a sua exclusividade e 
+    necessidade de definir todas as regras válidas em cada.
+
+    No seguimento da definição dos estados, surge um diagrama de 
+    \textbf{máquina de estados} para permitir uma melhor compreênsão da
+    dinâmica léxica, dentro dos estados existentes, em \ref{fig:state_machine}.
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{assets/Máquina_estados.jpg}
+        \caption{Diagrama de máquina de estados para o analisador léxico.}
+        \label{fig:state_machine}
+    \end{figure}
+
 \end{document}

@@ -8,7 +8,7 @@
         \item \textbf{Lista: }Os elementos são percorridos ordenadamente,
         sendo a variável definida para cada elemento.
         \item \textbf{Dicionário: }As chaves são percorridas ordenadamente,
-        sendo a variável definida para o valor correspondente\dots
+        sendo a variável definida para o valor correspondente. 
         \item \textbf{Texto: }O ciclo só irá realizar uma única iteração.
     \end{itemize}
 
@@ -35,22 +35,43 @@
 
     \mintinline{Bash}{autor = José, autor = Marco, autor = Miguel}
 
+    Adicionalmente, foi criado um \textit{Range} que pode ser utilizado como a
+    condição do ciclo \textit{for}. Este é defenido entre parênteses retos e 
+    contem três número dividos por virgulas. O primeiro corresponde ao minímo, o segundo
+    ao máximo e o terceiro ao \textit{step}. O primeiro, segundo e terceiro argumento são
+    por defeito 0, infino e 1, respetivamente.
+    Por exemplo:
+    \mintinline{Bash}{$for([0, 3])$Hello World $endfor$}
+    produz
+    \mintinline{Bash}{Hello World Hello World Hello World }
+
     \subsubsection{Estratégia utilizada}
 
-    A classe \textit{for} é inicilizada com a variável a iterar, a lista
-    de elemento que compõe o corpo do \textit{for} e o separador no caso de
+    A classe \textit{StmtFor} é inicializada com a variável a iterar, a lista
+    de elementos que compõe o corpo do \textit{for} e o separador no caso de
     este ser utilizado.
 
     Uma vez que a forma de iterar o ciclo, depende do tipo da variável, tal como
     já foi explicado anteriormente, foram criadas 3 funções: \textit{handleStr},
-    \textit{handleList} e \textit{handleDict}\dots
+    \textit{handleList} e \textit{handleDict}. 
 
-    Em todas as funções é percorrido a lista de elementos, sendo estes imprimidos
-    consoante o valor a ser iterado. No caso das listas é passado o elemento e também
-    a condição, desta forma, caso no corpo apareça a variavel da condição pertende-se 
-    imprimir apenas o valor e não a lista inteira. 
+    Em todas as funções são percorridos todos os elementos da variável, sendo estes imprimidos
+    consoante o valor a ser iterado. 
+
     
-    FALTA FALAR DOS MAPAS
+    No caso das listas(\textit{handleList}) é passado à função que imprime os objetos \textit{Elem} o elemento e também a condição.
+    Assim, caso no corpo apareça a variável da condição pertende-se imprimir
+    apenas o valor e não a lista inteira. No caso de existir um separador, este é
+    impresso em todas as iterações, excepto na última. 
+
+    A função \textit{handleDicts} é análoga à função responsável pelas listas, divergindo
+    apenas no valor iterado, que no caso dos dicionário são apenas os valores e também nos
+    argumentos passados à função que imprime os elementos. No caso dos dicionários, caso se
+    pretenda imprimir o valor a ser iterado é utilizada a palavra reservada \textit{it}, que
+    será abordada em \ref{subsec:sep}. 
+
+    A \textit{handleStr} é mais simples, faz apenas uma iteração passando o valor da variável 
+    à função que imprime os elementos que constituem o seu corpo.
 
 
 \end{document}

@@ -28,7 +28,7 @@ Elem    ->  Stmt Newline
 
 Stmt    ->  If
         |  For
-        |  Subtemplate
+        |  StmtSubtemplate
 
 ###############################################
 #                  IfStmt                     #
@@ -70,12 +70,12 @@ SubIt            ->   VarAtomic OPAR CPAR
 #                    It                       #
 ###############################################
 
-It      -> IT ItOpt Newline
+It      -> IT ItOpt Pipes Newline
 
 ItOpt   ->  COLON SubIt                                
-        |   DOT Var COLON SubIt                        
-        |   DOT Var                                    
-        |   DOT Var OSQBRAC NUM COMMA NUM CSQBRAC      
+        |   DOT VarAtomic COLON SubIt                        
+        |   DOT VarAtomic                                    
+        |   DOT VarAtomic OSQBRAC NUM COMMA NUM CSQBRAC      
         |   OSQBRAC NUM COMMA NUM CSQBRAC              
         |   Empty                                      
 
@@ -97,6 +97,7 @@ NestElem  -> Var
 
 Cond    ->  Var
         |   It
+        |   Range
 
 ###############################################
 #                   Vars                      #
@@ -116,6 +117,15 @@ Pipes   -> Pipes SLASH ID
         | Pipes SLASH ID NUM QUO TEXT QUO QUO TEXT QUO   
         | Empty                                          
           
+###############################################
+#                  Range                      # 
+###############################################
+
+Range   -> OSQBRAC RangeOpt CSQBRAC
+
+RangeOpt -> NUM COLON NUM
+         |  NUM COLON NUM COLON NUM
+
 ###############################################
 #                   Num                       # 
 ###############################################

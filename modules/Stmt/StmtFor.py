@@ -15,9 +15,14 @@ class StmtFor(Stmt):
             elem.pp_dict(self.cond.getValue())
 
     def handleList(self):
+        size = len(self.cond.getValue()) - 1
         for it in self.cond.getValue():
             for elem in self.elems:
                 elem.pp_list(it, self.cond.getKeyword())
+
+            if self.sep and size:
+                print(self.sep, end=self.end)
+                size -= 1
 
     def handleDict(self):
         size = len(self.cond.getValue()) - 1
