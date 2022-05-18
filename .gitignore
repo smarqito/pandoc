@@ -145,3 +145,5 @@ parsetab.py
 *.pyg
 *.pdf
 www/
+relatorio.out
+relatorio.pdf
