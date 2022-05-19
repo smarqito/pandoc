@@ -71,7 +71,7 @@ def t_error(t):
     return t
 
 def t_metadata_ID(t):
-    r'(?i)[a-z_]\w*'
+    r'(?i)[a-z_-][\w-]*'
     if t.value.upper() in reservadas:
         t.type = t.value.upper()
     return t

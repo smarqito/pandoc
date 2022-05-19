@@ -4,7 +4,7 @@ from modules.Var import Var
 
 
 class StmtFor(Stmt):
-    def __init__(self, cond : Var | ItVar, elems : list = [], sep = None, end = None):
+    def __init__(self, cond , elems : list = [], sep = None, end = None):
         super().__init__(end)
         self.cond = cond
         self.elems = elems
@@ -35,13 +35,14 @@ class StmtFor(Stmt):
                 size -= 1
 
     def pp(self):
-        if self.pipes:
-            for elem in self.elems:
-                elem.add_pipes(self.pipes)
-        self.cond.setValue(self.cond.aplly_pipes(self.cond.getValue()))
-        if self.cond.getType() is dict:
-            self.handleDict()
-        elif self.cond.getType() is list:
-            self.handleList()
-        else:
-            self.handleStr()
+        if self.cond.getValue():
+            if self.pipes:
+                for elem in self.elems:
+                    elem.add_pipes(self.pipes)
+            self.cond.setValue(self.cond.aplly_pipes(self.cond.getValue()))
+            if self.cond.getType() is dict:
+                self.handleDict()
+            elif self.cond.getType() is list:
+                self.handleList()
+            else:
+                self.handleStr()
