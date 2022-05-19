@@ -1,4 +1,69 @@
 \documentclass[../relatorio.tex]{subfiles}
 \begin{document}
+    A palavra reservada \textit{it}(dentro de '\$') é utilizada
+    para aceder ao objeto que está ser iterado no momento em que
+    este é utilizado.
+
+    Utilizando como exemplo o dicionário:
     
+    \mintinline{Python}{'map': {'key1': {'key22': 'value2'}, 'key2': {'key22': 'value22'}}}
+
+    \begin{minted}{bash}
+        $for(map)$
+            $it$
+        $endfor$
+    \end{minted}
+
+    O texto obtido é:
+    \begin{minted}{Python}
+        {'key22': 'value2'}
+        {'key22': 'value22'}
+    \end{minted}
+
+    A seguir da palavra reservada \textit{it}, é possível ainda indicar
+    o nome da variável, bem com um \textit{Range}(ver \ref{subsec:range})
+    ou uma \textit{Subtemplate}.
+
+    \begin{minted}{bash}
+        $for(map)$
+            $it.key22$
+        $endfor$
+
+        $for(map)$
+            $it::subtemplate()$
+        $endfor$
+
+        $for(map)$
+            $it.key22[4,]$
+        $endfor$
+    \end{minted}
+
+    \subsubsection{Estratégia Utilizada}
+
+    A classe \textit{It} inicializa o seu atributo \textit{default}
+    com a variavél que irá ser iterada. Para tratar dos casos em que
+    aparece o nome de variável, um \textit{Range} ou uma \textit{Subtemplate}
+    a seguir à palavra reservada \textit{it} foram criadas 3 subclasses: \textbf{ItVar}, 
+    \textbf{ItRange} e \textbf{ItSubtemplate}
+
+
+    \textbf{ItVar} recebe uma lista de \textit{Keywords}
+    que correspondem ao nome das variáveis. Esta lista é iterada,
+    atualizando o valor de \textit{default}. 
+    
+    \inputminted[firstline=11, lastline=17]{py}{../modules/It/ItVar.py}
+    
+    Caso o tipo do valor de \textit{default} seja um dicionário é possível obter
+    a chave ou valor deste, caso as \textit{KeyWords} recebidas sejam respectivamente,
+    \textit{key} e \textit{value}
+
+    Como o \textit{Range} pode ser antecedido por nomes de variáveis, a classe
+    \textit{ItRange} é uma subclasse de \textit{ItVar}. Esta recebe um \textit{Range},
+    que indica o valor mínimo e máximo, atualizando o valor de default da seguinte forma:
+    
+    \inputminted[firstline=9, lastline=20]{py}{../modules/It/ItRange.py}
+
+    
+    
+     
 \end{document}
