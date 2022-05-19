@@ -1,4 +1,50 @@
 \documentclass[../relatorio.tex]{subfiles}
 \begin{document}
+    É utilizado o símbolo \textbf{literal} '\^' para 
+    colocar conteúdo \textit{nested}, i.e. obrigar que
+    as subsequentes linhas estejam alinhadas com a variável 
+    escolhida; preserva a identação da primeira variável.
+
+    Com base no dicionário:
+
+    \begin{minted}{Python}
+        'map':{'var1' : "Lorem ipsum" , 
+               'var2' : "sit amet, consectetur adipiscing elit, sed do eiusmod
+                         tempor incididunt ut labore et dolore magna aliqua. 
+                         Id neque aliquam vestibulum morbi blandit cursus."}
+    \end{minted}
+
+    \dots e o exemplo num \textit{template}:
+
+    \begin{minted}{bash}
+        $var1$$^$ $var2$ $^$
+    \end{minted}
+                           
+    O texto obtido segue-se:
+    \begin{minted}{bash}
+        Lorem ipsum  sit amet, consectetur adipiscing elit, sed do eiusmod
+                     tempor incididunt ut labore et dolore magna aliqua. 
+                     Id neque aliquam vestibulum morbi blandit cursus.
+    \end{minted}
+
+    \dots pelo que o texto da variável \textit{var2} vai sempre começar 
+    à frente de \textit{var1}; encontra-se \textit{indented} pelo prefixo 
+    definido pela \textit{var1}.
+    
+    \subsubsection{Estratégia Utilizada}
+    
+    A classe \textit{Nesting} contém no seu atributo \textit{preffix} a 
+    variável cujos espaços vão ser utilizados para indexar as subsequentes
+    linhas na sua correta posição.
+    Em \textit{elems} encontra-se todo o texto, incluindo \textit{variáveis},
+    que seguem o prefixo.
+    Por fim, guarda-se no atributo \textit{spaces} o número de espaços a adicionar
+    no começo de cada nova linha; corresponde ao tamanho do prefixo passado,
+    sendo adicionados dois espaços para melhoria estética.
+    
+    Não obstante a inicialização da classe, só é feito um \textit{override}
+    do método de \textit{pretty printing} (\textit{pp}), da classe 
+    \textit{super} - \textit{Elem}, para apresentar corretamente 
+    o conteúdo \textit{nested}.
     
 \end{document}

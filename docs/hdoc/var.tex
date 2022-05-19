@@ -1,4 +1,78 @@
 \documentclass[../relatorio.tex]{subfiles}
 \begin{document}
+    O elemento primitivo da camada de \textbf{metadados},
+    a variável, delimitada por '\$', é utilizada para 
+    acessar um qualquer objeto dentro do dicionário.
+
+    Deste modo, considerando o dicionário:
     
+    \mintinline{Python}{'map': {'key1': {'key11': 'value1'}, 'key2': {'key22': 'value22'}}}
+
+    E o respetivo comando dentro do \textit{template}:
+    \begin{minted}{bash}
+        Exemplo 1:
+        $map$
+
+        Exemplo 2:
+        $map.key1$
+
+        Exemplo 3:
+        $map.key1.key11$
+
+        Exemplo 4:
+        $map.key2.key22$
+    \end{minted}
+
+    O texto produzido será do tipo: 
+
+    \begin{minted}{Python}
+        Exemplo 1:
+        {'key1': {'key11': 'value1'}, 'key2': {'key22': 'value22'}}
+
+        Exemplo 2:
+        {'key11': 'value1'}
+
+        Exemplo 3:
+        'value1'
+
+        Exemplo 4:
+        'value2'
+    \end{minted}
+
+    \dots sendo possível acessar o valor dentro do dicionário
+    independentemente do seu grau de \textbf{aninhamento}.
+
+    \subsubsection{Estratégia Utilizada}
+    A classe \textit{Var} é sempre inicializada com os atributos \textit{keyword} e
+    \textit{dict}.
+    A \textit{keyword} corresponde ao objeto a procurar dentro do dicionário \textit{dict}.
+    O nome do atributo que guarda a \textit{keyword}, a variável, é \textit{id}.
+    Na fase de inicialização da classe, é colocado em \textit{value} o valor correspondente 
+    à \textit{keyword}, dentro do dicionário; caso não exista é colocado como \textbf{None}.
+
+    Contudo, como referido em cima, deve ser possibilitado o aninhamento de objetos para poder 
+    acessar um valor do dicionário.
+    Neste sentido, dentro do atributo \textit{ids}, uma lista, irá encontrar-se todas 
+    as \textit{keywords} a serem adicionadas à variável, sendo inicializada com a primeira
+    \textit{keyword} passada.
+    \dots dentro do atributo \textit{id} vai ser a \textit{string} da variável, como 
+    apresentada no \textit{template}.
+
+    No seguimento criou-se o método \mintinline{Python}{nextValue(self, keyword)}, que 
+    coloca em \textit{value} o objeto resultante, acessado por \textit{dict}, e 
+    atualiza os atributos \textit{id} e \textit{ids}.
+
+    Criou-se os respetivos \textit{getters} e \textit{setters} para acessar o valor, as 
+    \textit{keywords} da variável e o seu tipo, para preservar a estratégia de um \textbf{paradigma
+    orientado a objetos} adotada.
+
+    Não obstante os métodos específicos à class \textit{Var}, apresenta-se outros 2, de \textit{pretty printing},
+    que a classe faz \textit{override} da \textit{super class} Elem, \textit{pp} e \textit{pp\_list}.
+    
+    Assim, dependendo do tipo da variável, um dos métodos irá ser utilizado, contendo uma 
+    apresentação diferente; pelo que em ambos os casos têm a respetiva verificação de erros.
+
+    Como consequência da adição dos \textit{pipes} (\ref{subsec:pipes}), ainda existe um último 
+    atributo, \textit{pipes}, inicializado a \textit{None}.
+
 \end{document}
