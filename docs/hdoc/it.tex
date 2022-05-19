@@ -43,11 +43,11 @@
     A classe \textit{It} inicializa o seu atributo \textit{default}
     com a variavél que irá ser iterada. Para tratar dos casos em que
     aparece o nome de variável, um \textit{Range} ou uma \textit{Subtemplate}
-    a seguir à palavra reservada \textit{it} foram criadas 3 subclasses: \textbf{ItVar}, 
+    a seguir à palavra reservada \textit{it} foram criadas 3 classes: \textbf{ItVar}, 
     \textbf{ItRange} e \textbf{ItSubtemplate}
 
 
-    \textbf{ItVar} recebe uma lista de \textit{Keywords}
+    A \textbf{ItVar} é uma subclasse de classe \textit{It} que recebe uma lista de \textit{Keywords}
     que correspondem ao nome das variáveis. Esta lista é iterada,
     atualizando o valor de \textit{default}. 
     
@@ -62,6 +62,10 @@
     que indica o valor mínimo e máximo, atualizando o valor de default da seguinte forma:
     
     \inputminted[firstline=9, lastline=20]{py}{../modules/It/ItRange.py}
+
+    Quanto à classe \textit{ItSubtemplate}, esta é uma subclasse da classe \textit{StmtSubtemplate}
+    que será abordade em \ref{subsec:subt}. É inicializada com o nome do \textit{subtemplate},
+    o novo \textit{parser} e lista de \textit{KeyWords}.
 
     
     
