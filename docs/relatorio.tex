@@ -11,6 +11,12 @@
     fontsize=\footnotesize,
     framesep=2mm
 }
+\setminted[py]{
+    frame=lines,
+    breaklines,
+    fontsize=\footnotesize,
+    framesep=2mm
+}
 \usepackage{hyperref}
 \usepackage{subfiles}
 \usepackage{lscape}
@@ -56,7 +62,6 @@
 \subfile{hdoc/state.tex}
 \section{\textit{Parser}} \label{subsec:strat}
 \subfile{hdoc/strategy.tex}
-- Funcionalidades
 
 \section{\textit{Var}} \label{subsec:var}
 \subfile{hdoc/var.tex}
@@ -97,7 +102,7 @@ CONSTRUIR MANUAL!!
 \inputminted{bash}{assets/gramatica.txt}
 
 \section{Diagrama de Máquina de Estados}
-\begin{figure}
+\begin{figure}[!ht]
     \centering
     \includegraphics[width=\linewidth]{assets/Máquina_estados.jpg}
 \end{figure}

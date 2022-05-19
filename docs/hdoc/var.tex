@@ -42,12 +42,12 @@
     \dots sendo possível acessar o valor dentro do dicionário
     independentemente do seu grau de \textbf{aninhamento}.
 
-    \subsubsection{Estratégia Utilizada}
+    \subsection{Estratégia Utilizada}
     A classe \textit{Var} é sempre inicializada com os atributos \textit{keyword} e
     \textit{dict}.
     A \textit{keyword} corresponde ao objeto a procurar dentro do dicionário \textit{dict}.
-    O nome do atributo que guarda a \textit{keyword}, a variável, é \textit{id}.
-    Na fase de inicialização da classe, é colocado em \textit{value} o valor correspondente 
+    Dentro da classe, o nome do atributo que guarda a \textit{keyword} é \textit{id}.
+    Na fase de inicialização, é colocado em \textit{value} o valor correspondente 
     à \textit{keyword}, dentro do dicionário; caso não exista é colocado como \textbf{None}.
 
     Contudo, como referido em cima, deve ser possibilitado o aninhamento de objetos para poder 
@@ -55,7 +55,7 @@
     Neste sentido, dentro do atributo \textit{ids}, uma lista, irá encontrar-se todas 
     as \textit{keywords} a serem adicionadas à variável, sendo inicializada com a primeira
     \textit{keyword} passada.
-    \dots dentro do atributo \textit{id} vai ser a \textit{string} da variável, como 
+    \dots dentro do atributo \textit{id} vai construir-se a \textit{string} da variável, como 
     apresentada no \textit{template}.
 
     No seguimento criou-se o método \mintinline{Python}{nextValue(self, keyword)}, que 
