@@ -24,6 +24,10 @@ A produção, dada à sua simplicidade, permaneceu imutável durante todo o per�
 desenvolvimento do projeto, sendo todas as alterações 
 feitas ao nível atómico das produções.
 
+\begin{minted}{bash}
+Document -> Elems
+\end{minted}
+
 \subsubsection{\textit{Elements}} \label{grm:elems}
 Os elementos que compõem um documento são caracterizados como uma lista 
 de \textbf{Element} (\ref{grm:elem}). 
@@ -35,6 +39,11 @@ Como o \textit{parser} usado (\textit{Yacc}) tem um reconhecimento \textbf{LALR}
 é vantajoso o uso de \textbf{recursividade à esquerda} para a definição da lista.
 Deste modo, será mais eficiente o \textit{shift-reduce parsing}, para além
 de permitir gramáticas com produções a começar no mesmo símbolo.
+
+\begin{minted}{bash}
+Elems   ->  Elems Elem
+        |   Elem
+\end{minted}
 
 \subsubsection{\textit{Element}}\label{grm:elem}
 Componenentes primitivos do documento. 
@@ -50,17 +59,18 @@ Um elemento pode ser do tipo:
 
 O elemento \textbf{Texto} representa a parte do 
 ficheiro que não contém variáveis dinâmicas.
-Os restantes são respetivos aos campos de \textbf{metadados}
-do \textit{template}.
+Os restantes são respetivos aos campos de \textbf{metadados} do \textit{template}.
 Devido à organização de um documento, um novo elemento integrante 
-poderá ser facilmente inserido
-na gramática da linguagem, acrescentando uma nova produção.
+poderá ser facilmente inserido na gramática da linguagem, acrescentando uma nova produção.
 
-Com a exceção do \textit{TEXT} e \textit{BACK},
-tratam-se todos de símbolos não terminais, sendo facilitada
-o \textbf{decisão} perante a produção a escolher; se no começo 
-de uma estiver a identificar corretamente os parâmetros, 
-as restantes produções já não são válidas.
+\begin{minted}{bash}
+Elem    ->  Stmt Newline
+        |   TEXT NewLine
+        |   Var  NewLine
+        |   BACK NewLine
+        |   It
+        |   Nesting
+\end{minted}
 
 \subsubsection{\textit{Stmt}}\label{grm:stmt}
 Um \textit{Statement} refere-se a 3 operações:
@@ -73,37 +83,34 @@ Um \textit{Statement} refere-se a 3 operações:
 \textit{statement} possível, passando a ter apenas 
 \textbf{3 símbolos não terminais}.
 
-\subsubsection{\textit{IfStmt}} \label{grm:ifstmt}
-Um \textit{IfStmt} trata-se de uma transformação
-condicional.
-
-Apresenta-se como:
+\subsubsection*{\textit{If Stmt}} \label{grm:ifstmt}
+\begin{minted}{bash}
+    If      ->  IF OPAR Cond CPAR Newline Elems Else ENDIF
+\end{minted}
+Um \textit{If Stmt} trata-se de uma transformação
+condicional, em que o corpo (\textit{body}) apenas será executado
+se $cond\ is\ True$.
 \begin{minted}{bash}    
 $if(cond)$
     body
 $endif$
 \end{minted}
-\dots sendo que o \textit{body} só vai ser executado
-se $cond=True$; em que a variável \textit{cond} é do 
-tipo \ref{grm:conds}.
-Um $body$ pode ser constituído por 
-vários elementos a serem executados (\ref{grm:elems}).
-É permitido existir casos opcionais, 
-no seguimento da condição falhar, 
-$cond=False$, na forma de \textit{ElseIfs} ou \textit{Elses}.
+O corpo pode ser constituído por vários elementos a serem executados.
+É permitido existir casos opcionais, no seguimento da condição falhar, 
+$cond=False$, na forma de \textit{ElseIf} ou \textit{Else}.
 A marca \textit{endif} simboliza o término da operação.
 
-\subsubsection{\textit{Else}} \label{grm:else}
+\subsubsection{\textit{Else} e \textit{ElseIf}} \label{grm:else}
 A produção \textit{Else} refere-se aos casos opcionais 
-dentro de uma condicional, na ocorrência de falhar a 
-condição de entrada.
+dentro de uma condicional, na ocorrência de falhar as
+condições anteriores.
 
 Segue-se:
 \begin{enumerate}
-    \item \textit{Else :} No caso de tudo falhar, executa o \textit{body} dentro do campo
-                          e acaba a operação.
     \item \textit{ElseIf :} Apresenta uma nova condição, se entrar, executa o seu \textit{body}
                             e acaba a operação.
+    \item \textit{Else :} No caso das condições anteriores falharem, executa o \textit{body} dentro do campo
+                          e acaba a operação.
     \item \textit{Empty :} Não existem casos opcionais.
 \end{enumerate}
 
@@ -120,26 +127,19 @@ A estrutura de um \textit{ElseIf} e \textit{Else}:
 
 Convencionou-se que um \textit{Else} seria a última operação dentro de um \textit{If}, no 
 caso de tudo falhar. 
-Por este motivo, como podem existir $n$ \textit{ElseIfs}, foi necessária a utilização 
-de \textbf{recursividade à direita}. 
-Deste modo, é garantida uma lista de \textit{ElseIfs}, em que o \textit{Else}
+Por este motivo, como podem existir $n$ \textit{ElseIf}, optou-se pela utilização 
+de \textbf{recursividade à direita} para manter a gramática mais próxima da sintaxe concreta. 
+Deste modo, é garantida uma lista de \textit{ElseIf}, em que o \textit{Else}
 é a última operação, no caso de existir.
 
-Apesar de não ser tão eficiente, não existem problemas relacionados com a 
-utilização de recursividade à direita num \textit{parser LALR}.
-
-\subsubsection{\textit{ElseIf}} \label{grm:elseif}
-Decidiu-se representar os \textit{ElseIfs} numa produção 
-à parte, sendo um não terminal no contexto da produção 
-\textit{Else}(\ref{grm:else}).
-A sua estrutura assemelha-se à de um \textit{If}, com 
-a exceção de utilizar uma nova palavra reservada e não 
-terminar obrigatoriamente num \textit{Endif}.
-
 \subsubsection{\textit{ForStmt}} \label{grm:forstmt}
+\begin{minted}{bash}
+For     -> FOR OPAR Cond CPAR Newline Elems Sep ENDFOR  
+\end{minted}
+
 O elemento \textit{ForStmt} representa uma transformação cíclica.
 Para tal recebe uma condição, \ref{grm:conds}, a iterar 
-e os elementos a executar durante o período de vida, \ref{grm:elems}.
+e os elementos a compilar em cada iteração.
 
 A operação deve obrigatoriamente terminar com \textit{endfor}.
 
@@ -150,40 +150,52 @@ Deste modo, apresenta-se como:
     $endfor$
 \end{minted}
 
-Adicionalmente, pode-se colocar um \textbf{separador} a ser adicionado
+Adicionalmente, pode-se colocar um \textbf{separador} a ser acrescentado
 em cada iteração à frente do corpo do ciclo, com a exceção da última.
 Para tal foi criada a produção \textit{Sep}.
 O separador é opcional, por isso tem um campo vazio.
 
-\subsubsection{\textit{StmtSubtemplate}} \label{grm:sub}
-Para permitir utilizar outros \textit{templates} e substituir
-o seu texto no atual, adicionou-se a produção \textit{StmtSubtemplate}.
+\begin{minted}{bash}
+Sep     -> SEP TEXT
+        | Empty
+\end{minted}
 
-Utilizou-se os parênteses $()$ como sinal para a utilização de um 
-\textit{subtemplate}.
-Segue-se:
+\subsubsection{\textit{StmtSubtemplate}} \label{grm:sub}
+Para permitir utilizar outros \textit{templates} e integrar
+o seu texto na compilação em execução, adicionou-se a produção \textit{StmtSubtemplate}.
+
+Utilizou-se os parênteses $()$ como sinal para a utilização de um \textit{subtemplate}.
+
 \begin{minted}{bash}
     $subtemplate()$
     $subtemplate()\pipe$
 \end{minted}
 
-Adicionalmente, estes podem sofrer alterações através de \textit{pipes} (\ref{grm:pipes}),
+Adicionalmente, estes podem sofrer transformações através de \textit{pipes} (\ref{grm:pipes}),
 utilizando o não terminal, no final da produção.
-\dots \textit{pipes} devem afetar todo o ficheiro, pelo que este deve ser 
+\dots \textit{pipes} devem afetar toda a produção, pelo que esta deve ser 
 percorrido pelo \textit{parser}, como o \textit{template} principal.
 
 Uma distinção dos \textit{subtemplates}
 teve de ser feita para permitir o uso a partir
-de um iterável, \ref{grm:it},
+de um iterável, $It$ (\ref{grm:it}),
 nomeadamente no interior de ciclos \textit{for}, não sendo permitidos \textit{pipes}.
 Assim, foi criada a produção \textit{SubIt}.
 
 \subsubsection{\textit{It}} \label{grm:it}
-Para permitir dentro das operações de \textbf{metadados} acessar à iteração
-de um objeto, utiliza-se a diretiva \textit{it},
+\begin{minted}{bash}
+It      -> IT ItOpt Pipes Newline
+ItOpt   ->  COLON SubIt                                
+        |   DOT VarAtomic COLON SubIt                        
+        |   DOT VarAtomic                                    
+        |   DOT VarAtomic OSQBRAC NUM COMMA NUM CSQBRAC      
+        |   OSQBRAC NUM COMMA NUM CSQBRAC              
+        |   Empty  
+\end{minted}
+Para permitir, dentro das operações de \textbf{metadados}, aceder ao conteúdo do objeto
+a ser iterado, utiliza-se a diretiva \textit{it},
 representada na produção \textit{It}.
 
-Seria no sentido:
 \begin{minted}{bash}
     $it$
     $it:subtemplate()$
@@ -193,31 +205,38 @@ Seria no sentido:
     $it.[begin_range, end_range]$
 \end{minted}
 
-Neste caso, o \textit{it} pode iterar os objetos que 
-movimentam-se dentro dos metadados.
+Neste caso, o \textit{it} permite aceder ao objeto concreto a ser processado,
+assim como aos seus constituintes.
 São utilizados com grande efeito dentro dos ciclos \textit{for}, 
 para permitir obter o próximo valor dentro de um 
 iterável, em cada nova iteração do \textit{loop}.
 
-É notável a fatorização à esquerda efetuada entre todas as possíveis 
-opções dentro do \textit{it}.
-Como dito anteriormente, o \textit{parser} beneficia deste 
-comportamente, na decisão do caminho da árvore sintática.
+% É notável a fatorização à esquerda efetuada entre todas as possíveis 
+% opções do \textit{it}.
 
 \subsubsection{\textit{Nesting}} \label{grm:nest}
+\begin{minted}{bash}
+Nesting ->  Var TEXT '^' NestElems '^' Newline
+
+NestElems -> NestElems
+          |  NestElem
+
+NestElem  -> Var
+          |  TEXT
+\end{minted}
 Para permitir conteúdo \textit{nested} dentro do documento, i.e
 a preservação da identação das linhas subsequentes, 
 foram criadas as produções para o \textit{nesting}.
 
-Utiliza-se a diretiva - \^ - para separar o elemento para o qual todas as 
+Utiliza-se a diretiva \mintinline{bash}{'^'} para separar o elemento para o qual todas as 
 linhas se vão indexar, \textit{Var}, e o restante texto, em \textit{NestElems}.
 
 Para tomar partido do reconhecedor utilizado pelo \textit{yacc}, 
 definiu-se à esquerda a recursividade da lista de elementos, \textit{NestElems}.
 Estes podem ser \textbf{texto} ou \textbf{variáveis}.
 
-\dots apesar do \textit{NestElems} representar, na íntegra, a produção 
-\textit{elems} (\ref{grm:elems}), foi necessário a criar para evitar problemas 
+\dots \textit{NestElems} representa uma parte da produção 
+\textit{elems} (\ref{grm:elems}). Este foi necessário para evitar problemas 
 com \textbf{reduções}, sendo provocada uma circularidade não controlável.
 
 \subsubsection{\textit{Conds}} \label{grm:conds}
@@ -228,37 +247,44 @@ No contexto das operações \textit{for} é dada a opção
 de inserir um \textit{range} de valores; para permitir
 mais flexibilidade ao utilizador.
 
-\subsubsection{\textit{Vars}} \label{grm:vars}
+A título sugestivo, seria relevante acrescentar um conjunto de produções
+que permitisse a utilização de operadores lógicos.
+Tal implementação não é complexa, mas requer uma nova iteração de trabalho.
+
+\subsubsection{\textit{Var}} \label{grm:vars}
 O elemento atómico para representar variáveis no documento.
 
+\begin{minted}{bash}
+Var -> VarAtomic Pipes
+
+VarAtomic ->  VarAtomic DOT ID                          
+          |  ID   
+\end{minted}
+
 Uma variável é caracterizada pelo seu nome, um \textit{ID}.
-Contudo, no caso de mapas, os valores devem ser acessados 
-com $.key\_name$.
-Neste sentido, estamos a manipular os valores cujo nome da 
+Contudo, no caso de dicionários, os valores devem ser acedidos 
+com $ID.key\_name$.
+Neste sentido, está-se a manipular os valores cujo nome da 
 chave no mapa é \textit{key\_name}.
 
-Adicionalmente, como é possível haver aninhamento de mapas, 
-recorreu-se à recursividade à esquerda.
-Aproveitando o facto do \textit{parser} ser \textit{Bottom-Up},
-as variáveis podem acessar os valores de qualquer mapa 
-existente no dicionário.
-
-Mais tarde, devido à implementação de \textit{pipes}(\ref{grm:pipes}), 
+Mais tarde, devido à implementação de \textit{pipes} (\ref{grm:pipes}), 
 as produções foram alteradas para permitir uma variável 
 ser modificada; foi criada \textit{VarAtomic} para representar
 apenas as variáveis.
  
 \subsubsection{\textit{Pipes}} \label{grm:pipes}
+\begin{minted}{bash}
+Pipes   -> Pipes SLASH ID                                
+        | Pipes SLASH ID NUM QUO TEXT QUO                
+        | Pipes SLASH ID NUM QUO TEXT QUO QUO TEXT QUO   
+        | Empty   
+\end{minted}
 Foram implementados um conjunto de \textit{pipes}, 
 como apresentados em \ref{subsec:pipes}.
 
-É permitido \textbf{aninhamento de pipes}, sendo a produção
+É permitido uma \textbf{sequência de pipes}, sendo a produção
 \textit{pipes} uma lista.
-Por esse motivo existe um caso \textbf{vazio}.
-
-Devido ao reconhecedor utilizado pelo \textit{Yacc} ser \textit{Bottom-Up}
-é preferível utilizar \textbf{recursividade à esquerda}, sendo por isso 
-aplicada em todas as produções.
+Por esse motivo, existe um caso \textbf{vazio}.
 
 Neste caso, podem ser apresentados como:
 \begin{minted}{bash}
@@ -269,11 +295,22 @@ Neste caso, podem ser apresentados como:
 dinâmicos no seu \textit{output}.
 
 A adição dos \textit{pipes} nas operações superiores provocou 
-alguns problemas do âmbito \textit{reduce-reduce} e \textit{shift-reduce},
-sendo rapidamente tratados; nomeadamente na produção \textit{StmtSubtemplate} (\ref{grm:sub}).
+alguns problemas do âmbito \textit{reduce-reduce} e \textit{shift-reduce} devido à circularidade
+causada pela reutilização de produções.
+Por esse motivo, a sua possibilidade de utilização nas várias produções teve de ser 
+devidamente revista e ajustada, para garantir o bom funcionamento do sistema.
 
-\subsubsection{\textit{Num}} \label{grm:num}
-Dado a ser possibilitada a utilização de \textit{range} nos iteráveis (\ref{grm:it}),
+\subsubsection{\textit{Range} e \textit{Num}} \label{grm:num}
+\begin{minted}{bash}
+Num     -> NUM
+        | Empty
+
+Range   -> OSQBRAC RangeOpt CSQBRAC
+
+RangeOpt -> NUM COLON NUM
+         |  NUM COLON NUM COLON NUM
+\end{minted}
+Dado a ser possibilitada a utilização de \textit{range} nos iteráveis ($It$),
 foi criada uma produção para representar os parâmetros recebidos, do tipo numérico.
 
 A necessidade advém de ser oferecida a opção de não inserir um valor, para representar
@@ -281,14 +318,22 @@ os extremos de um objeto a iterar.
 Por esse motivo, \textit{Num} têm uma produção a vazio.
 
 \subsubsection{\textit{Newline}} \label{grm:nl}
-A produção é utilizada para o tratamento dos caracteres \textit{newline}
+A produção é utilizada para o tratamento dos carateres \textit{newline}
 em todo o ficheiro.
-Ao nível da análise léxica são contabilizados os caracteres \textit{newline}
-lidos no ficheiro original, sendo guardado o seu número.
+Ao nível da análise léxica são contabilizados os carateres \textit{newline}
+lidos no ficheiro original, sendo armazenado o total.
 Posteriormente, serão adicionados no texto final, nas 
 posições apropriadas para re-estabelecer o formato do \textit{template}.
 
-É possível não existir nenhum caracter \textit{newline} no ficheiro original,
+É possível não existir nenhum carater \textit{newline} no ficheiro original,
 no contexto de uma produção da gramática, pelo que existe o caso \textbf{vazio}.
+
+A implementação desta produção nos vários locais da gramática, foi 
+bastante delicada, tendo causado um conjunto de problemas do tipo 
+\textit{shift-reduce}.
+Por outro lado, atendendo que há situações em que se pretende ignorar a nova linha
+e outras em que se pretende ter conhecimento da sua existência, acrescentou-se à classe
+\textbf{elem} uma variável \textbf{end} que simboliza o carater de fim desse elemento 
+e permite modificar o comportamento do $print$.
 
 \end{document}
