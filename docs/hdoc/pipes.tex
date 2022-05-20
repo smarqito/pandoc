@@ -22,7 +22,7 @@
     \end{minted}
     
     Quanto aos \textit{Pipes} criados, foram feitos todos os que o
-    \textit{Pandoc} tem implementados até ao momento da realização
+    \textit{Pandoc} tem implementados até à data da realização
     do presente relatório, mais concretamente:
 
     \begin{itemize}
@@ -68,7 +68,7 @@
     \end{itemize}
 
     Tendo como variáveis:
-    \begin{minted}{Python}
+    \begin{minted}{python}
         autores : {ent1 : {nome : Jose, numero : 93271, turno: PL2, nota: 20}, 
                    ent2 : {nome : Marco, numero : 62608, turno: PL3, nota: 20},
                    ent3 : {nome : Miguel, numero : 94269, turno: PL5, nota: 20}}
@@ -105,11 +105,11 @@
     Na classe \textit{Pipe} foi criado um dicionário, em que a chave é o nome do \textit{pipe} 
     e o valor é a função que implementa o respetivo método. 
     
-    \inputminted[firstline=215, lastline=232]{py}{../modules/Pipe.py}
+    \inputminted[firstline=215, lastline=232]{python}{../modules/Pipe.py}
     
     Desta forma, a função responsável por aplicar o \textit{pipe} ao valor apenas precisa
     de fazer:
-    \begin{minted}{Python}
+    \begin{minted}{python}
         Pipe._pipes[self.id](args)
     \end{minted}
     \dots sendo o self.id o nome do \textit{pipe} e args os argumentos passados, podendo variar de

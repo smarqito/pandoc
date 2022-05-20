@@ -6,7 +6,7 @@
 
     Utilizando como exemplo o dicionário:
     
-    \mintinline{Python}{'map': {'key1': {'key22': 'value2'}, 'key2': {'key22': 'value22'}}}
+    \mintinline{python}{'map': {'key1': {'key22': 'value2'}, 'key2': {'key22': 'value22'}}}
 
     \begin{minted}{bash}
         $for(map)$
@@ -15,14 +15,13 @@
     \end{minted}
 
     O texto obtido é:
-    \begin{minted}{Python}
+    \begin{minted}{python}
         {'key22': 'value2'}
         {'key22': 'value22'}
     \end{minted}
 
     A seguir da palavra reservada \textit{it}, é possível ainda indicar
-    o nome da variável, bem com um \textit{Range}(ver \ref{subsec:range})
-    ou uma \textit{Subtemplate}.
+    o nome da variável, bem com um \textit{Range} ou uma \textit{Subtemplate}.
 
     \begin{minted}{bash}
         $for(map)$
@@ -51,7 +50,7 @@
     que correspondem ao nome das variáveis. Esta lista é iterada,
     atualizando o valor de \textit{default}. 
     
-    \inputminted[firstline=11, lastline=17]{py}{../modules/It/ItVar.py}
+    \inputminted[firstline=11, lastline=17]{python}{../modules/It/ItVar.py}
     
     Caso o tipo do valor de \textit{default} seja um dicionário é possível obter
     a chave ou valor deste, caso as \textit{KeyWords} recebidas sejam respectivamente,
@@ -61,7 +60,7 @@
     \textit{ItRange} é uma subclasse de \textit{ItVar}. Esta recebe um \textit{Range},
     que indica o valor mínimo e máximo, atualizando o valor de default da seguinte forma:
     
-    \inputminted[firstline=9, lastline=20]{py}{../modules/It/ItRange.py}
+    \inputminted[firstline=9, lastline=20]{python}{../modules/It/ItRange.py}
 
     Quanto à classe \textit{ItSubtemplate}, esta é uma subclasse da classe \textit{StmtSubtemplate}
     que será abordade em \ref{subsec:subt}. É inicializada com o nome do \textit{subtemplate},

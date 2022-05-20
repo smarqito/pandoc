@@ -2,11 +2,13 @@
 \begin{document}
     O elemento primitivo da camada de \textbf{metadados},
     a variável, delimitada por '\$', é utilizada para 
-    acessar um qualquer objeto dentro do dicionário.
+    aceder a qualquer objeto dentro do dicionário,
+    desde que o acesso seja feito a partir do próprio nível em que a 
+    iteração se encontra.
 
     Deste modo, considerando o dicionário:
     
-    \mintinline{Python}{'map': {'key1': {'key11': 'value1'}, 'key2': {'key22': 'value22'}}}
+    \mintinline{python}{'map': {'key1': {'key11': 'value1'}, 'key2': {'key22': 'value22'}}}
 
     E o respetivo comando dentro do \textit{template}:
     \begin{minted}{bash}
@@ -23,7 +25,7 @@
         $map.key2.key22$
     \end{minted}
 
-    O texto produzido será do tipo: 
+    O texto produzido será: 
 
     \begin{minted}{Python}
         Exemplo 1:
@@ -39,7 +41,7 @@
         'value2'
     \end{minted}
 
-    \dots sendo possível acessar o valor dentro do dicionário
+    \dots sendo possível aceder o valor dentro do dicionário
     independentemente do seu grau de \textbf{aninhamento}.
 
     \subsection*{Estratégia Utilizada}
@@ -47,30 +49,30 @@
     \textit{dict}.
     A \textit{keyword} corresponde ao objeto a procurar dentro do dicionário \textit{dict}.
     Dentro da classe, o nome do atributo que guarda a \textit{keyword} é \textit{id}.
-    Na fase de inicialização, é colocado em \textit{value} o valor correspondente 
-    à \textit{keyword}, dentro do dicionário; caso não exista é colocado como \textbf{None}.
+    Na fase de inicialização, é colocado na variável de instância \textit{value} o valor correspondente 
+    à \textit{keyword}, dentro do dicionário; caso não exista, é colocado como \textbf{None}.
 
     Contudo, como referido em cima, deve ser possibilitado o aninhamento de objetos para poder 
-    acessar um valor do dicionário.
-    Neste sentido, dentro do atributo \textit{ids}, uma lista, irá encontrar-se todas 
-    as \textit{keywords} a serem adicionadas à variável, sendo inicializada com a primeira
-    \textit{keyword} passada.
-    \dots dentro do atributo \textit{id} vai construir-se a \textit{string} da variável, como 
-    apresentada no \textit{template}.
+    aceder a qualquer nível do dicionário.
+    Neste sentido, o atributo \textit{ids}, uma lista, armazena todas 
+    as chaves de acesso ao valor pretendido, sendo inicializada como uma lista vazia.
+    \dots dentro do atributo \textit{id}, vai-se construir a \textit{string} que designa a variável,
+    como apresentada no \textit{template}.
 
-    No seguimento criou-se o método \mintinline{Python}{nextValue(self, keyword)}, que 
-    coloca em \textit{value} o objeto resultante, acessado por \textit{dict}, e 
-    atualiza os atributos \textit{id} e \textit{ids}.
+    No seguimento, criou-se o método \mintinline{python}{nextValue(self, keyword)}, que 
+    efetua o método $get$ no \textit{value} e atribui-lhe, também, o valor resultante.
+    Por fim, atualiza os atributos \textit{id} e \textit{ids}.
 
-    Criou-se os respetivos \textit{getters} e \textit{setters} para acessar o valor, as 
-    \textit{keywords} da variável e o seu tipo, para preservar a estratégia de um \textbf{paradigma
-    orientado a objetos} adotada.
+    Criou-se os respetivos \textit{getters} e \textit{setters} para aceder ao valor, às 
+    \textit{keywords} da variável e o seu tipo, para preservar algum encapsulamento das classes,
+    assim como o paradigma adotado.
 
-    Não obstante os métodos específicos à class \textit{Var}, apresenta-se outros 2, de \textit{pretty printing},
-    que a classe faz \textit{override} da \textit{super class} Elem, \textit{pp} e \textit{pp\_list}.
+    Não obstante, os métodos específicos à classe \textit{Var}, apresenta-se outros 2,
+    de \textit{pretty printing}, que a classe faz \textit{override} da \textit{super class} Elem,
+    \textit{pp} e \textit{pp\_list}.
     
-    Assim, dependendo do tipo da variável, um dos métodos irá ser utilizado, contendo uma 
-    apresentação diferente; pelo que em ambos os casos têm a respetiva verificação de erros.
+    Assim, dependendo do tipo da variável, um dos métodos será utilizado, contendo uma 
+    estratégia diferente; pelo que em ambos os casos têm a respetiva verificação de erros.
 
     Como consequência da adição dos \textit{pipes} (\ref{subsec:pipes}), ainda existe um último 
     atributo, \textit{pipes}, inicializado a \textit{None}.

@@ -9,45 +9,50 @@
 
 No âmbito de aplicar as regras da gramática definidas anteriormente,
 recorreu-se ao uso do módulo \textit{Yacc} da biblioteca \textit{PLY}. 
-Deste modo, constroi-se um \textit{parser}, estabelecendo a análise 
+Deste modo, construiu-se um \textit{parser}, estabelecendo a análise 
 sintática a efetuar.
 
 \subsection{Árvore de \textit{Parsing} Concreta}
 
 %árvore de parsing concreta
+Apesar de ser sugerido pela equipa docente uma utilização de compilação 
+de código \textit{python} intermédio, o grupo preferiu
+abraçar o desafio de construir uma árvore de parsing.
+Esta decisão surgiu do facto das mesmas serem bastante flexíveis,
+permitindo, com pequenos ajustes, transformar a ação semântica que se está 
+a utilizar.
+
+Assim, por forma a tornar o código mais fácil de desenvolver, interpretar e manter,
+utilizou-se o paradigma de programação orientada aos objetos e a sua construção
+hierárquica.
+A definição das classes necessárias, derivou da gramática abstrata construída inicialmente.
+
 
 \subsection{Classes}
 
 O diagrama de classes, na sua totalidade, encontra-se definido em \ref{sec:classes}.
 
-% \subsubsection{Diretoria \textit{It}}
+\subsubsection{\textit{Var}} \label{subsec:var}
+\subfile{../hdoc/var.tex}
 
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=\linewidth]{assets/dir_it.png}
-%     \caption{Diretoria para a funcionalidade \textit{It}}
-% \end{figure}
+\subsubsection{\textit{If}} \label{subsec:If}
+\subfile{../hdoc/ifs.tex}
 
-% \subsubsection{Diretoria \textit{Stmt}}
+\subsubsection{\textit{For}}\label{subsec:For}
+\subfile{../hdoc/for.tex}
 
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=\linewidth]{assets/dir_stmt.png}
-% \end{figure}
+\subsubsection{\textit{Subtemplates}} \label{subsec:subt}
+\subfile{../hdoc/subtempl.tex}
 
-% \subsubsection{Restantes Módulos}
+\subsubsection{\textit{Pipes}} \label{subsec:pipes}
+\subfile{../hdoc/pipes.tex}
 
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=\linewidth]{assets/dir_modules.png}
-%     \caption{Classe \textit{Document} e \textit{Element}}
-% \end{figure}
+\subsubsection{\textit{It}}\label{subsec:it}
+\subfile{../hdoc/it.tex}
 
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=\linewidth]{assets/pipes.png}
-%     \caption{Classes independentes \textit{Pipes} e \textit{Pipe}}
-% \end{figure}
+\subsubsection{Nesting}
+\subfile{../hdoc/nest.tex} \label{subsec:nest}
 
-
+\subsubsection{Entity}
+\subfile{../hdoc/entity.tex} \label{subsec:entity}
 \end{document}

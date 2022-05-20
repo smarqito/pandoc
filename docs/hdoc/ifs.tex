@@ -30,20 +30,31 @@
 
     Quanto à outra classe, trata-se de uma subclasse da primeira, tendo 
     adicionalmente uma lista de \textit{StmtIf} que correspondem aos
-    \textit{elseif} e uma lista de \textit{Elem}(\textit{elseifs}) que correspondem ao corpo
-    da condição \textit{Else}(\textit{elseElems}). 
+    \textit{elseif} e uma lista de \textit{Elem} (\textit{elseifs}) que correspondem ao corpo
+    da condição \textit{Else} (\textit{elseElems}). 
 
     A função responsável por imprimir um \textit{StmtIf}, em primeiro lugar testa se a sua 
     variável existe. Em caso afirmativo executa a sua lista de elementos e retorna \textit{True},
-    no caso contrário apenas retorna \textit{False}. 
+    caso contrário apenas retorna \textit{False}. 
     
     Quando se trata da classe \textit{StmtIfElse}, é inicializada uma \textit{flag} a \textit{False},
-    que determina se alguma condição já foi executa e em seguida é chamada a função 
+    que determina se alguma condição retornou verdadeira e em seguida é chamada a função 
     \mintinline{Python}{super().pp} que corresponde à função do \textit{StmtIf}, descrita anteriormente.
 
-    Caso esta retorna \textit{True}, a flag passa \textit{True} e não são testadas as restantes condições. 
-    Quando esta retorna \textit{False}, são testadas as condições dos \textit{elseifs} até que uma seja verificada. 
-    Na possiblidade de nenhuma desta se verificar, e exista um else são executados os \textit{elseElems}.
-
-    
+    Caso esta retorne \textit{True}, a flag é atualizada e não são testadas as restantes condições. 
+    Quando esta retorna \textit{False}, são testadas as condições dos \textit{elseifs} até que uma seja verificada ou não haja mais para verificar. 
+    Por último, na possiblidade de nenhuma desta se verificar e exista um else
+    são executados os \textit{elseElems}.
+    \begin{minted}{python}
+        def pp(self):
+        f = False
+        f = super().pp()
+        if not f:
+            for elseif in self.elseifs:
+                if f := elseif.pp():
+                    break
+        if not f:
+            for elseElem in self.elseBody:
+                elseElem.pp()
+    \end{minted}    
 \end{document}

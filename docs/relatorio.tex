@@ -13,7 +13,7 @@
     fontsize=\footnotesize,
     framesep=2mm
 }
-\setminted[py]{
+\setminted[python]{
     frame=lines,
     breaklines,
     fontsize=\footnotesize,
@@ -78,39 +78,21 @@ seguido do analisador léxico e, por fim, o \textit{parser}.
 
 \section{Gramática Independente de Contexto} \label{subsec:grammar}
 \subfile{hdoc/gic.tex}
+
 \section{Analisador Léxico} \label{subsec:lex}
 \subfile{hdoc/state.tex}
+
 \section{\textit{Parser}} \label{subsec:strat}
 \subfile{hdoc/strategy.tex}
 
-\section{\textit{Var}} \label{subsec:var}
-\subfile{hdoc/var.tex}
 
-\section{\textit{If}} \label{subsec:If}
-\subfile{hdoc/ifs.tex}
+\section{\textit{HandleDoc}}
+\subsection{Manual}
+\inputminted{bash}{../assets/manual.txt}
 
-\section{\textit{For}}\label{subsec:For}
-\subfile{hdoc/for.tex}
+\subsection{Funcionalidades Compactadas}
+\subfile{hdoc/func_table.tex}
 
-\section{\textit{Subtemplates}} \label{subsec:subt}
-\subfile{hdoc/subtempl.tex}
-
-\section{\textit{Pipes}} \label{subsec:pipes}
-\subfile{hdoc/pipes.tex}
-
-\section{\textit{It}}\label{subsec:it}
-\subfile{hdoc/it.tex}
-
-\section{Nesting}
-\subfile{hdoc/nest.tex} \label{subsec:nest}
-
-\section{Entity}
-\subfile{hdoc/entity.tex} \label{subsec:entity}
-
-\section{\textit{Pandoc}}
-CONSTRUIR MANUAL!!
-
-\section{Exemplos de execução}
 
 \chapter{Conclusões}
 

@@ -7,12 +7,12 @@
 
     \mintinline{bash}{$subtemplate()$}
 
-    O ficheiro chamado, tem de estar obrigatoriamente na mesma diretoria do \textit{template}
+    O ficheiro chamado, tem de estar, obrigatoriamente, na mesma diretoria do \textit{template}
     principal. Caso não seja passado a terminação do ficheiro, por defeito assume-se que o
     \textit{subtemplate} tem a mesma terminação que o principal, isto é, para o exemplo acima, caso o nome do
     \textit{main template} fosse 'template.html' assumia-se que o \textit{subtemplate} tinha o nome "subtemplate.html".
     
-    Os \textit{Partials} podem ser aplicados apenas a uma variável do dicionário, bem como podem ser seguidos de pipes:
+    Os \textit{Partials} podem ser aplicados apenas a uma variável do dicionário, pedendo ser seguidos de pipes:
 
     \begin{minted}{bash}
         $for(obj)$
@@ -25,7 +25,7 @@
     \subsection*{Estratégia utilizada}
 
     Para iterar um \textit{subtemplate} é preciso criar um novo \textit{Parser} a partir do
-    comando \mintinline{Python}{yacc.yacc()}. \textit{Parser} este que é passado como argumento
+    comando \mintinline{python}{yacc.yacc()}. \textit{Parser} este que é passado como argumento
     à classe \textit{StmtSubtemplate}, bem como o nome do ficheiro e opcionalmente uma lista
     de \textit{KeyWords} e uma lista de \textit{Pipes}. 
     
@@ -35,7 +35,7 @@
     Quando a classe é inicializada é chamada a função \textit{handleFileName}, que atualiza o \textit{finfo} com a 
     informação do \textit{subtemplate}.
 
-    \inputminted[firstline=14, lastline=21]{py}{../modules/Stmt/StmtSubtemplate.py}
+    \inputminted[firstline=14, lastline=21]{python}{../modules/Stmt/StmtSubtemplate.py}
 
     Tal como referido anteriormente, caso não seja passado a terminação do \textit{subtemplate}, assume-se que 
     é a mesma do ficheiro que o chamou. Para obter o nome do ficheiro, foi utilizada uma expressão regular que captura
@@ -44,12 +44,13 @@
     Sabendo que o dicionário \textit{finfo} é constítuido pelas chaves 'path', 'fname' e 'ext', para obter o \textit{path}
     completo para o \textit{subtemplate} é só concatenar os valores de cada, isto é:
 
-    \mintinline{Python}{path = finfo['path'] + finfo['fname'] + finfo['ext']}
+    \mintinline{python}{path = finfo['path'] + finfo['fname'] + finfo['ext']}
 
     A partir deste \textit{path} completo e com o novo parser passado por argumento, é possível ler o conteúdo do ficheiro
     e fazer o \textit{parsing} do mesmo. 
     
-    Importante ainda referir que caso a classe tenha sido inicializada com uma lista de
+    Importante, ainda, referir que caso a classe tenha sido inicializada com uma lista de
     \textit{Pipes} é utilizada a função \textit{addPipes} para passar estes pipes ao novo objeto \textit{Document} criado,
-    desta forma, quando é efetuada a escrita do ficheiro, previamente já foram aplicados os \textit{Pipes}.
+    desta forma, quando é efetuada a escrita do ficheiro, previamente já foram aplicados a transformação 
+    dos \textit{Pipes} a cada elemento.
 \end{document}

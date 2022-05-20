@@ -41,27 +41,27 @@
 
     O primeiro, \textbf{metadata}, é utilizado para identificar todos os
     campos de metadados, eg. \textbf{operações If/For}.
-    O caracter que simboliza a entrada, e a consequente sáida, é o 
+    O caracter que simboliza a entrada, e a consequente saída, é o 
     \textit{dollar sign} ("\$").
-    O estado pode ser acessado dentro do estado \textit{INITIAL}, e
+    O estado pode ser acedido quando se encontra na contexto inicial, e
     na saída do estado \textit{args}.
 
     O segundo, \textbf{args}, foi adicionado mediante a apresentação 
     de argumentos nos \textit{pipes} (\ref{subsec:pipes}), para permitir 
     distinguí-los do texto padrão. 
-    Neste caso, entra-se no estado \textit{args} somente dentro do 
-    estado \textit{metadata}, ao aparecer o símbolo - " (aspas).
-    Ao receber o símbolo " (aspas) volta ao estado \textit{metadata},
+    Neste caso, entra-se no contexo \textit{args} apenas dentro do 
+    estado \textit{metadata}, ao aparecer o símbolo \textbf{"} (aspas).
+    Ao processar novamente o símbolo \textit{aspas} volta ao estado \textit{metadata},
     como referido anteriormente.
 
-    \dots ambos os estados são exclusivos pois é necessário fazer \textit{override}
-    do comportamento \textit{default} do \textit{lexer}.
-    Nestes são apenas válidos um conjunto de caracteres, daí a sua exclusividade e 
+    \dots ambos os estados são exclusivos, pois é necessário fazer \textit{override}
+    do comportamento padrão do \textit{lexer}.
+    Nestes, apenas são válidos um conjunto de caracteres, daí a sua exclusividade e 
     necessidade de definir todas as regras válidas em cada.
 
     No seguimento da definição dos estados, surge um diagrama de 
-    \textbf{máquina de estados} para permitir uma melhor compreênsão da
-    dinâmica léxica, dentro dos estados existentes, em \ref{fig:state_machine}.
+    \textbf{máquina de estados} para permitir uma melhor compreensão da
+    dinâmica léxica, mediante os estados existentes, em \ref{fig:state_machine}.
 
     \begin{figure}[!ht]
         \centering

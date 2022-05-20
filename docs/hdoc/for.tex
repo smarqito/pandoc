@@ -25,25 +25,25 @@
     indicando o separador a utilizar. Por exemplo:
     Caso queiramos iterar a lista:
 
-    \mintinline{Python}{autores = ["José", "Marco", "Miguel"]}
+    \mintinline{python}{autores = ["José", "Marco", "Miguel"]}
 
     no seguinte template:
 
-    \mintinline{Bash}{$for(autores)$autor = $autores$$sep$, $endfor$}
+    \mintinline{bash}{$for(autores)$autor = $autores$$sep$, $endfor$}
 
     Será produzido:
 
-    \mintinline{Bash}{autor = José, autor = Marco, autor = Miguel}
+    \mintinline{bash}{autor = José, autor = Marco, autor = Miguel}
 
     Adicionalmente, foi criado um \textit{Range} que pode ser utilizado como a
-    condição do ciclo \textit{for}. Este é defenido entre parênteses retos e 
+    condição do ciclo \textit{for}. Este é definido entre parênteses retos e 
     contem três número dividos por virgulas. O primeiro corresponde ao minímo, o segundo
-    ao máximo e o terceiro ao \textit{step}. O primeiro, segundo e terceiro argumento são
-    por defeito 0, infino e 1, respetivamente.
+    ao máximo e o terceiro ao \textit{step}. O primeiro, segundo e terceiro argumento são,
+    por defeito, 0, infino e 1, respetivamente.
     Por exemplo:
-    \mintinline{Bash}{$for([0, 3])$Hello World $endfor$}
+    \mintinline{bash}{$for([0, 3])$Hello World $endfor$}
     produz
-    \mintinline{Bash}{Hello World Hello World Hello World }
+    \mintinline{bash}{Hello World Hello World Hello World }
 
     \subsection*{Estratégia utilizada}
 
