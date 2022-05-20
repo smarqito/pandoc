@@ -1,6 +1,8 @@
 \documentclass[11pt]{report} 
 
 \usepackage[a4paper]{geometry}
+\usepackage[portuguese]{babel}
+\usepackage{hyphenat}
 \usepackage{projectreport}
 \usepackage{graphicx}
 %
@@ -20,6 +22,7 @@
 \usepackage{hyperref}
 \usepackage{subfiles}
 \usepackage{lscape}
+
 % Used for displaying a sample figure. If possible, figure files should
 % be included in EPS format.
 %
@@ -56,7 +59,24 @@
 \subfile{intro/descr.tex}
 
 \chapter{\textit{HandleDoc}}
-\section{Gramática Criada} \label{subsec:grammar}
+O desenvolvimento do \textit{software} apresentado neste relatório,
+remete-se à utilização de um paradigma de programação orientada aos objetos.
+Procurou-se, ao longo da sua modelação, realizar uma descentralização de responsabilidades,
+através da utilização da hierarquia de classes e da geração de classes especializadas que
+derivam de outras abstratas, permitindo a unificação do sistema.
+
+Assim, por forma a estruturar a solução, começou por se modular uma gramática abstrata.
+Posteriormente, identificou-se as palavras reservadas que a definiam.
+Por último, adicionou-se os vários símbolos terminais e literais que permitiam
+compôr a sintaxe de \textit{templating}.
+
+A partir da gramática abstrata, foi possível construir um diagrama de classes
+correspondente à representação da árvore de sintaxe concreta.
+
+Irá apresentar-se a gramática independente de contexto, em particular os sínbolos não terminais,
+seguido do analisador léxico e, por fim, o \textit{parser}.
+
+\section{Gramática Independente de Contexto} \label{subsec:grammar}
 \subfile{hdoc/gic.tex}
 \section{Analisador Léxico} \label{subsec:lex}
 \subfile{hdoc/state.tex}
@@ -75,7 +95,7 @@
 \section{\textit{Subtemplates}} \label{subsec:subt}
 \subfile{hdoc/subtempl.tex}
 
-\subsection{\textit{Pipes}} \label{subsec:pipes}
+\section{\textit{Pipes}} \label{subsec:pipes}
 \subfile{hdoc/pipes.tex}
 
 \section{\textit{It}}\label{subsec:it}

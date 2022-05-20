@@ -24,21 +24,20 @@ Para o desenvolvimento do \textbf{compilador} segue-se a criação de um:
     \item Analisador Léxico. 
     \item \textit{Parser}.
 \end{itemize}
-\dots que conjuntamente permitem capturar os campos de 
+\dots que, conjuntamente, permitem capturar os campos de 
 \textbf{metadados} dos \textit{templates}, para serem 
 posteriormente tratados.
-Para tal deve-se recorrer ao módulo \textit{PLY} do \textit{Python},
+Para tal, ira recorrer-se ao módulo \textit{PLY} do \textit{Python},
 nomeadamente o gerador de analisadores léxicos - \textit{Lex} - e
 o gerador de compiladores (com base em gramáticas tradutoras) - \textit{Yacc}.
 
-No final, após o documento ser corrido na sua totalidade,
+No final, após o documento ser processado na sua totalidade,
 o texto final está completo.
 
 Os dados a serem inseridos no \textit{template}
 encontram-se num ficheiro à parte, um \textbf{dicionário},
 que será submetido aquando da execução do programa. 
 No projeto a realizar utilizar-se-á ficheiros 
-\textit{YAML}, usufruindo da organização 
-estrutural da linguagem.
+\textit{YAML}, usufruindo da organização estrutural da linguagem.
 
 \end{document}

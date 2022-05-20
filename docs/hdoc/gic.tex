@@ -5,9 +5,9 @@ Com o intuito de descrever a estrutura hierárquica da linguagem
 definida para os \textit{templates}, construiu-se a \textbf{gramática} 
 a usar no compilador. 
 
-Como o programa na íntegra dependia das decisões tomadas durante
+Como o programa, na íntegra, dependia das decisões tomadas durante
 a definição da gramática, foi o primeiro passo no processo de desenvolvimento
-da solução. 
+da solução.
 
 A \textbf{gramática independente de contexto} (GIC) usada 
 no âmbito do presente projeto encontra-se em \ref{fig:grammar}.
@@ -17,11 +17,11 @@ Mediante os símbolos \textbf{terminais}, \textbf{literais} e as palavras
 compilador, em \ref{subsec:lex}, seguem-se os \textbf{não terminais}:
 
 \subsubsection{\textit{Document}}\label{grm:doc}
-Correspondente à primeira produção criada no contexto gramatical,
+Correspondente ao \textbf{axioma},
 \textit{Document} caracteriza o \textit{template} na sua totalidade,
 com todos os elementos constituintes (\ref{grm:elems}).
-A produção dada à sua simplicidade permaneceu imutável desde o ínicio
-do desenvolvimento do projeto até ao fim, sendo todas as alterações 
+A produção, dada à sua simplicidade, permaneceu imutável durante todo o período de
+desenvolvimento do projeto, sendo todas as alterações 
 feitas ao nível atómico das produções.
 
 \subsubsection{\textit{Elements}} \label{grm:elems}
