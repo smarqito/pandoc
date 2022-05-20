@@ -1,0 +1,126 @@
+\documentclass[../relatorio.tex]{subfiles}
+
+\begin{document}
+    Sucintamente, as funcionalidades proporcionadas pela 
+    solução criada encontram-se apresentadas em \ref{table:funcs}.
+    \begin{landscape}
+        \centering
+        \begin{table}[!ht]
+            \begin{tabular}{|c|p{7cm}|p{6cm}|p{7cm}|}
+                \hline
+                Funcionalidade      
+                & 
+                \centering
+                Descrição           
+                & 
+                \centering
+                Sintaxe             
+                & 
+                Exemplo 
+                \\
+                \hline
+                \textit{Var}        
+                &
+                Substitui o comando pelo valor 
+                da variável no dicionário.
+                Caso não exista, e não se encontre
+                dentro de uma operação de validação 
+                e.g. \textit{If}, ocorre um erro 
+                sintático.
+                &
+                \$ first\_variable\_name.nested\_values... \$
+                &
+                \$ ucs.notas.PL \$
+                \\
+                \hline
+                \textit{If}
+                &
+                Executa o \textit{body} do
+                comando caso a condição seja \textit{True}.
+                No caso da condição ser inválida, testa o(s)
+                \textit{elseif(s)} do mesmo modo,
+                senão executa o \textit{else}, caso estes 
+                existam.                                \newline
+                Caso contrário, a parsela é ignorada.
+                &
+                \$ if(cond\_name) \$                    \newline
+                    if\_body                            \newline
+                \$ endif \$                             \newline
+                &
+                \$ if(ucs.notas.PL) \$                  \newline
+                    A nota óbtida é \$ucs.notas.PL\$    \newline
+                    \$else\$                            \newline
+                    Não existe apreciação à cadeira PL. \newline
+                \$ endif \$                             \newline
+                \\
+                \hline
+                \textit{For}
+                &
+                Executa o \textit{body} do 
+                comando, por todas as iterações 
+                da variável do ciclo.
+                Se a variável não for válida, o 
+                ciclo é ignorado.
+                &
+                \$ for(var\_name)\$                     \newline
+                    for\_body                           \newline
+                \$ endfor \$                            \newline
+                &
+                \$ for(ucs.notas) \$                    \newline
+                    $it$                                \newline
+                \$ endfor \$                            \newline
+                \\
+                \hline
+                \textit{Subtemplates}
+                &
+                Imprime o conteúdo existente 
+                num \textit{subfile}.
+                Este irá ser filtrado pelo 
+                \textit{parser}.
+                &
+                \$ subtempl\_name() \$
+                &
+                \$ ucs.notas() \$
+                \\
+                \hline
+                \textit{it}
+                &
+                Acede ao objeto a ser iterado.
+                &
+                \$ it.key\_name \$
+                &
+                \$ for(eng\_inf) \$                    \newline
+                    $it.ucs$                           \newline
+                \$ endfor \$                           \newline
+                \\
+                \hline 
+                \textit{Nesting}
+                &
+                Preserva a identação das linhas
+                subsquentes, com base tamanho
+                da primeira variável inserida.
+                &
+                \$ var\_name \$\$\^{}\$ \$ text\_lines \$ \$\^{}\$
+                &
+                \$ \$cursos.ENGINF\$ \$\$\^{}\$         \newline
+                \$ \$cursos.ENGINF.alunos\$ \$ \$\^{}\$ \newline
+                \\
+                \hline
+                \textit{Entity}
+                &
+                Efetua alterações no texto, 
+                relativas a símbolos sensíveis e.g.
+                \textit{Backslash escape} ou atalhos.
+                &
+                $\backslash$char\_name                     \newline
+                &
+                $\backslash\$$                            \newline
+                $\backslash$div                           \newline
+                \\
+                \hline
+            \end{tabular}
+            \caption{Tabela de funcionalidades da aplicação}
+            \label{table:funcs}
+        \end{table}
+    \end{landscape}
+\end{document}
