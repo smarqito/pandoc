@@ -146,3 +146,8 @@ parsetab.py
 *.pdf
 www/
 *.out
+*.bbl
+*.bcf
+*.blg
+*.toc
+*.run.xml

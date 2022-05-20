@@ -9,6 +9,7 @@
 from re import *
 import sys
 import ply.yacc as yacc
+from modules.Comment import Comment
 from modules.Range import Range
 from pandoc_lex import tokens
 from modules.Entity import Entity
@@ -128,6 +129,10 @@ def p_Elem_f(p):
     r"Elem : Nesting"
     p[0] = p[1]
 
+def p_Elem_g(p):
+    r"Elem : OCOMMENT COMMENT CCOMMENT Newline"
+    p[0] = Comment(p[2], p.parser.comments['out'], p.parser.comments['prefix'], p.parser.comments['suffix'], p[4])
+
 
 ######################
 #       STMT         #
@@ -218,6 +223,7 @@ def p_subtemplate_a(p):
     np.lineno = p.lineno
     np.yaml = p.parser.yaml
     np.finfo = p.parser.finfo
+    np.comments = p.parser.comments
     sub = StmtSubtemplate(p[1].getKeyword(), np)
     if p[4]:
         sub.set_pipes(Pipes(p[4]))
@@ -230,6 +236,7 @@ def p_SubIt(p):
     np.lineno = p.lineno
     np.yaml = p.parser.yaml
     np.finfo = p.parser.finfo
+    np.comments = p.parser.comments
     sub = ItSubtemplate(p[1].getKeyword(), np)
     p[0] = sub
     

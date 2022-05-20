@@ -12,17 +12,39 @@ import sys
 
 states = [
     ('metadata', 'exclusive'),
-    ('args', 'exclusive')
+    ('args', 'exclusive'),
+    ('comments', 'exclusive')
 ]
 
 reservadas = "if else elseif endif for endfor sep it".upper().split(' ')
 
-tokens = "ID TEXT OPAR CPAR BACK COLON OSQBRAC CSQBRAC COMMA DOT SLASH NUM QUO NL".split(' ') + reservadas
+tokens = "ID TEXT OPAR CPAR BACK COLON OSQBRAC CSQBRAC COMMA DOT SLASH NUM QUO NL OCOMMENT CCOMMENT COMMENT".split(' ') + reservadas
 
 literals = "^".split(' ')
 
 
 #  adicionar contexto para o $ com lookbehind do '\' -> "(?<!\\)$"
+
+###################
+# handle comments
+###################
+def t_OCOMMENT(t):
+    r"\$--"
+    t.lexer.push_state('comments')
+    return t
+
+def t_comments_CCOMMENT(t):
+    r"--\$"
+    t.lexer.pop_state()
+    return t
+
+def t_comments_COMMENT(t):
+    r"(.|\n)+(?=--\$)"
+    return t
+
+def t_comments_error(t):
+      print("Illegar charecter in comments!! '%s'" % t.value)
+      exit()
 
 ###################
 # handle metadata
