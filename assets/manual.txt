@@ -25,7 +25,10 @@ DESCRIPTION
     -p  <output_dir></.ext>?    choose an output directory; if it has an extension (ext)
                                 all files will be renamed to file_name<.ext>
     -r <input_dir>              define an input directory; all arg files will be accessed in dir path
+    -c                          print the comments in output
     -h                          manual menu
+    --oc <prefix>               print the comments in output whith prefix <prefix>
+    --cc <suffix>               print the comments in output whith suffix <suffix>
     --help <topic>              specific manual menu
     --log <err_file>            redirect error file to another log
 
@@ -34,10 +37,14 @@ DESCRIPTION
     With this, bash pipes can be used. 
     stderr can also be set using the bash command 2> or --log <file_name>
     the executable is made to print a simple error to stdout and full trace to stderr
+    By default comments are omitted from the output file.
 
 EXAMPLES
     hdoc -i samples/info.yaml samples/ex1.in
         default mode: will generate the expected text to stdout
+
+    hdoc --oc='<!-' --cc='->' -i samples/info.yaml samples/ex1.in
+        comments will be printed with the prefix '<!-' and the suffix '->'
 
     hdoc -f samples/ -i samples/info.yaml ex1.in
         change from path -> 'samples/' will be prefix of all filenames
