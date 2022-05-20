@@ -26,3 +26,5 @@ $for(obj.autores)$
 $it.nome/uppercase/left 9 "|"$$it.numero/left 9 "|"$$it.turno/roman/uppercase/center 9 "|" "|"$$it.nota/right 9 "|"$
 |$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|$for([0:9])$-$endfor$|
 $endfor$
+$-- isto é um comentário
+com 2 linhas --$

@@ -6,3 +6,4 @@ $if(obj.map)$
 abrangido pelo pipe 
 $endif$
 depois do for
+$-- comentario num subtemplate --$

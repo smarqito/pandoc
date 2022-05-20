@@ -1,0 +1,39 @@
+\documentclass[../relatorio.tex]{subfiles}
+    Um comentário é tudo que está entre '<--' e '-->'. Por defeito
+    os comentários não são escritos no ficheiro gerado, a menos que o
+    utilizador o pretenda.
+
+    \begin{minted}{bash}
+        <-- Isto é um comentário
+        com 2 linhas-->
+
+        Texto <--outro comentário-->
+    \end{minted}
+
+    Como dito anteriormente, os comentários por defeito são excluídos
+    do ficheiro gerado. Porém caso o utilizador os pretenda imprimir
+    pode-o fazer, inclusive indicando opcionalmente qual os caracteres
+    utilizados para abrir e terminar. 
+    
+    Isto é, utilizando o exemplo acima, caso o modo de abertura e de 
+    encerrar fossem, respetivamente, '<!-' e '->', o texto gerado seria:
+
+    \begin{minted}{bash}
+        <!- Isto é um comentário
+        com 2 linhas->
+
+        Texto <!-outro comentário->
+    \end{minted}
+
+
+    \subsection*{Estratégia utilizada}
+
+    A classe \textit{Comment} é inicilizada com o conteúdo do comentário,
+    a flag que indica se é para escrever o comentário e opcionalmente o 
+    o modo de abertura e de encerramento do comentário.
+
+    A função responsável por imprimir o texto gerado, apenas escreve o
+    comentário no caso da flag ser \textit{True}, concatenando com o prefixo
+    e sufixo recebido.
+
+\end{document}

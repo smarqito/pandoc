@@ -19,8 +19,8 @@ from aux import throw_error
 
 # loaded = yaml.load(f.read(), Loader=yaml.Loader)
 
-args_filter = 'i:o:d:hgl:t:f:'
-long_args = ['help=', 'log=']
+args_filter = 'i:o:d:hgl:t:f:c'
+long_args = ['help=', 'log=', 'oc=', 'cc=']
 rootdir = False
 outdir = False
 stdin = False
@@ -42,6 +42,11 @@ t_info = {
         'fname': '',
         'ext': ''
     },
+    'comments' : {
+        'out' : False,
+        'prefix': '',
+        'suffix' : ''
+    }
 }
 
 
@@ -158,6 +163,19 @@ def handle_indir(path):
     t_info['input']['path'] = path
     rootdir = True
 
+def handle_comments(value):
+    global t_info
+    t_info['comments']['out'] = True
+
+def handle_ocomment(value):
+    global t_info
+    handle_comments('')
+    t_info['comments']['prefix'] = value
+
+def handle_ccomment(value):
+    global t_info
+    handle_comments('')
+    t_info['comments']['suffix'] = value
 
 args_handler = {
     'input': handle_input,
@@ -166,8 +184,11 @@ args_handler = {
     '-o': handle_output,
     '-t': handle_outdir,
     '-f': handle_indir,
+    '-c': handle_comments,
     '--help': handle_help,
     '--log': handle_log,
+    '--oc' : handle_ocomment,
+    '--cc' : handle_ccomment,
 }
 
 
@@ -187,6 +208,8 @@ def handle_opts():
     # ordena por chave do tuplo (nao faz redirect do output ate ter info toda!)
     # optlist.sort(key=lambda y : y[0])
     for opt, value in optlist:
+        if opt == '-c':
+            value = ''
         args_handler[opt](value)
     set_input(args)
 
@@ -208,6 +231,7 @@ def hdoc():
         print('mal construido')
         throw_error("hdoc -d <yaml_file> <template_file> ", True)
     parser.yaml = t_info['yaml']
+    parser.comments = t_info['comments']
     for filename in t_info['files']:
         handle_input(filename)
         if outdir:
