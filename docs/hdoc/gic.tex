@@ -55,6 +55,7 @@ Um elemento pode ser do tipo:
     \item \textit{Backslash}    (BACK)
     \item Iterável              (It)
     \item \textit{Nesting}      (Nesting)
+    \item Comentário            (COMMENT)
 \end{itemize}
 
 O elemento \textbf{Texto} representa a parte do 
@@ -63,6 +64,10 @@ Os restantes são respetivos aos campos de \textbf{metadados} do \textit{templat
 Devido à organização de um documento, um novo elemento integrante 
 poderá ser facilmente inserido na gramática da linguagem, acrescentando uma nova produção.
 
+\dots um exemplo concreto desta organização é relativo ao 
+elemento \textit{Comment}, que foi adicionado 
+posteriormente, no final da projeto.
+
 \begin{minted}{bash}
 Elem    ->  Stmt Newline
         |   TEXT NewLine
@@ -70,6 +75,7 @@ Elem    ->  Stmt Newline
         |   BACK NewLine
         |   It
         |   Nesting
+        |   OCOMMENT COMMENT CCOMMENT Newline
 \end{minted}
 
 \subsubsection{\textit{Stmt}}\label{grm:stmt}

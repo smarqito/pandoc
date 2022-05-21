@@ -21,6 +21,7 @@ Elem    ->  Stmt Newline
         |   BACK NewLine
         |   It
         |   Nesting
+        |   OCOMMENT COMMENT CCOMMENT Newline
 
 ###############################################
 #                  Stmt                       #
