@@ -56,4 +56,13 @@ case $1 in
     pandoc.py -i samples/info.yaml -t $2/$3 --oc=$4 --cc=$5 samples/ex1.in
     clean
     ;;
+    "html")
+    echo '##############################'
+    echo '        Exemplo html'
+    echo 'pandoc.py -i samples/info2.yaml -t www/.html --oc='<!--' --cc='-->' samples/default.html
+    echo '##############################'
+    echo ''
+    pandoc.py -i samples/info2.yaml -t www/.html --oc='<!--' --cc='-->' samples/default.html
+    clean
+    ;;
 esac
