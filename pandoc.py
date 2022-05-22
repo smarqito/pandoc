@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # ----------------------------------------------------------------
-# Created by: G53
+# Created by: G57@PL
 # Created date: 2022-05-08
 # Version = '1.0'
 # ----------------------------------------------------------------
@@ -15,10 +15,6 @@ import os
 from pandoc_par import parser, getFinfo
 from aux import throw_error
 
-
-# f = open("samples/data.yaml", "r")
-
-# loaded = yaml.load(f.read(), Loader=yaml.Loader)
 
 args_filter = 'i:o:d:hgl:t:f:cj:'
 long_args = ['help=', 'log=', 'oc=', 'cc=']
