@@ -37,7 +37,7 @@ DESCRIPTION
     With this, bash pipes can be used. 
     stderr can also be set using the bash command 2> or --log <file_name>
     the executable is made to print a simple error to stdout and full trace to stderr
-    By default comments are omitted from the output file.
+    By default comments are omitted from the output.
 
 EXAMPLES
     hdoc -i samples/info.yaml samples/ex1.in
