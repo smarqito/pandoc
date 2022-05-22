@@ -8,14 +8,14 @@ a solução apresentada consegue, com sucesso, construir novos ficheiros
 
 No projeto atual o grupo utilizou a biblioteca \textit{PLY} como é o caso das aulas práticas.
 Neste sentido, e com o auxílio da equipa docente, os alunos foram munidos com as ferramentas 
-necessárias para poder manipular e utilizar, com sucesso, o paradigma inerente aos 
+necessárias para serem capazes de manipular e utilizar, com sucesso, o paradigma inerente aos 
 analisadores léxicos e \textit{parsers}, na construção de um compilador.
 
-Usufruindo do paradigma orientado aos objetos, permitido na linguagem \textit{Python},
-estruturou-se a construção da consequente árvore sintática de modo a ser eficiente a sua 
-execução e facilitada a adição de novas funcionalidades à aplicação.
+Usufruindo do paradigma de programação orientada aos objetos, permitida na linguagem \textit{Python},
+estruturou-se a construção da árvore sintática de modo a apresentar uma 
+execução eficiente e facilitada a adição de novas funcionalidades à aplicação.
 
-Não obstante a demonstração do domínio do panorama essencial ao segundo trabalho 
+Não obstante, a demonstração do domínio do panorama essencial ao segundo trabalho 
 - \textit{Gramáticas} - em concreto gramáticas independentes de contexto (GIC),
 o grupo também desejou evoluir as suas capacidades ao nível de programação na 
 linguagem em \textit{Python}.
@@ -24,4 +24,22 @@ Deste modo, apresenta-se uma gramática sem conflitos, do qual o grupo está
 confiante, sendo colocado como a primitiva principal a eliminação 
 de quaisquer problemáticas do nível \textit{shift-reduce} e, nomeadamente,
 \textit{reduce-reduce}.
+
+Poderia, ainda, implementar-se um conjunto de funcionalidades adicionais,
+nomeadamente:
+\begin{itemize}
+    \item Adição de um interpretador de expansões, isto é:
+        \begin{itemize}
+            \item Definir num ficheiro independente um conjunto de produções
+            que permitem a expansão de palavras abreviadas, como é o caso 
+            do $\backslash div \rightarrow\ <div>\_</div>$
+        \end{itemize}
+        Este ficheiro poderia tornar o processo de \textit{templating} 
+        bastante mais configurável e pessoal.
+    \item Adição de um ficheiro de configuração, em vez de ler a alteração 
+    de comportamento a partir da linha de comandos
+    \item Expandir o comportamento dos pipes, com novas funções
+    \item $\cdots$
+\end{itemize}
+
 \end{document}
