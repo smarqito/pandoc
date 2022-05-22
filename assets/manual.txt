@@ -22,15 +22,15 @@ DESCRIPTION
     -i  <yaml_file>             data file using yaml syntax
     -j  <json_file>             data file using json syntax
     -o  <output_file>           output file - concatenate all templates if more than 1
-    -p  <output_dir></.ext>?    choose an output directory; if it has an extension (ext)
+    -t  <output_dir></.ext>?    choose an output directory; if it has an extension (ext)
                                 all files will be renamed to file_name<.ext>
-    -r <input_dir>              define an input directory; all arg files will be accessed in dir path
-    -c                          print the comments in output
+    -f <input_dir>              define an input directory; all arg files will be accessed in dir path
+    -c                          print the comments to output
     -h                          manual menu
-    --oc <prefix>               print the comments in output whith prefix <prefix>
-    --cc <suffix>               print the comments in output whith suffix <suffix>
+    --oc <prefix>               print the comments to output whith prefix <prefix>
+    --cc <suffix>               print the comments to output whith suffix <suffix>
     --help <topic>              specific manual menu
-    --log <err_file>            redirect error file to another log
+    --log,  -l <err_file>       redirect error file to another log
 
     If no templates are specified, stdin will be used
     All opts are available in this mode
