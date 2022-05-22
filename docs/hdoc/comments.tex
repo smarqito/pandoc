@@ -1,36 +1,48 @@
 \documentclass[../relatorio.tex]{subfiles}
-    Um comentário é tudo que está entre '<--' e '-->'. Por defeito
-    os comentários não são escritos no ficheiro gerado, a menos que o
-    utilizador o pretenda.
+\begin{document}
+    Pode-se escrever um comentário, utilizando as etiquetas '\$--' e '--\$'.
+    Todo o texto que estiver no interior, será interpretado como sendo um comentário,
+    não lhe sendo efetuado qualquer tratamento.
+    Por defeito os comentários são ignorados quando se gera o ficheiro de \textit{output}.
+    No entanto, esse comportamento pode ser alterado pelo utilizador.
 
     \begin{minted}{bash}
-        <-- Isto é um comentário
-        com 2 linhas-->
+        $-- Isto é um comentário
+        com 2 linhas --$
 
-        Texto <--outro comentário-->
+        Texto $--outro comentário--$
     \end{minted}
 
-    Como dito anteriormente, os comentários por defeito são excluídos
-    do ficheiro gerado. Porém caso o utilizador os pretenda imprimir
-    pode-o fazer, inclusive indicando opcionalmente qual os caracteres
-    utilizados para abrir e terminar. 
-    
-    Isto é, utilizando o exemplo acima, caso o modo de abertura e de 
-    encerrar fossem, respetivamente, '<!-' e '->', o texto gerado seria:
+    Para além do utilizador ter a possibilidade de escolher entre ignorar, ou não,
+    os comentários, pode também controlar a forma como este é apresentado no ficheiro gerado.
+    Em particular, pode definir um prefixo e/ ou um sufixo que irão encapsular o comentário.
+
+    Por exemplo, caso o modo de abertura e de 
+    encerramento fossem, respetivamente, '<!--' e '-->', o texto gerado seria:
 
     \begin{minted}{bash}
-        <!- Isto é um comentário
-        com 2 linhas->
+        <!-- Isto é um comentário
+        com 2 linhas -->
 
-        Texto <!-outro comentário->
+        Texto <!--outro comentário-->
     \end{minted}
 
+    Este comportamento permite, por exemplo, gerar um ficheiro \textit{html}
+    em que se mantém um conjunto de comentários no ficheiro gerado, sem alterar o 
+    comportamento do \textit{layout} pretendido.
 
     \subsection*{Estratégia utilizada}
 
-    A classe \textit{Comment} é inicilizada com o conteúdo do comentário,
-    a flag que indica se é para escrever o comentário e opcionalmente o 
-    o modo de abertura e de encerramento do comentário.
+    Quando o utilizador define que pretende ver os comentários no ficheiro gerado,
+    através da utilização do argumento \mintinline{bash}{-c}, é injetado
+    no parser uma variável a \mintinline{python}{True} que indica essa pretensão.
+    Adiciona-se, ainda, o prefixo e o sufixo a ser utilizado durante a geração do texto
+    final.
+
+    Assim, a classe \textit{Comment} é inicilizada com o conteúdo do comentário,
+    a flag que indica se é para escrever o comentário e o 
+    o modo de abertura e de encerramento do comentário (podendo este ser alterado pelo
+    utilizador através das flags \mintinline{bash}{--oc='<!--'} e \mintinline{bash}{--cc='-->'}).
 
     A função responsável por imprimir o texto gerado, apenas escreve o
     comentário no caso da flag ser \textit{True}, concatenando com o prefixo

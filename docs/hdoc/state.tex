@@ -24,6 +24,8 @@
         \item \textit{NUM :} Qualquer conjunto de números.
         \item \textit{QUO :} O caracter " (aspas).
         \item \textit{NL :} Conjunto de \textit{newlines} - "$\backslash$n".
+        \item \textit{OCOMMENT CCOMMENT: } Abertura e fecho de um comentário.
+        \item \textit{COMMENT: } Qualquer conjunto de caracter até encontrar "-->"
     \end{itemize}
 
     Adicionadas aos \textit{tokens}, mas cujo o significado foi abordado
@@ -34,10 +36,10 @@
 
     \subsubsection{Estados Criados}
     No âmbito da definição da linguagem usada nos \textit{templates},
-    foi necessária a implementação de \textbf{dois estados para contexto} no
+    foi necessária a implementação de \textbf{três estados para contexto} no
     analisador léxico.
 
-    \inputminted[firstline=13, lastline=16]{py}{../pandoc_lex.py}
+    \inputminted[firstline=13, lastline=17]{python}{../pandoc_lex.py}
 
     O primeiro, \textbf{metadata}, é utilizado para identificar todos os
     campos de metadados, eg. \textbf{operações If/For}.
@@ -54,7 +56,11 @@
     Ao processar novamente o símbolo \textit{aspas} volta ao estado \textit{metadata},
     como referido anteriormente.
 
-    \dots ambos os estados são exclusivos, pois é necessário fazer \textit{override}
+    O terceiro, \textbf{comments}, foi utilizado mediante a possibilidade de 
+    encontrar comentários nos templates. Dessa maneira, foi necessário criar um 
+    estado para compreender e diferenciar estes do texto regular.
+
+    \dots os três estados são exclusivos, pois é necessário fazer \textit{override}
     do comportamento padrão do \textit{lexer}.
     Nestes, apenas são válidos um conjunto de caracteres, daí a sua exclusividade e 
     necessidade de definir todas as regras válidas em cada.
@@ -65,7 +71,7 @@
 
     \begin{figure}[!ht]
         \centering
-        \includegraphics[width=\linewidth]{assets/Máquina_estados.jpg}
+        \includegraphics[width=\linewidth]{assets/Máquina_estados.png}
         \caption{Diagrama de máquina de estados para o analisador léxico.}
         \label{fig:state_machine}
     \end{figure}
