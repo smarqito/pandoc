@@ -9,6 +9,7 @@
 from re import *
 import sys
 import yaml
+import json
 import getopt
 import os
 from pandoc_par import parser, getFinfo
@@ -19,7 +20,7 @@ from aux import throw_error
 
 # loaded = yaml.load(f.read(), Loader=yaml.Loader)
 
-args_filter = 'i:o:d:hgl:t:f:c'
+args_filter = 'i:o:d:hgl:t:f:cj:'
 long_args = ['help=', 'log=', 'oc=', 'cc=']
 rootdir = False
 outdir = False
@@ -116,6 +117,16 @@ def handle_data(x):
 
     t_info['yaml'] = yaml.load(d.read(), Loader=yaml.Loader)
 
+def handle_json(x):
+    global t_info
+
+    try:
+        d = open(x, 'r')
+    except:
+        throw_error(f"Ficheiro YAML {x} nao encontrado!", True)
+
+    t_info['yaml'] = json.loads(d.read())
+
 
 def handle_output(x):
     info = getoutdir(x)
@@ -180,6 +191,7 @@ def handle_ccomment(value):
 args_handler = {
     'input': handle_input,
     '-i': handle_data,
+    '-j': handle_json,
     '-l': handle_log,
     '-o': handle_output,
     '-t': handle_outdir,
