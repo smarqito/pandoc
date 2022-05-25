@@ -156,10 +156,19 @@ def handle_log(file):
     f = open(file, 'a')
     sys.stderr = f
 
+def getoutext(path):
+    m = search(
+        r"(?P<path>\/?(?:\w+\/)+)(?P<ext>\w*)$", path)
+    if m:
+        return {
+            'path' : m['path'],
+            'fname' : '',
+            'ext' : '.' + m['ext'] if m['ext'] else ''
+        }
 
 def handle_outdir(path):
     global outdir
-    t_info['output'] = getoutdir(path)
+    t_info['output'] = getoutext(path)
     if not os.path.exists(t_info['output']['path']):
         os.mkdir(t_info['output']['path'])
     outdir = True
