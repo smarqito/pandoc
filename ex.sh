@@ -59,7 +59,7 @@ case $1 in
     "html")
     echo '##############################'
     echo '        Exemplo html'
-    echo 'pandoc.py -i samples/info2.yaml -t www/.html --oc='<!--' --cc='-->' samples/default.html
+    echo 'pandoc.py -i samples/info2.yaml -t www/.html --oc='<!--' --cc='-->' samples/default.html'
     echo '##############################'
     echo ''
     pandoc.py -i samples/info2.yaml -t www/.html --oc='<!--' --cc='-->' samples/default.html
